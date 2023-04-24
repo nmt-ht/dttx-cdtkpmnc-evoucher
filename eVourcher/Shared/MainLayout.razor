@@ -1,0 +1,29 @@
+﻿@inject IJSRuntime JS
+@inject IMessageService MessageService
+@inherits LayoutComponentBase
+
+<Layout>
+    <LayoutHeader>
+        <Bar Breakpoint="Breakpoint.Desktop"
+                Background="Background.White"
+                ThemeContrast="ThemeContrast.Light"
+                style="box-shadow: none; border-style: none; " Padding="Padding.Is2.FromStart">
+            <BarBrand Style="cursor:pointer;">
+                eVoucher Administrator
+            </BarBrand>
+            <BarToggler />
+        </Bar>
+    </LayoutHeader>
+    <Layout Sider="true">
+        <LayoutSider>
+            <LayoutSiderContent>
+                <LeftMenu></LeftMenu>
+            </LayoutSiderContent>
+        </LayoutSider>
+        <Layout>
+            <LayoutContent Margin="Margin.Is2" style="background-color: #E3F2FD;border-bottom-left-radius: 0;border-bottom-right-radius: 0;border-top-left-radius: 6pt; border-top-right-radius: 6pt">
+                    @Body
+            </LayoutContent>
+        </Layout>
+    </Layout>
+</Layout>

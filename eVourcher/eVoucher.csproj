@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<Optimize>False</Optimize>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="AutoMapper" Version="12.0.1" />
+		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+		<PackageReference Include="Blazored.SessionStorage" Version="2.3.0" />
+		<PackageReference Include="Blazored.Typeahead" Version="4.7.0" />
+		<PackageReference Include="Blazorise.Components" Version="1.2.2" />
+		<PackageReference Include="Blazorise.DataGrid" Version="1.2.2" />
+		<PackageReference Include="Blazorise.Icons.FontAwesome" Version="1.2.2" />
+		<PackageReference Include="Blazorise.Icons.Material" Version="1.2.2" />
+		<PackageReference Include="Blazorise.Material" Version="1.2.2" />
+		<PackageReference Include="Blazorise.RichTextEdit" Version="1.2.2" />
+		<PackageReference Include="Blazorise.Sidebar" Version="1.2.2" />
+		<PackageReference Include="Blazorise.Snackbar" Version="1.2.2" />
+		<PackageReference Include="Blazorise.SpinKit" Version="1.2.2" />
+		<PackageReference Include="Blazorise.TreeView" Version="1.2.2" />
+		<PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.21.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.5" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.5" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+		<PackageReference Include="Microsoft.Authentication.WebAssembly.Msal" Version="7.0.5" />
+		<PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="System.Configuration.ConfigurationManager" Version="7.0.0" />
+		<PackageReference Include="System.Net.Http.Json" Version="7.0.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="Models\Compains\" />
+		<Folder Include="Models\Partners\" />
+	</ItemGroup>
+</Project>

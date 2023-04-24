@@ -1,0 +1,15 @@
+﻿@page "/accounts"
+@using eVoucher.Models;
+
+<PageTitle>Accounts</PageTitle>
+
+<DataGrid TItem="Account"
+          Data="@AccountData"
+          @bind-SelectedRow="@selectedAccount"
+          Responsive>
+    <DataGridCommandColumn />
+    <DataGridColumn Field="@nameof(Account.ID)" Caption="#" Sortable="false" />
+    <DataGridColumn Field="@nameof(Account.FirstName)" Caption="First Name" Editable />
+    <DataGridColumn Field="@nameof(Account.LastName)" Caption="Last Name" Editable />
+    <DataGridColumn Field="@nameof(Account.Email)" Caption="Email" Editable />
+</DataGrid>

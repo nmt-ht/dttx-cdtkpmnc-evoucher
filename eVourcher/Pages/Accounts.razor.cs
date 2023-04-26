@@ -3,12 +3,14 @@ using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System;
+using eVourcher.Services;
 
 namespace eVoucher.Pages;
 public partial class Accounts : ComponentBase
 {
+    private IAccountService _accountService { get; set; }
     public Account Account { get; set; }
-    private List<Account> AccountData { get; set; } = new List<Account>
+    private IList<Account> AccountList { get; set; } = new List<Account>
     {
         new Account
         {
@@ -22,5 +24,6 @@ public partial class Accounts : ComponentBase
     protected override async Task OnInitializedAsync()
     {
         //await base.OnInitializedAsync();
+        AccountList = await _accountService.GetAccounts();
     }
 }

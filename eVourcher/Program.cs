@@ -1,4 +1,4 @@
-using Blazorise;
+﻿using Blazorise;
 using Blazorise.Icons.FontAwesome;
 using Blazorise.Icons.Material;
 using Blazorise.Material;
@@ -34,7 +34,7 @@ public class Program
             return provider.GetService<IConfiguration>();
         });
 
-        builder.Services.AddSingleton<IAccountService, AccountService>();
+        builder.Services.AddSingleton<IAccountService, AccountService>(); // Đăng kí (DI)
 
         builder.Services.AddHttpClient("default", client =>
         {

@@ -147,3 +147,26 @@ a, .btn-link {
     .menu-child li + li {
         margin-top: 10px;
     }
+
+.evoucher-header {
+    background-color: #fff;
+    margin: 3px;
+    border-radius: 6px;
+    box-shadow: none;
+    color: #000;
+    padding: 10px;
+}
+
+.evoucher-content {
+    background-color: #fff;
+    margin: 3px;
+    border-radius: 6px;
+    box-shadow: none;
+    color: #000;
+    min-height: 820px;
+}
+
+.title {
+    font-size: 20px;
+    font-weight: bold;
+}

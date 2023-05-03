@@ -1,0 +1,34 @@
+﻿@page "/users"
+@using eVoucher.Models;
+
+<PageTitle>Users</PageTitle>
+
+<Div Class="user-view">
+    <Div Class="evoucher-header user-header">
+        <Row Display="Display.Flex">
+            <Column ColumnSize="ColumnSize.Is6" Class="title">User Information</Column>
+            <Column ColumnSize="ColumnSize.Is6" Class="user-actions">
+                <Button Color="Color.Primary" Margin="Margin.Is2.FromEnd">Add</Button>
+                <Button Color="Color.Secondary" Margin="Margin.Is2.FromEnd">Edit</Button>
+                <Button Color="Color.Danger">Delete</Button>
+            </Column>
+        </Row>
+    </Div>
+    <Div Class="evoucher-content user-content">
+        <DataGrid TItem="User"
+                  Data="@Users"
+                  @bind-SelectedRow="@selectedUser"
+                  Responsive
+                  PageSize="20"
+                  ShowPager="true"
+                  Hoverable="true"
+                  Striped="true"
+                  Filterable>
+            <DataGridCommandColumn />
+            <DataGridColumn Field="@nameof(User.ID)" Caption="#" Sortable="false" />
+            <DataGridColumn Field="@nameof(User.FirstName)" Caption="First Name" Editable />
+            <DataGridColumn Field="@nameof(User.LastName)" Caption="Last Name" Editable />
+            <DataGridColumn Field="@nameof(User.EmailAddress)" Caption="Email Address" Editable />
+        </DataGrid>
+    </Div>
+</Div>

@@ -3,6 +3,7 @@ using Blazorise.Icons.FontAwesome;
 using Blazorise.Icons.Material;
 using Blazorise.Material;
 using Blazorise.RichTextEdit;
+using eVoucher.Handlers;
 using eVourcher.Services;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -33,8 +34,9 @@ public class Program
         {
             return provider.GetService<IConfiguration>();
         });
+        builder.Configuration.Bind("eVoucherConfig", RestClient.VoucherConfig);
 
-        builder.Services.AddSingleton<IAccountService, AccountService>(); // Đăng kí (DI)
+        builder.Services.AddSingleton<IUserService, UserService>();
 
         builder.Services.AddHttpClient("default", client =>
         {

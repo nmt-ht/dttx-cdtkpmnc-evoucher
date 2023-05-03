@@ -2,6 +2,6 @@
 
 namespace eVoucher.Pages;
 
-public partial class Campains : ComponentBase
+public partial class CampaignsView : ComponentBase
 {
 }

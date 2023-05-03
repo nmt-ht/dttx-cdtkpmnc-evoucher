@@ -33,9 +33,5 @@
 		<PackageReference Include="System.Configuration.ConfigurationManager" Version="7.0.0" />
 		<PackageReference Include="System.Net.Http.Json" Version="7.0.1" />
 	</ItemGroup>
-
-	<ItemGroup>
-		<Folder Include="Models\Compains\" />
-		<Folder Include="Models\Partners\" />
-	</ItemGroup>
+	
 </Project>

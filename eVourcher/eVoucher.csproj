@@ -2,6 +2,9 @@
 
 	<PropertyGroup>
 		<TargetFramework>net7.0</TargetFramework>
+		<!--<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<NoWarn>$(NoWarn);1591</NoWarn>-->
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

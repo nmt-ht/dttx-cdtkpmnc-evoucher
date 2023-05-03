@@ -2,7 +2,6 @@
 using eVoucher.Pages.Users.Components;
 using eVourcher.Services;
 using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -10,7 +9,6 @@ namespace eVoucher.Pages.Users;
 public partial class UserView : ComponentBase
 {
     [Inject] public IUserService UserService { get; set; }
-    //[Inject] IConfiguration Configuration { get; set; }
     private IList<User> Users { get; set; } = new List<User>();
  
     private User selectedUser;

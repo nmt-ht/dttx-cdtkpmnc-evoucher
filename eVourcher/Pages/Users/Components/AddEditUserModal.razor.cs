@@ -1,16 +1,40 @@
 ﻿using Blazorise;
 using eVoucher.Models;
+using eVourcher.Services;
 using Microsoft.AspNetCore.Components;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using static eVoucher.Models.DataType;
+using Address = eVoucher.Models.Address;
 
 namespace eVoucher.Pages.Users.Components;
 public partial class AddEditUserModal : ComponentBase
 {
-    // reference to the modal component
+    [Inject] public IUserService UserService { get; set; }
+    [Inject] public INotificationService NotificationService { get; set; }
+    [Parameter] public User User { get; set; } = new();
+    
     private Modal modalRef;
-    [Parameter] public User User { get; set; }
+    private Address BillToAddress { get; set; } = new();
+    private bool IsAdded => User is not null && User.Id != Guid.Empty ? false : true;
+    private string Title => IsAdded ? "Add User" : "Edit User";
+
+    private IEnumerable<eAddressType> AddressTypes = new List<eAddressType>() { eAddressType.ShipTo, eAddressType.BillTo, eAddressType.BillToShipTo};
+    private eAddressType selectedAddressType = eAddressType.BillTo;
+
     public void InitData()
     {
+        if (!IsAdded)
+        {
+            BillToAddress = User?.Addresses?.FirstOrDefault(x => x.Type == eAddressType.BillTo);
+        }
+        {
+            User = new();
+            BillToAddress = new();
+        }
+
         ShowModal();
     }
 
@@ -22,5 +46,16 @@ public partial class AddEditUserModal : ComponentBase
     private Task HideModal()
     {
         return modalRef.Hide();
+    }
+
+    private async Task UpdateData()
+    {
+        if(IsAdded)
+        {
+            User.Addresses.Add(BillToAddress);
+            var result = await UserService.UpdateUser(User);
+            if (result)
+                await NotificationService.Info(IsAdded ? "Added user successfully." : "Edit user successfully.");
+        }
     }
 }

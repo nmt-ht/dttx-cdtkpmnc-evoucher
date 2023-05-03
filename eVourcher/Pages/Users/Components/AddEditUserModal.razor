@@ -1,22 +1,75 @@
-﻿<Modal @ref="modalRef">
-    <ModalContent Centered>
+﻿@using static eVoucher.Models.DataType;
+<Modal @ref="modalRef">
+    <ModalContent Centered Size="ModalSize.ExtraLarge">
         <ModalHeader>
-            <ModalTitle>Add/Edit User</ModalTitle>
+            <ModalTitle>@Title</ModalTitle>
             <CloseButton />
         </ModalHeader>
         <ModalBody>
-            <Field>
-                <FieldLabel>Name</FieldLabel>
-                <TextEdit Placeholder="Enter name..." />
-            </Field>
-            <Field>
-                <FieldLabel>Surname</FieldLabel>
-                <TextEdit Placeholder="Enter surname..." />
-            </Field>
+            @if (User is not null)
+            {
+                <Field>
+                    <FieldLabel>First Name</FieldLabel>
+                    <TextEdit @bind-Text="@User.FirstName" Placeholder="Enter first name..." />
+                </Field>
+                <Field>
+                    <FieldLabel>Last Name</FieldLabel>
+                    <TextEdit @bind-Text="User.LastName" Placeholder="Enter last name..." />
+                </Field>
+                <Field>
+                    <FieldLabel>Date of Birth</FieldLabel>
+                    <DateEdit @bind-Date=User.DateOfBirth></DateEdit>
+                </Field>
+                <Fields>
+                    <Field>
+                        <FieldLabel>Phone number</FieldLabel>
+                        <TextEdit @bind-Text="User.Phone" Placeholder="Enter phone number...">
+                            <FieldHelp>Include country and area prefixes</FieldHelp>
+                        </TextEdit>
+                    </Field>
+                    <Field>
+                        <FieldLabel>Password</FieldLabel>
+                        <TextEdit @bind-Text="User.Password" Placeholder="Enter phone number...">
+                            <FieldHelp>Password strength: <Text TextColor="TextColor.Danger">weak</Text></FieldHelp>
+                        </TextEdit>
+                    </Field>
+                </Fields>
+                <Field>
+                    <FieldLabel>Type of Address</FieldLabel>
+                    <SelectList TItem="eAddressType"
+                            TValue="eAddressType"
+                            Data="@AddressTypes"
+                            TextField="@((item)=> eVoucher.Handlers.eVoucherHelper.GetEnumDescription(item))"
+                            ValueField="@((item)=>item)"
+                            @bind-SelectedValue="@selectedAddressType"
+                            DefaultItemText="Choose your address type" />
+                </Field>
+                <Fields>
+                    <Field ColumnSize="ColumnSize.Is6.OnDesktop">
+                        <FieldLabel>Street</FieldLabel>
+                        <TextEdit @bind-Text="BillToAddress.Street" Placeholder="Enter street..." />
+                    </Field>
+                    <Field ColumnSize="ColumnSize.Is6.OnDesktop">
+                        <FieldLabel>District</FieldLabel>
+                        <TextEdit @bind-Text="BillToAddress.District" Placeholder="Enter district..." />
+                    </Field>
+                    
+                </Fields>
+                <Fields>
+                    <Field ColumnSize="ColumnSize.Is6.OnDesktop">
+                        <FieldLabel>City</FieldLabel>
+                        <TextEdit @bind-Text="BillToAddress.City" Placeholder="Enter city..." />
+                    </Field>
+                    <Field ColumnSize="ColumnSize.Is6.OnDesktop">
+                        <FieldLabel>Country</FieldLabel>
+                        <TextEdit @bind-Text="BillToAddress.Country" Placeholder="Enter country..." />
+                    </Field>
+                </Fields>
+            }
         </ModalBody>
         <ModalFooter>
             <Button Color="Color.Secondary" Clicked="@HideModal">Close</Button>
-            <Button Color="Color.Primary" Clicked="@HideModal">Save Changes</Button>
+            <Button Color="Color.Primary" Clicked="@UpdateData">Save Changes</Button>
         </ModalFooter>
     </ModalContent>
 </Modal>

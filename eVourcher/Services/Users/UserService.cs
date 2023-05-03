@@ -1,8 +1,8 @@
 ﻿using eVoucher.Handlers;
-using eVoucher.Models;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using User = eVoucher.Models.User;
 
 namespace eVourcher.Services
 {
@@ -35,9 +35,17 @@ namespace eVourcher.Services
             throw new System.NotImplementedException();
         }
 
-        public Task<bool> UpdateUser(User user)
+        public async Task<bool> UpdateUser(User user)
         {
-            throw new System.NotImplementedException();
+            string requestURL = "/api/users/create";
+
+            var response = await RestClient.APIClient.PostAsync(requestURL, user);
+
+            if (response != null && response.Success && response.Data != null)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

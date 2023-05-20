@@ -1,0 +1,38 @@
+﻿@using static eVoucher.Models.DataType;
+<Modal @ref="modalRef">
+    <ModalContent Centered Size="ModalSize.ExtraLarge">
+        <ModalHeader>
+            <ModalTitle>@Title</ModalTitle>
+            <CloseButton />
+        </ModalHeader>
+        <ModalBody>
+            @if (Campaign is not null)
+            {
+                <Field>
+                    <FieldLabel>Name</FieldLabel>
+                    <TextEdit @bind-Text="@Campaign.Name" Placeholder="Enter first name..." />
+                </Field>
+                <Field>
+                    <FieldLabel>Description</FieldLabel>
+                    <TextEdit @bind-Text="Campaign.Description" Placeholder="Enter last name..." />
+                </Field>
+                <Field>
+                    <FieldLabel>Created Date</FieldLabel>
+                    <DateEdit @bind-Date=Campaign.CreatedDate></DateEdit>
+                </Field>
+                <Field>
+                    <FieldLabel>Start Date</FieldLabel>
+                    <DateEdit @bind-Date=Campaign.StartedDate></DateEdit>
+                </Field>
+                <Field>
+                    <FieldLabel>Expire Date</FieldLabel>
+                    <DateEdit @bind-Date=Campaign.ExpiredDate></DateEdit>
+                </Field>
+            }
+        </ModalBody>
+        <ModalFooter>
+            <Button Color="Color.Secondary" Clicked="@HideModal">Close</Button>
+            <Button Color="Color.Primary" Clicked="@UpdateData">Save Changes</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>

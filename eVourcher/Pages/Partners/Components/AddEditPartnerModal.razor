@@ -1,0 +1,34 @@
+﻿@using static eVoucher.Models.DataType;
+<Modal @ref="modalRef">
+    <ModalContent Centered Size="ModalSize.ExtraLarge">
+        <ModalHeader>
+            <ModalTitle>@Title</ModalTitle>
+            <CloseButton />
+        </ModalHeader>
+        <ModalBody>
+            @if (Partner is not null)
+            {
+                <Field>
+                    <FieldLabel>Name</FieldLabel>
+                    <TextEdit @bind-Text="@Partner.CompanyName" Placeholder="Enter first name..." />
+                </Field>
+                <Field>
+                    <FieldLabel>Description</FieldLabel>
+                    <TextEdit @bind-Text="Partner.Description" Placeholder="Enter last name..." />
+                </Field>
+                <Field>
+                    <FieldLabel>Start Date</FieldLabel>
+                    <TextEdit @bind-Text=Partner.CompanyPhone></TextEdit>
+                </Field>
+                <Field>
+                    <FieldLabel>Expire Date</FieldLabel>
+                    <TextEdit @bind-Text=Partner.CompanyEmailAddress></TextEdit>
+                </Field>
+            }
+        </ModalBody>
+        <ModalFooter>
+            <Button Color="Color.Secondary" Clicked="@HideModal">Close</Button>
+            <Button Color="Color.Primary" Clicked="@UpdateData">Save Changes</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>

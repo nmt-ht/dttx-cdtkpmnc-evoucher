@@ -1,0 +1,43 @@
+﻿@page "/campaigns"
+@using eVoucher.Models;
+@using eVoucher.Pages.Campaigns.Components;
+
+<PageTitle>Campaigns</PageTitle>
+
+<Div Class="Campaign-view">
+    <Div Class="evoucher-header Campaign-header">
+        <Row Display="Display.Flex">
+            <Column ColumnSize="ColumnSize.Is6" Class="title">Campaign Information</Column>
+            <Column ColumnSize="ColumnSize.Is6" Class="Campaign-actions">
+                <Button Color="Color.Primary" Margin="Margin.Is2.FromEnd" Clicked="ViewAddEditCampaign">
+                    <Icon Name="IconName.Add"></Icon><Span>&nbsp; @("Add")</Span>
+                </Button>
+                    <Button Color="Color.Secondary" Margin="Margin.Is2.FromEnd">
+                        <Icon Name="IconName.Edit"></Icon><Span>&nbsp; @("Edit")</Span>
+                    </Button>
+                    <Button Color="Color.Danger">
+                        <Icon Name="IconName.Delete"></Icon><Span>&nbsp; @("Delete")</Span>
+                    </Button>
+                </Column>
+            </Row>
+        </Div>
+        <Div Class="evoucher-content Campaign-content">
+            <DataGrid TItem="Campaign"
+                  Data="@Campaigns"
+                  @bind-SelectedRow="@selectedCampaign"
+                  Responsive
+                  PageSize="20"
+                  ShowPager="true"
+                  Hoverable="true"
+                  Striped="true"
+                  Filterable>
+            <DataGridCommandColumn />
+            <DataGridColumn Field="@nameof(Campaign.Id)" Caption="#" Sortable="false" />
+            <DataGridColumn Field="@nameof(Campaign.Name)" Caption="Campaign Name" Editable />
+            <DataGridColumn Field="@nameof(Campaign.Description)" Caption="Description" Editable />
+            <DataGridColumn Field="@nameof(Campaign.ExpiredDate)" Caption="Expired Date" Editable />
+        </DataGrid>
+    </Div>
+</Div>
+
+<AddEditCampaignModal @ref="addEditCampaignModal"></AddEditCampaignModal>

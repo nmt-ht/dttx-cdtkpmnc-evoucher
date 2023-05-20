@@ -12,7 +12,7 @@ namespace eVourcher.Services
 
         public async Task<IList<Campaign>> GetCampaigns()
         {
-            IList<Campaign> users = new List<Campaign>();
+            IList<Campaign> campaigns = new List<Campaign>();
 
             string requestURL = "/api/Campaigns";
 
@@ -20,26 +20,26 @@ namespace eVourcher.Services
 
             if (response != null && response.Success && response.Data != null)
             {
-                users = JsonConvert.DeserializeObject<IList<Campaign>>(response.Data.ToString());
+                campaigns = JsonConvert.DeserializeObject<IList<Campaign>>(response.Data.ToString());
             }
 
-            return users;
+            return campaigns;
         }
-        public Task<bool> CreateCampaign(Campaign user)
+        public Task<bool> CreateCampaign(Campaign campaign)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<bool> DeleteCampaign(Campaign user)
+        public Task<bool> DeleteCampaign(Campaign campaign)
         {
             throw new System.NotImplementedException();
         }
 
-        public async Task<bool> UpdateCampaign(Campaign user)
+        public async Task<bool> UpdateCampaign(Campaign campaign)
         {
-            string requestURL = "/api/users/create";
+            string requestURL = "/api/campaigns/create";
 
-            var response = await RestClient.APIClient.PostAsync(requestURL, user);
+            var response = await RestClient.APIClient.PostAsync(requestURL, campaign);
 
             if (response != null && response.Success && response.Data != null)
             {

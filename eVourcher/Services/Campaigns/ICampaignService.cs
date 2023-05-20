@@ -7,8 +7,8 @@ namespace eVourcher.Services
     public interface ICampaignService
     {
         Task<IList<Campaign>> GetCampaigns();
-        Task<bool> CreateCampaign(Campaign Campaign);
-        Task<bool> UpdateCampaign(Campaign Campaign);
-        Task<bool> DeleteCampaign(Campaign Campaign);
+        Task<bool> CreateCampaign(Campaign campaign);
+        Task<bool> UpdateCampaign(Campaign campaign);
+        Task<bool> DeleteCampaign(Campaign campaign);
     }
 }

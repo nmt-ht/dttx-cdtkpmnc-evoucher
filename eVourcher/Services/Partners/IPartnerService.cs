@@ -7,8 +7,8 @@ namespace eVourcher.Services
     public interface IPartnerService
     {
         Task<IList<Partner>> GetPartners();
-        Task<bool> CreatePartner(Partner Partner);
-        Task<bool> UpdatePartner(Partner Partner);
-        Task<bool> DeletePartner(Partner Partner);
+        Task<bool> CreatePartner(Partner partner);
+        Task<bool> UpdatePartner(Partner partner);
+        Task<bool> DeletePartner(Partner partner);
     }
 }

@@ -12,7 +12,7 @@ namespace eVourcher.Services
 
         public async Task<IList<Partner>> GetPartners()
         {
-            IList<Partner> users = new List<Partner>();
+            IList<Partner> partners = new List<Partner>();
 
             string requestURL = "/api/Partners";
 
@@ -20,26 +20,26 @@ namespace eVourcher.Services
 
             if (response != null && response.Success && response.Data != null)
             {
-                users = JsonConvert.DeserializeObject<IList<Partner>>(response.Data.ToString());
+                partners = JsonConvert.DeserializeObject<IList<Partner>>(response.Data.ToString());
             }
 
-            return users;
+            return partners;
         }
-        public Task<bool> CreatePartner(Partner user)
+        public Task<bool> CreatePartner(Partner partner)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<bool> DeletePartner(Partner user)
+        public Task<bool> DeletePartner(Partner partner)
         {
             throw new System.NotImplementedException();
         }
 
-        public async Task<bool> UpdatePartner(Partner user)
+        public async Task<bool> UpdatePartner(Partner partner)
         {
-            string requestURL = "/api/users/create";
+            string requestURL = "/api/partners/create";
 
-            var response = await RestClient.APIClient.PostAsync(requestURL, user);
+            var response = await RestClient.APIClient.PostAsync(requestURL, partner);
 
             if (response != null && response.Success && response.Data != null)
             {

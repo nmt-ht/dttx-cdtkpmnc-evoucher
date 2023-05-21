@@ -1,0 +1,42 @@
+﻿@using static eVoucher.Models.DataType;
+<Modal @ref="modalRef">
+    <ModalContent Centered Size="ModalSize.ExtraLarge">
+        <ModalHeader>
+            <ModalTitle>@Title</ModalTitle>
+            <CloseButton />
+        </ModalHeader>
+        <ModalBody>
+            @if (Address is not null)
+            {
+                <Fields>
+                    <Field ColumnSize="ColumnSize.Is6.OnDesktop">
+                        <FieldLabel>Street</FieldLabel>
+                        <TextEdit @bind-Text="Address.Street" Placeholder="Enter street..." />
+                    </Field>
+                    <Field ColumnSize="ColumnSize.Is6.OnDesktop">
+                        <FieldLabel>District</FieldLabel>
+                        <TextEdit @bind-Text="Address.District" Placeholder="Enter district..." />
+                    </Field>
+                </Fields>
+                <Fields>
+                    <Field ColumnSize="ColumnSize.Is4.OnDesktop">
+                        <FieldLabel>City</FieldLabel>
+                        <TextEdit @bind-Text="Address.City" Placeholder="Enter city..." />
+                    </Field>
+                    <Field ColumnSize="ColumnSize.Is4.OnDesktop">
+                        <FieldLabel>Country</FieldLabel>
+                        <TextEdit @bind-Text="Address.Country" Placeholder="Enter country..." />
+                    </Field>
+                    <Field ColumnSize="ColumnSize.Is4.OnDesktop">
+                        <FieldLabel>Type of Address</FieldLabel>
+                        <TextEdit Text="@(eVoucher.Handlers.eVoucherHelper.GetEnumDescription(Address.Type))" Placeholder="Enter country..." />
+                    </Field>
+                </Fields>
+            }
+        </ModalBody>
+        <ModalFooter>
+            <Button Color="Color.Secondary" Clicked="@HideModal">Close</Button>
+            <Button Color="Color.Primary" Clicked="@UpdateData">Save Changes</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>

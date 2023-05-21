@@ -3,7 +3,6 @@ using eVoucher.Models;
 using eVourcher.Services;
 using Microsoft.AspNetCore.Components;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using static eVoucher.Models.DataType;
@@ -20,10 +19,7 @@ public partial class AddEditUserModal : ComponentBase
     private Address BillToAddress { get; set; } = new();
     private bool IsAdded => User is not null && User.Id != Guid.Empty ? false : true;
     private string Title => IsAdded ? "Add User" : "Edit User";
-
-    private IEnumerable<eAddressType> AddressTypes = new List<eAddressType>() { eAddressType.ShipTo, eAddressType.BillTo, eAddressType.BillToShipTo};
-    private eAddressType selectedAddressType = eAddressType.BillTo;
-
+    
     public void InitData()
     {
         if (!IsAdded)

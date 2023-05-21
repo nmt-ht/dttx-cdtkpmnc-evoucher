@@ -1,13 +1,14 @@
 ﻿@using static eVoucher.Models.DataType;
 <Modal @ref="modalRef">
-    <ModalContent Centered Size="ModalSize.ExtraLarge">
+    <ModalContent Centered Size="ModalSize.Fullscreen" Class="add-edit-user-modal">
         <ModalHeader>
-            <ModalTitle>@Title</ModalTitle>
+            <ModalTitle TextAlignment="TextAlignment.Center">@Title</ModalTitle>
             <CloseButton />
         </ModalHeader>
         <ModalBody>
             @if (User is not null)
             {
+                <Field Class="edit-user-header">User Information:</Field>
                 <Field>
                     <FieldLabel>First Name</FieldLabel>
                     <TextEdit @bind-Text="@User.FirstName" Placeholder="Enter first name..." />
@@ -18,53 +19,78 @@
                 </Field>
                 <Field>
                     <FieldLabel>Date of Birth</FieldLabel>
-                    <DateEdit TValue="DateTime?"  @bind-Date=User.DateOfBirth />
+                    <DateEdit TValue="DateTime?" @bind-Date=User.DateOfBirth />
                 </Field>
                 <Fields>
+                    <Field>
+                        <FieldLabel>Email address</FieldLabel>
+                        <TextEdit @bind-Text="User.EmailAddress" Placeholder="Enter email address..." />
+                    </Field>
                     <Field>
                         <FieldLabel>Phone number</FieldLabel>
                         <TextEdit @bind-Text="User.Phone" Placeholder="Enter phone number...">
                             <FieldHelp>Include country and area prefixes</FieldHelp>
                         </TextEdit>
                     </Field>
+                </Fields>
+                <Fields>
+                    <Field>
+                        <FieldLabel>User Name</FieldLabel>
+                        <TextEdit @bind-Text="User.UserName" Placeholder="Enter user name..." />
+                    </Field>
                     <Field>
                         <FieldLabel>Password</FieldLabel>
-                        <TextEdit @bind-Text="User.Password" Placeholder="Enter phone number...">
+                        <TextEdit @bind-Text="User.Password" Placeholder="Enter password...">
                             <FieldHelp>Password strength: <Text TextColor="TextColor.Danger">weak</Text></FieldHelp>
                         </TextEdit>
                     </Field>
                 </Fields>
-                <Field>
-                    <FieldLabel>Type of Address</FieldLabel>
-                    <SelectList TItem="eAddressType"
-                            TValue="eAddressType"
-                            Data="@AddressTypes"
-                            TextField="@((item)=> eVoucher.Handlers.eVoucherHelper.GetEnumDescription(item))"
-                            ValueField="@((item)=>item)"
-                            @bind-SelectedValue="@selectedAddressType"
-                            DefaultItemText="Choose your address type" />
-                </Field>
-                <Fields>
-                    <Field ColumnSize="ColumnSize.Is6.OnDesktop">
-                        <FieldLabel>Street</FieldLabel>
-                        <TextEdit @bind-Text="BillToAddress.Street" Placeholder="Enter street..." />
-                    </Field>
-                    <Field ColumnSize="ColumnSize.Is6.OnDesktop">
-                        <FieldLabel>District</FieldLabel>
-                        <TextEdit @bind-Text="BillToAddress.District" Placeholder="Enter district..." />
-                    </Field>
-                    
-                </Fields>
-                <Fields>
-                    <Field ColumnSize="ColumnSize.Is6.OnDesktop">
-                        <FieldLabel>City</FieldLabel>
-                        <TextEdit @bind-Text="BillToAddress.City" Placeholder="Enter city..." />
-                    </Field>
-                    <Field ColumnSize="ColumnSize.Is6.OnDesktop">
-                        <FieldLabel>Country</FieldLabel>
-                        <TextEdit @bind-Text="BillToAddress.Country" Placeholder="Enter country..." />
-                    </Field>
-                </Fields>
+
+                <Div Display="Display.Flex">
+                    <Field Class="edit-user-header">Address Information:</Field>
+                    <Buttons>
+                        <Button Color="Color.Primary">Add</Button>
+                        <Button Color="Color.Secondary">Edit</Button>
+                        <Button Color="Color.Danger">Delete</Button>
+                    </Buttons>
+                </Div>
+                
+                @if (User.Addresses.Any())
+                {
+                    <Table Resizable ResizeMode="TableResizeMode.Columns">
+                    <TableHeader ThemeContrast="ThemeContrast.Light">
+                    <TableRow>
+                            <TableHeaderCell>#</TableHeaderCell>
+                            <TableHeaderCell>Street</TableHeaderCell>
+                            <TableHeaderCell>District</TableHeaderCell>
+                            <TableHeaderCell>City</TableHeaderCell>
+                            <TableHeaderCell>Country</TableHeaderCell>
+                            <TableHeaderCell>Type</TableHeaderCell>
+                    </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                         @{
+                                foreach (var (address, index) in User.Addresses.Select((value, i) => (value, i)))
+                                {
+                                    <TableRow>
+                                        <TableRowHeader>@index++</TableRowHeader>
+                                        <TableRowCell>@address.Street</TableRowCell>
+                                        <TableRowCell>@address.District</TableRowCell>
+                                        <TableRowCell>@address.City</TableRowCell>
+                                        <TableRowCell>@address.Country</TableRowCell>
+                                        <TableRowCell>
+                                            @(eVoucher.Handlers.eVoucherHelper.GetEnumDescription(address.Type))
+                                        </TableRowCell>
+                                    </TableRow>
+                                }
+                           }
+                       </TableBody>
+                    </Table>
+                }
+                else
+                {
+                   <Field TextAlignment="TextAlignment.Center">The current address is empty.</Field> 
+                }
             }
         </ModalBody>
         <ModalFooter>

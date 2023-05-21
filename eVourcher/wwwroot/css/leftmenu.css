@@ -70,15 +70,15 @@
         transform: translateY(-45%)
     }
 
-.fa-square-a {
+.fa-square-u {
     position: relative;
     margin-right: 35px !important;
     font-weight: unset !important;
     font-family: unset !important;
 }
 
-    .fa-square-a::before {
-        content: "A";
+    .fa-square-u::before {
+        content: "U";
         width: 30px;
         height: 30px;
         border-radius: 5px;

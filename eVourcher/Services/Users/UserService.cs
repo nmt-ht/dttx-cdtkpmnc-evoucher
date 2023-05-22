@@ -1,5 +1,6 @@
 ﻿using eVoucher.Handlers;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using User = eVoucher.Models.User;
@@ -9,7 +10,6 @@ namespace eVourcher.Services
     public class UserService : IUserService
     {
         public UserService() { }
-
         public async Task<User> Login(string email, string passWord)
         {
             User userLogin = new User();
@@ -27,7 +27,6 @@ namespace eVourcher.Services
             }
             return null;
         }
-
         public async Task<IList<User>> GetUsers()
         {
             IList<User> users = new List<User>();
@@ -59,23 +58,43 @@ namespace eVourcher.Services
             }
             return null;
         }
-
-        public Task<bool> DeleteUser(User user)
+        public async Task<bool> DeleteUser(Guid id)
         {
-            throw new System.NotImplementedException();
-        }
+            string requestURL = $"api/users/{id}/delete";
 
-        public async Task<bool> UpdateUser(User user)
-        {
-            string requestURL = "/api/users/create";
+            var response = await RestClient.APIClient.DeleteAsync(requestURL);
 
-            var response = await RestClient.APIClient.PostAsync(requestURL, user);
-
-            if (response != null && response.Success && response.Data != null)
+            if (response is not null && response.Success)
             {
                 return true;
             }
             return false;
+        }
+        public async Task<bool> UpdateUser(User user)
+        {
+            string requestURL = "api/users/update";
+
+            var response = await RestClient.APIClient.PostAsync(requestURL, user);
+
+            if (response is not null && response.Success)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public async Task<User> GetUserById(Guid id)
+        {
+            var user = new User();
+            string requestURL = $"/api/users/{id}";
+            var response = await RestClient.APIClient.GetAsync(requestURL);
+
+            if (response != null && response.Success && response.Data != null)
+            {
+                user = JsonConvert.DeserializeObject<User>(response.Data.ToString());
+            }
+
+            return user;
         }
     }
 }

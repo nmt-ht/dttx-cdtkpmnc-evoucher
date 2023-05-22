@@ -11,7 +11,9 @@ namespace eVoucher.Models
             [Description("Bill To")]
             BillTo = 1,
             [Description("Ship To & Bill To")]
-            BillToShipTo = 2
+            BillToShipTo = 2,
+            [Description("Company")]
+            Company = 3,
         }
 
         public enum ePartnerType
@@ -28,6 +30,13 @@ namespace eVoucher.Models
             Thirty = 2,
             Fifty = 3,
             OneHundered = 4
+        }
+
+        public enum eAction
+        {
+            Add = 0,
+            Edit = 1,
+            Delete = 2
         }
     }
 }

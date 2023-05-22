@@ -4,11 +4,11 @@ namespace eVoucher.Models
 {
     public class Address : Entity
     {
-        public string Street { get; set; } = string.Empty;
-        public string District { get; set; } = string.Empty;
-        public string City { get; set; } = string.Empty;
-        public string Country { get; set; } = string.Empty;
+        public string Street { get; set; }
+        public string District { get; set; } 
+        public string City { get; set; }
+        public string Country { get; set; }
         public eAddressType Type { get; set; }
-        public bool IsDeleted { get; set; } = false;
+        public bool IsDeleted { get; set; }
     }
 }

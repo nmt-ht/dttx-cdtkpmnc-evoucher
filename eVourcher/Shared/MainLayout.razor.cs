@@ -1,10 +1,7 @@
-﻿using Blazorise;
+﻿using eVoucher.Models;
 using eVoucher.Pages.Accounts;
-using eVoucher.Models;
-using eVourcher.Services;
 using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
-using System;
 
 namespace eVoucher.Shared;
 
@@ -52,7 +49,7 @@ public partial class MainLayout : LayoutComponentBase
         {
             await Close();
             loggedIn = true;
-            await LocalStorage.SaveStringAsync("userId", userLogin.Id.ToString());
+            await LocalStorage.SaveStringAsync("userId", userLogin.ID.ToString());
             await LocalStorage.SaveStringAsync("user", user);
         }
     }

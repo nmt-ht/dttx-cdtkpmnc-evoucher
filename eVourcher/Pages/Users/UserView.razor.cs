@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static eVoucher.Models.DataType;
 
 namespace eVoucher.Pages.Users;
 public partial class UserView : ComponentBase
@@ -18,6 +19,11 @@ public partial class UserView : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
+        await LoadData();
+    }
+
+    private async Task LoadData()
+    {
         await ShowLoadingPage(true);
         Users = await UserService.GetUsers();
         var index = 0;
@@ -25,9 +31,24 @@ public partial class UserView : ComponentBase
         await ShowLoadingPage(false);
     }
 
-    private void ViewAddEdiUser()
+    private async Task UserActions(eAction action)
     {
-        addEditUserModal.InitData();
+        switch (action)
+        {
+            case eAction.Add:
+                addEditUserModal.SetParameters(new User(), true);
+                addEditUserModal.InitData();
+                break;
+            case eAction.Edit:
+                var user = await UserService.GetUserById(selectedUser.ID);
+                addEditUserModal.SetParameters(user, false);
+                addEditUserModal.InitData();
+                break;
+            case eAction.Delete:
+                break;
+            default:
+                break;
+        }
     }
 
     #region Show Loading page

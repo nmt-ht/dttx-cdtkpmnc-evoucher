@@ -1,5 +1,4 @@
-﻿@using static eVoucher.Models.DataType;
-<Modal @ref="modalRef">
+﻿<Modal @ref="userRef">
     <ModalContent Centered Size="ModalSize.Fullscreen" Class="add-edit-user-modal">
         <ModalHeader>
             <ModalTitle TextAlignment="TextAlignment.Center">@Title</ModalTitle>
@@ -9,18 +8,20 @@
             @if (User is not null)
             {
                 <Field Class="edit-user-header">User Information:</Field>
-                <Field>
-                    <FieldLabel>First Name</FieldLabel>
-                    <TextEdit @bind-Text="@User.FirstName" Placeholder="Enter first name..." />
-                </Field>
-                <Field>
-                    <FieldLabel>Last Name</FieldLabel>
-                    <TextEdit @bind-Text="User.LastName" Placeholder="Enter last name..." />
-                </Field>
-                <Field>
-                    <FieldLabel>Date of Birth</FieldLabel>
-                    <DateEdit TValue="DateTime" @bind-Date=User.DateOfBirth />
-                </Field>
+                <Fields>
+                    <Field>
+                        <FieldLabel>First Name</FieldLabel>
+                        <TextEdit @bind-Text="@User.FirstName" Placeholder="Enter first name..." />
+                    </Field>
+                    <Field>
+                        <FieldLabel>Last Name</FieldLabel>
+                        <TextEdit @bind-Text="User.LastName" Placeholder="Enter last name..." />
+                    </Field>
+                    <Field>
+                        <FieldLabel>Date of Birth</FieldLabel>
+                        <DateEdit TValue="DateTime?" @bind-Date=User.DateOfBirth />
+                    </Field>
+                </Fields>
                 <Fields>
                     <Field>
                         <FieldLabel>Email address</FieldLabel>
@@ -49,9 +50,9 @@
                 <Div Display="Display.Flex">
                     <Field Class="edit-user-header">Address Information:</Field>
                     <Buttons>
-                        <Button Color="Color.Primary">Add</Button>
-                        <Button Color="Color.Secondary">Edit</Button>
-                        <Button Color="Color.Danger">Delete</Button>
+                        <Button Color="Color.Primary" Clicked="@(() => AddressActions(eAction.Add))">Add</Button>
+                        <Button Color="Color.Secondary" Clicked="@(() => AddressActions(eAction.Edit))">Edit</Button>
+                        <Button Color="Color.Danger" Clicked="@(() => AddressActions(eAction.Delete))">Delete</Button>
                     </Buttons>
                 </Div>
                 
@@ -69,11 +70,13 @@
                     </TableRow>
                     </TableHeader>
                     <TableBody>
-                         @{
+                    @{
+                                var indexCounter = 0;
                                 foreach (var (address, index) in User.Addresses.Select((value, i) => (value, i)))
                                 {
-                                    <TableRow>
-                                        <TableRowHeader>@index++</TableRowHeader>
+                                    indexCounter = index + 1;
+                                    <TableRow Clicked="@(() => OnSelectedAddressChanged(address))">
+                                        <TableRowHeader>@(indexCounter)</TableRowHeader>
                                         <TableRowCell>@address.Street</TableRowCell>
                                         <TableRowCell>@address.District</TableRowCell>
                                         <TableRowCell>@address.City</TableRowCell>
@@ -83,7 +86,7 @@
                                         </TableRowCell>
                                     </TableRow>
                                 }
-                           }
+                     }
                        </TableBody>
                     </Table>
                 }
@@ -99,3 +102,5 @@
         </ModalFooter>
     </ModalContent>
 </Modal>
+
+<AddEditAddresModal @ref=addEditAddressModal  UpdateAddressCallBack="OnUpdateAddressCallBack"></AddEditAddresModal>

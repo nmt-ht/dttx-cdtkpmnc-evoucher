@@ -1,5 +1,4 @@
-﻿@using static eVoucher.Models.DataType;
-<Modal @ref="modalRef">
+﻿<Modal @ref="addressRef">
     <ModalContent Centered Size="ModalSize.ExtraLarge">
         <ModalHeader>
             <ModalTitle>@Title</ModalTitle>
@@ -29,7 +28,13 @@
                     </Field>
                     <Field ColumnSize="ColumnSize.Is4.OnDesktop">
                         <FieldLabel>Type of Address</FieldLabel>
-                        <TextEdit Text="@(eVoucher.Handlers.eVoucherHelper.GetEnumDescription(Address.Type))" Placeholder="Enter country..." />
+                        <SelectList TItem="eAddressType"
+                                TValue="eAddressType"
+                                Data="@AddressTypes"
+                                TextField="@((item)=>eVoucherHelper.GetEnumDescription(item))"
+                                ValueField="@((item)=>item)"
+                                @bind-SelectedValue="@(Address.Type)"
+                                DefaultItemText="Choose type of address" />
                     </Field>
                 </Fields>
             }

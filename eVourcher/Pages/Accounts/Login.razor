@@ -64,7 +64,7 @@
                             </Validation>
                             <Field>
                                 <FieldLabel>Date of Birth</FieldLabel>
-                                <DateEdit TValue="DateTime" @bind-Date="@user.DateOfBirth" />
+                                <DateEdit TValue="DateTime?" @bind-Date="@user.DateOfBirth" />
                             </Field>
                             <Validation Validator="ValidationRule.IsEmail">
                                 <Field>

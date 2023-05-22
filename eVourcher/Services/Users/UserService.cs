@@ -10,6 +10,24 @@ namespace eVourcher.Services
     {
         public UserService() { }
 
+        public async Task<User> Login(string email, string passWord)
+        {
+            User userLogin = new User();
+            userLogin.EmailAddress = email;
+            userLogin.Password = passWord;
+
+            string requestURL = "/api/users/login";
+
+            var response = await RestClient.APIClient.PostAsync(requestURL, userLogin);
+
+            if (response != null && response.Success && response.Data != null)
+            {
+                var user = JsonConvert.DeserializeObject<User>(response.Data.ToString());
+                return user;
+            }
+            return null;
+        }
+
         public async Task<IList<User>> GetUsers()
         {
             IList<User> users = new List<User>();
@@ -25,9 +43,21 @@ namespace eVourcher.Services
 
             return users;
         }
-        public Task<bool> CreateUser(User user)
+        public async Task<User> CreateUser(User userRegister)
         {
-            throw new System.NotImplementedException();
+            if (userRegister != null)
+            {
+                string requestURL = "/api/users/create";
+
+                var response = await RestClient.APIClient.PostAsync(requestURL, userRegister);
+
+                if (response != null && response.Success && response.Data != null)
+                {
+                    var user = JsonConvert.DeserializeObject<User>(response.Data.ToString());
+                    return user;
+                }
+            }
+            return null;
         }
 
         public Task<bool> DeleteUser(User user)

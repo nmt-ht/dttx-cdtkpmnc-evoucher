@@ -1,18 +1,30 @@
 ﻿@inject IJSRuntime JS
 @inject IMessageService MessageService
 @inherits LayoutComponentBase
+@using eVoucher.Pages.Accounts
 
 <Layout>
-    <LayoutHeader>
-        <Bar Breakpoint="Breakpoint.Desktop"
+    <LayoutHeader Class="row col-12 pr-0">
+        <Bar Class="col-6" Breakpoint="Breakpoint.Desktop"
                 Background="Background.White"
                 ThemeContrast="ThemeContrast.Light"
-                style="box-shadow: none; border-style: none; " Padding="Padding.Is2.FromStart">
+                style="box-shadow: none; border-style: none;" Padding="Padding.Is2.FromStart">
             <BarBrand Style="cursor:pointer;">
                 eVoucher Administrator
             </BarBrand>
             <BarToggler />
         </Bar>
+        <div Class="col-6  pr-0" style="text-align:right;">
+            @if (loggedIn)
+            {
+                <p style="margin-bottom: 0px; font-size:18px;line-height: 28px;">@GetUserName()</p>
+                <button class="btn btn-sm btn-danger" style="margin-bottom: 0px;" title="Logout" @onclick="Logout"><span class="oi oi-account-logout"></span></button>
+            }
+            else
+            {
+                <button class="btn btn-sm btn-success" style="margin-bottom: 0px; margin-top: 16px;" title="Login" @onclick="OpenLogin"><span class="oi oi-account-login"></span></button>
+            }
+        </div>
     </LayoutHeader>
     <Layout Sider="true">
         <LayoutSider>
@@ -29,3 +41,4 @@
 </Layout>
 
 <PageProgressProvider />
+<Login @ref="login" OnloginSuccess="OnloginSuccess"></Login>

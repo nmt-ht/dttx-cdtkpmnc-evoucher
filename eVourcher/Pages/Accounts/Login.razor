@@ -1,0 +1,103 @@
+﻿@page "/account/login"
+@using eVoucher.Models;
+
+<Modal @ref="modalRef">
+    <ModalContent Centered Size="ModalSize.ExtraLarge">
+         <Tabs SelectedTab="@selectedTab" SelectedTabChanged="@OnSelectedTabChanged" Pills FullWidth>
+            <Items>
+                <Tab Name="login">Login</Tab>
+                <Tab Name="register">Register</Tab>
+            </Items>
+            <Content>
+                <TabPanel Name="login">
+                    <ModalHeader>
+                        <ModalTitle>Welcome Back, Please Login</ModalTitle>
+                    </ModalHeader>
+                    <ModalBody Class="login-account"> 
+                        <FieldLabel Style="color:red;">@errorLogin</FieldLabel>
+                        <Validations @ref="@loginValidationsRef" Mode="ValidationMode.Manual" ValidateOnLoad="false">
+                            <Validation Validator="ValidationRule.IsEmail">
+                                <Field>
+                                    <FieldLabel>Email</FieldLabel>
+                                    <TextEdit @bind-Text="@email" Placeholder="Enter email...">
+                                        <Feedback>
+                                            <ValidationNone>Please Enter Your Email. </ValidationNone>
+                                            <ValidationSuccess>Email is good</ValidationSuccess>
+                                            <ValidationError>Please Enter A Valid Email</ValidationError>
+                                        </Feedback>
+                                    </TextEdit>
+                                </Field>
+                            </Validation>
+                            <Validation Validator="ValidationRule.IsNotEmpty">
+                                <Field>
+                                    <FieldLabel>Password</FieldLabel>
+                                    <TextEdit type="@typePassWordLogin" @bind-Text="@password" Placeholder="Enter Password.." />
+                                </Field>                               
+                            </Validation>
+                            <Field>
+                                <FieldLabel>Show Password</FieldLabel>
+                                <Check TValue="bool" Checked="@showPassWordLogin" CheckedChanged="ShowPassWordLogin" />
+                            </Field>
+                        </Validations>            
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button Color="Color.Secondary" Clicked="@HideModal">Close</Button>
+                        <Button Color="Color.Primary" Clicked="@OnLoginClicked">Login</Button>
+                    </ModalFooter>  
+                </TabPanel>
+                <TabPanel Name="register">
+                    <ModalHeader>
+                        <ModalTitle>New Here? Create An Account</ModalTitle>
+                    </ModalHeader>
+                    <ModalBody Class="register-account">
+                        <FieldLabel Style="color:red;">@errorCreateAccount</FieldLabel>
+                        <Validations @ref="@registerValidationsRef" Mode="ValidationMode.Manual" ValidateOnLoad="false">
+                            <Validation Validator="ValidationRule.IsNotEmpty">
+                                <Field>
+                                    <FieldLabel>First Name</FieldLabel>
+                                    <TextEdit @bind-Text="@user.FirstName" Placeholder="Enter Your First Name" />
+                                </Field>
+                                <Field>
+                                    <FieldLabel>Last Name</FieldLabel>
+                                    <TextEdit @bind-Text="@user.LastName" Placeholder="Enter Your Last Name" />
+                                </Field>
+                            </Validation>
+                            <Field>
+                                <FieldLabel>Date of Birth</FieldLabel>
+                                <DateEdit TValue="DateTime" @bind-Date="@user.DateOfBirth" />
+                            </Field>
+                            <Validation Validator="ValidationRule.IsEmail">
+                                <Field>
+                                    <FieldLabel>Email</FieldLabel>
+                                    <TextEdit @bind-Text="@user.UserName" Placeholder="Enter Your Email">
+                                        <Feedback>
+                                            <ValidationNone>Please Enter your email.</ValidationNone>
+                                            <ValidationSuccess>Email is valid</ValidationSuccess>
+                                            <ValidationError>Enter Valid email </ValidationError>
+                                        </Feedback>
+                                    </TextEdit>
+                                </Field>
+                            </Validation>
+                            <Validation Validator="ValidationRule.IsNotEmpty">
+                                <Field>
+                                    <FieldLabel>Password</FieldLabel>
+                                    <TextEdit type="@typePassWordCreateAccount" @bind-Text="@user.Password" Placeholder="Enter Password.." />
+                                </Field>
+                            </Validation>
+                            <Field>
+                                <FieldLabel>Show Password</FieldLabel>
+                                <Check TValue="bool" Checked="@showPasswordCreateAccount" CheckedChanged="ShowPassWordCreateAccount" />
+                            </Field>
+                        </Validations>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button Color="Color.Secondary" Clicked="@HideModal">Close</Button>
+                        <Button Color="Color.Primary" Clicked="@OnRegisterClicked">
+                            Create Account
+                        </Button>
+                    </ModalFooter>
+                </TabPanel>
+            </Content>
+        </Tabs>
+    </ModalContent>
+</Modal>

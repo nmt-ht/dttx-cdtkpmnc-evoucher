@@ -36,6 +36,7 @@ public class Program
         });
         builder.Configuration.Bind("eVoucherConfig", RestClient.VoucherConfig);
 
+        builder.Services.AddSingleton<ILocalStorage, LocalStorage>(); 
         builder.Services.AddSingleton<IUserService, UserService>();
         builder.Services.AddSingleton<ICampaignService, CampaignService>();
         builder.Services.AddSingleton<IPartnerService, PartnerService>();

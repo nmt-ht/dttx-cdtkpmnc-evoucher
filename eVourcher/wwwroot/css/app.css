@@ -170,6 +170,20 @@ a, .btn-link {
     font-size: 20px;
     font-weight: bold;
 }
+.nav-pills .nav-link.active {
+    color: white;
+}
+.nav-pills .nav-link {
+    font-size: 1.25rem;
+    cursor: pointer;
+}
+.login-account .modal-body {
+    min-height: 350px;
+}
+.register-account .modal-body {
+    min-height: 350px;
+}
+}
 
 .modal-header{
     font-weight: bold;

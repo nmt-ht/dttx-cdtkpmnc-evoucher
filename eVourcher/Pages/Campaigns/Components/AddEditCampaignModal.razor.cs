@@ -47,6 +47,8 @@ public partial class AddEditCampaignModal : ComponentBase
     {
         if(IsAdded)
         {
+            Campaign.CreatedBy = Guid.Parse("7CF80730-A4C2-4A55-96D0-811F549947C6");
+            Campaign.ModifiedBy = Guid.Parse("7CF80730-A4C2-4A55-96D0-811F549947C6");
             var result = await CampaignService.UpdateCampaign(Campaign);
             if (result)
                 await NotificationService.Info(IsAdded ? "Added Campaign successfully." : "Edit Campaign successfully.");

@@ -10,7 +10,7 @@ public class Campaign : Entity
     public DateTime StartedDate { get; set; }
     public DateTime ExpiredDate { get; set; }
     public DateTime ModifiedDate { get; set; }
-    public User ModifiedBy { get; set; }
+    public Guid ModifiedBy { get; set; }
     public bool IsDeleted { get; set; }
-    public User CreatedBy { get; set; }
+    public Guid CreatedBy { get; set; }
 }

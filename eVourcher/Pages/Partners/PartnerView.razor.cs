@@ -20,8 +20,13 @@ public partial class PartnerView : ComponentBase
         StateHasChanged();
     }
 
-    private void ViewAddEditPartner()
+    private void ViewAddPartner()
     {
-        addEditPartnerModal.InitData();
+        addEditPartnerModal.InitData(new Partner());
+    }
+
+    private void ViewEditPartner()
+    {
+        addEditPartnerModal.InitData(selectedPartner);
     }
 }

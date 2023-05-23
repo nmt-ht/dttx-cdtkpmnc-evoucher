@@ -25,9 +25,17 @@ namespace eVourcher.Services
 
             return partners;
         }
-        public Task<bool> CreatePartner(Partner partner)
+        public async Task<bool> CreatePartner(Partner partner)
         {
-            throw new System.NotImplementedException();
+            string requestURL = "/api/partners/create";
+
+            var response = await RestClient.APIClient.PostAsync(requestURL, partner);
+
+            if (response != null && response.Success && response.Data != null)
+            {
+                return true;
+            }
+            return false;
         }
 
         public Task<bool> DeletePartner(Partner partner)
@@ -37,7 +45,7 @@ namespace eVourcher.Services
 
         public async Task<bool> UpdatePartner(Partner partner)
         {
-            string requestURL = "/api/partners/create";
+            string requestURL = "/api/partners/update";
 
             var response = await RestClient.APIClient.PostAsync(requestURL, partner);
 

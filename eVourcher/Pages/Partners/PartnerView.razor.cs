@@ -17,7 +17,7 @@ public partial class PartnerView : ComponentBase
     protected override async Task OnInitializedAsync()
     {
         Partners = await PartnerService.GetPartners();
-        StateHasChanged();
+        StateHasChanged(); 
     }
 
     private void ViewAddPartner()

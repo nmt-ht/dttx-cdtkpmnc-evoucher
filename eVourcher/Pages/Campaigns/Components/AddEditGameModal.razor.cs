@@ -19,13 +19,18 @@ public partial class AddEditGameModal : ComponentBase
     private Modal gameRef;
     /*private bool IsAdded => Campaign is not null && Campaign.Id != Guid.Empty ? false : true;
     */
-    private bool IsAdded = false;
-    private string Title => IsAdded ? "Add Game" : "Edit Game";
+    private Game Game { get; set; }
+    [Parameter] public EventCallback<Game> UpdateGameCallBack { get; set; }
 
-    public void SetParameters(Game game, bool isAdded)
+    private bool IsAdded = false;
+    //private bool IsAdded => Game is not null && Game.Id != Guid.Empty ? false : true;
+    //private IList<eAddressType> AddressTypes = new List<eAddressType>() { eAddressType.ShipTo, eAddressType.BillTo, eAddressType.BillToShipTo, eAddressType.Company };
+    private string Title => IsAdded ? "Add Game" : "Edit Game";
+    private Modal addressRef;
+
+    public void SetParameters(Game game)
     {
         Game = game;
-        IsAdded = isAdded;
     }
     public void InitData()
     {
@@ -44,31 +49,13 @@ public partial class AddEditGameModal : ComponentBase
         return gameRef.Hide();
     }
 
-    private async Task UpdateData()
+    private void UpdateData()
     {
-        if(IsAdded)
-        {
-            Game.CreatedBy = Guid.Parse("7CF80730-A4C2-4A55-96D0-811F549947C6");
-            Game.ModifiedBy = Guid.Parse("7CF80730-A4C2-4A55-96D0-811F549947C6");
-            var result = await GameService.UpdateGame(Game);
-            if (result)
-                await NotificationService.Info(IsAdded ? "Added Game successfully." : "Edit Game successfully.");
-        }
+        UpdateGameCallBack.InvokeAsync(Game);
+        HideModal();
     }
 
-    //
-    private Game Game { get; set; }
-    [Parameter] public EventCallback<Game> UpdateAddressCallBack { get; set; }
-    private bool IsAdded => Game is not null && Game.Id != Guid.Empty ? false : true;
-    //private IList<eAddressType> AddressTypes = new List<eAddressType>() { eAddressType.ShipTo, eAddressType.BillTo, eAddressType.BillToShipTo, eAddressType.Company };
-    private string Title => IsAdded ? "Add Game" : "Edit Game";
-    private Modal addressRef;
 
-    public void SetParameters(Game game)
-    {
-        Game = game;
-    }
-    
 
-   
+
 }

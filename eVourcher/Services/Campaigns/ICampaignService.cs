@@ -14,4 +14,6 @@ namespace eVourcher.Services
         Task<bool> DeleteCampaign(Guid id);
 
     }
+
+   
 }

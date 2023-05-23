@@ -15,10 +15,17 @@ public partial class AddEditCampaignModal : ComponentBase
     [Inject] public INotificationService NotificationService { get; set; }
     [Parameter] public Campaign Campaign { get; set; } = new();
     
-    private Modal modalRef;
-    private bool IsAdded => Campaign is not null && Campaign.Id != Guid.Empty ? false : true;
+    private Modal campaignRef;
+    /*private bool IsAdded => Campaign is not null && Campaign.Id != Guid.Empty ? false : true;
+    */
+    private bool IsAdded = false;
     private string Title => IsAdded ? "Add Campaign" : "Edit Campaign";
 
+    public void SetParameters(Campaign campaign, bool isAdded)
+    {
+        Campaign = campaign;
+        IsAdded = isAdded;
+    }
     public void InitData()
     {
         if (!IsAdded)
@@ -35,12 +42,12 @@ public partial class AddEditCampaignModal : ComponentBase
 
     private Task ShowModal()
     {
-        return modalRef.Show();
+        return campaignRef.Show();
     }
 
     private Task HideModal()
     {
-        return modalRef.Hide();
+        return campaignRef.Hide();
     }
 
     private async Task UpdateData()

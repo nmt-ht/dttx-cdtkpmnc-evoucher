@@ -9,19 +9,22 @@
         <Row Display="Display.Flex">
             <Column ColumnSize="ColumnSize.Is6" Class="title">Campaign Information</Column>
             <Column ColumnSize="ColumnSize.Is6" Class="Campaign-actions">
-                <Button Color="Color.Primary" Margin="Margin.Is2.FromEnd" Clicked="ViewAddEditCampaign">
+                <Button Color="Color.Primary" Margin="Margin.Is2.FromEnd" Clicked="@(() => CampaignActions(eAction.Add))">
                     <Icon Name="IconName.Add"></Icon><Span>&nbsp; @("Add")</Span>
-                </Button>
-                    <Button Color="Color.Secondary" Margin="Margin.Is2.FromEnd">
+                    </Button>
+                    <Button Color="Color.Secondary" Margin="Margin.Is2.FromEnd" Clicked="@(() => CampaignActions(eAction.Edit))">
                         <Icon Name="IconName.Edit"></Icon><Span>&nbsp; @("Edit")</Span>
                     </Button>
-                    <Button Color="Color.Danger">
+                    <Button Color="Color.Danger" Clicked="@(() => CampaignActions(eAction.Delete))">
                         <Icon Name="IconName.Delete"></Icon><Span>&nbsp; @("Delete")</Span>
                     </Button>
-                </Column>
+            </Column>
             </Row>
+
+            
+
         </Div>
-        <Div Class="evoucher-content Campaign-content">
+        <Div Class="evoucher-content campaign-content">
             <DataGrid TItem="Campaign"
                   Data="@Campaigns"
                   @bind-SelectedRow="@selectedCampaign"

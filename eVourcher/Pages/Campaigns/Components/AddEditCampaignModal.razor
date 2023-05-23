@@ -1,5 +1,5 @@
 ﻿@using static eVoucher.Models.DataType;
-<Modal @ref="modalRef">
+<Modal @ref="campaignRef">
     <ModalContent Centered Size="ModalSize.ExtraLarge">
         <ModalHeader>
             <ModalTitle>@Title</ModalTitle>
@@ -10,22 +10,22 @@
             {
                 <Field>
                     <FieldLabel>Name</FieldLabel>
-                    <TextEdit @bind-Text="@Campaign.Name" Placeholder="Enter first name..." />
+                    <TextEdit @bind-Text="@Campaign.Name" Placeholder="Enter campaign name..." />
                 </Field>
                 <Field>
                     <FieldLabel>Description</FieldLabel>
-                    <TextEdit @bind-Text="Campaign.Description" Placeholder="Enter last name..." />
+                    <TextEdit @bind-Text="Campaign.Description" Placeholder="Enter campaign description..." />
                 </Field>
                 <Field>
                     <FieldLabel>Created Date</FieldLabel>
                     <DateEdit @bind-Date=Campaign.CreatedDate></DateEdit>
                 </Field>
                 <Field>
-                    <FieldLabel>Start Date</FieldLabel>
+                    <FieldLabel>Started Date</FieldLabel>
                     <DateEdit @bind-Date=Campaign.StartedDate></DateEdit>
                 </Field>
                 <Field>
-                    <FieldLabel>Expire Date</FieldLabel>
+                    <FieldLabel>Expired Date</FieldLabel>
                     <DateEdit @bind-Date=Campaign.ExpiredDate></DateEdit>
                 </Field>
             }

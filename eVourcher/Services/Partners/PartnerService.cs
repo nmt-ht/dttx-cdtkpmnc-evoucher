@@ -36,7 +36,7 @@ namespace eVourcher.Services
                 return true;
             }
             return false;
-        }
+        } 
 
         public Task<bool> DeletePartner(Partner partner)
         {

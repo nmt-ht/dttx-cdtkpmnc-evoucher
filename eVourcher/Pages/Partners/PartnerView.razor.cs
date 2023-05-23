@@ -24,7 +24,7 @@ public partial class PartnerView : ComponentBase
     {
         addEditPartnerModal.InitData(new Partner());
     }
-
+     
     private void ViewEditPartner()
     {
         addEditPartnerModal.InitData(selectedPartner);

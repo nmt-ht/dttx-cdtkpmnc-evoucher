@@ -11,7 +11,7 @@ public partial class AddEditAddresModal : ComponentBase
 {
     private Address Address { get; set; }
     [Parameter] public EventCallback<Address> UpdateAddressCallBack { get; set; }
-    private bool IsAdded => Address is not null && Address.Id != Guid.Empty ? false : true;
+    private bool IsAdded => Address is not null && Address.ID != Guid.Empty ? false : true;
     private IList<eAddressType> AddressTypes = new List<eAddressType>() { eAddressType.ShipTo, eAddressType.BillTo, eAddressType.BillToShipTo, eAddressType.Company };
     private string Title => IsAdded ? "Add Address" : "Edit Address";
     private Modal addressRef;

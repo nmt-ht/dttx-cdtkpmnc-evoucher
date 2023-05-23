@@ -1,4 +1,6 @@
-﻿<Modal @ref="userRef">
+﻿@using Address = eVoucher.Models.Address;
+
+<Modal @ref="userRef">
     <ModalContent Centered Size="ModalSize.Fullscreen" Class="add-edit-user-modal">
         <ModalHeader>
             <ModalTitle TextAlignment="TextAlignment.Center">@Title</ModalTitle>
@@ -55,44 +57,33 @@
                         <Button Color="Color.Danger" Clicked="@(() => AddressActions(eAction.Delete))">Delete</Button>
                     </Buttons>
                 </Div>
-                
+
                 @if (User.Addresses.Any())
                 {
-                    <Table Resizable ResizeMode="TableResizeMode.Columns">
-                    <TableHeader ThemeContrast="ThemeContrast.Light">
-                    <TableRow>
-                            <TableHeaderCell>#</TableHeaderCell>
-                            <TableHeaderCell>Street</TableHeaderCell>
-                            <TableHeaderCell>District</TableHeaderCell>
-                            <TableHeaderCell>City</TableHeaderCell>
-                            <TableHeaderCell>Country</TableHeaderCell>
-                            <TableHeaderCell>Type</TableHeaderCell>
-                    </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                    @{
-                                var indexCounter = 0;
-                                foreach (var (address, index) in User.Addresses.Select((value, i) => (value, i)))
-                                {
-                                    indexCounter = index + 1;
-                                    <TableRow Clicked="@(() => OnSelectedAddressChanged(address))">
-                                        <TableRowHeader>@(indexCounter)</TableRowHeader>
-                                        <TableRowCell>@address.Street</TableRowCell>
-                                        <TableRowCell>@address.District</TableRowCell>
-                                        <TableRowCell>@address.City</TableRowCell>
-                                        <TableRowCell>@address.Country</TableRowCell>
-                                        <TableRowCell>
-                                            @(eVoucher.Handlers.eVoucherHelper.GetEnumDescription(address.Type))
-                                        </TableRowCell>
-                                    </TableRow>
-                                }
-                     }
-                       </TableBody>
-                    </Table>
+                    <DataGrid TItem="Address"
+                      Data="@User.Addresses"
+                      Responsive
+                      @bind-SelectedRow="@SelectedAddress"
+                      PageSize="20"
+                      ShowPager="true"
+                      Hoverable="true"
+                      Striped="true"
+                      Filterable
+                      RowDoubleClicked="@(() => EditAddress())">
+                    <DataGridColumn Field="@nameof(Address.Index)" Caption="#" Sortable="false" />
+                    <DataGridColumn Field="@nameof(Address.Street)" Caption="Street" Editable />
+                        <DataGridColumn Field="@nameof(Address.District)" Caption="District" Editable />
+                        <DataGridColumn Field="@nameof(Address.Country)" Caption="Country" Editable />
+                        <DataGridColumn Field="@nameof(Address.Type)" Caption="Type" Editable>
+                        <DisplayTemplate>
+                            @(eVoucher.Handlers.eVoucherHelper.GetEnumDescription(context.Type))
+                            </DisplayTemplate>
+                        </DataGridColumn>
+                    </DataGrid>
                 }
                 else
                 {
-                   <Field TextAlignment="TextAlignment.Center">The current address is empty.</Field> 
+                    <Field TextAlignment="TextAlignment.Center">The current address is empty.</Field>
                 }
             }
         </ModalBody>
@@ -103,4 +94,4 @@
     </ModalContent>
 </Modal>
 
-<AddEditAddresModal @ref=addEditAddressModal  UpdateAddressCallBack="OnUpdateAddressCallBack"></AddEditAddresModal>
+<AddEditAddresModal @ref=addEditAddressModal UpdateAddressCallBack="OnUpdateAddressCallBack"></AddEditAddresModal>

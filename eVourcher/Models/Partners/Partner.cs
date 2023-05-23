@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using static eVoucher.Models.DataType;
 
 namespace eVoucher.Models;
-public class Partner 
+public class Partner   
 {
     public Guid Id { get; set; }
     public string CompanyName { get; set; }

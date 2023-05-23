@@ -34,7 +34,7 @@ public partial class AddEditPartnerModal : ComponentBase
     {
         return modalRef.Hide();
     }
-    
+     
     private async Task UpdateData()
     {
         if(IsAdded)

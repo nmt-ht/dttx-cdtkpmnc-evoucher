@@ -4,7 +4,7 @@ using eVourcher.Services;
 using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
+ 
 namespace eVoucher.Pages.Partners;
 public partial class PartnerView : ComponentBase
 {

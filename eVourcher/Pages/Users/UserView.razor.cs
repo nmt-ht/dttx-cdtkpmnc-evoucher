@@ -5,6 +5,7 @@ using eVourcher.Services;
 using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using static eVoucher.Models.DataType;
 
@@ -41,6 +42,11 @@ public partial class UserView : ComponentBase
                 break;
             case eAction.Edit:
                 var user = await UserService.GetUserById(selectedUser.ID);
+                if(user.Addresses is not null && user.Addresses.Any())
+                {
+                    var index = 0;
+                    user.Addresses.ToList().ForEach(a => a.Index = ++index);
+                }
                 addEditUserModal.SetParameters(user, false);
                 addEditUserModal.InitData();
                 break;

@@ -9,18 +9,18 @@
         <Row Display="Display.Flex">
             <Column ColumnSize="ColumnSize.Is6" Class="title">Partner Information</Column>
             <Column ColumnSize="ColumnSize.Is6" Class="Partner-actions">
-                <Button Color="Color.Primary" Margin="Margin.Is2.FromEnd" Clicked="ViewAddEditPartner">
+                <Button Color="Color.Primary" Margin="Margin.Is2.FromEnd" Clicked="ViewAddPartner">
                     <Icon Name="IconName.Add"></Icon><Span>&nbsp; @("Add")</Span>
                 </Button>
-                    <Button Color="Color.Secondary" Margin="Margin.Is2.FromEnd">
+                    <Button Color="Color.Secondary" Margin="Margin.Is2.FromEnd" Clicked="ViewEditPartner">
                         <Icon Name="IconName.Edit"></Icon><Span>&nbsp; @("Edit")</Span>
                     </Button>
                     <Button Color="Color.Danger">
                         <Icon Name="IconName.Delete"></Icon><Span>&nbsp; @("Delete")</Span>
                     </Button>
                 </Column>
-            </Row>
-        </Div>
+            </Row> 
+        </Div> 
         <Div Class="evoucher-content Partner-content">
             <DataGrid TItem="Partner"
                   Data="@Partners"
@@ -28,7 +28,7 @@
                   Responsive
                   PageSize="20"
                   ShowPager="true"
-                  Hoverable="true"
+                  Hoverable="true" 
                   Striped="true"
                   Filterable>
             <DataGridCommandColumn />

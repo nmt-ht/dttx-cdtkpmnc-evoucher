@@ -4,7 +4,7 @@ using eVourcher.Services;
 using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
+ 
 namespace eVoucher.Pages.Partners;
 public partial class PartnerView : ComponentBase
 {
@@ -17,11 +17,16 @@ public partial class PartnerView : ComponentBase
     protected override async Task OnInitializedAsync()
     {
         Partners = await PartnerService.GetPartners();
-        StateHasChanged();
+        StateHasChanged(); 
     }
 
-    private void ViewAddEditPartner()
+    private void ViewAddPartner()
     {
-        addEditPartnerModal.InitData();
+        addEditPartnerModal.InitData(new Partner());
+    }
+     
+    private void ViewEditPartner()
+    {
+        addEditPartnerModal.InitData(selectedPartner);
     }
 }

@@ -1,13 +1,14 @@
 ﻿@using static eVoucher.Models.DataType;
 <Modal @ref="modalRef">
-    <ModalContent Centered Size="ModalSize.ExtraLarge">
+    <ModalContent Centered Size="ModalSize.Fullscreen">
         <ModalHeader>
             <ModalTitle>@Title</ModalTitle>
             <CloseButton />
-        </ModalHeader>
-        <ModalBody>
+        </ModalHeader> 
+        <ModalBody> 
             @if (Partner is not null)
             {
+                <Field Class="edit-user-header">Partner Information:</Field>
                 <Field>
                     <FieldLabel>Name</FieldLabel>
                     <TextEdit @bind-Text="@Partner.CompanyName" Placeholder="Enter first name..." />
@@ -17,13 +18,21 @@
                     <TextEdit @bind-Text="Partner.Description" Placeholder="Enter last name..." />
                 </Field>
                 <Field>
-                    <FieldLabel>Start Date</FieldLabel>
-                    <TextEdit @bind-Text=Partner.CompanyPhone></TextEdit>
+                    <FieldLabel>Join Date</FieldLabel>
+                    <DateEdit TValue="DateTime?" @bind-Date=Partner.JoinDate />
                 </Field>
-                <Field>
-                    <FieldLabel>Expire Date</FieldLabel>
-                    <TextEdit @bind-Text=Partner.CompanyEmailAddress></TextEdit>
-                </Field>
+                <Fields> 
+                    <Field>
+                        <FieldLabel>Company Email address</FieldLabel>
+                        <TextEdit @bind-Text="Partner.CompanyEmailAddress" Placeholder="Enter company email address..." />
+                    </Field>
+                    <Field>
+                        <FieldLabel>Company Phone number</FieldLabel>
+                        <TextEdit @bind-Text="Partner.CompanyPhone" Placeholder="Enter company phone number...">
+                            <FieldHelp>Include country and area prefixes</FieldHelp>
+                        </TextEdit>
+                    </Field>
+                </Fields>
             }
         </ModalBody>
         <ModalFooter>

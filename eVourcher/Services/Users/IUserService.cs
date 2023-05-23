@@ -13,5 +13,7 @@ namespace eVourcher.Services
         Task<User> CreateUser(User user);
         Task<bool> UpdateUser(User user);
         Task<bool> DeleteUser(Guid id);
+        Task<bool> DeleteAddress(Guid id);
+        Task<bool> UpdateAddess(Address address);
     }
 }

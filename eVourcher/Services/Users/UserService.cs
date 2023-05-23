@@ -60,7 +60,7 @@ namespace eVourcher.Services
         }
         public async Task<bool> DeleteUser(Guid id)
         {
-            string requestURL = $"api/users/{id}/delete";
+            string requestURL = $"api/users/delete/{id}";
 
             var response = await RestClient.APIClient.DeleteAsync(requestURL);
 
@@ -82,7 +82,6 @@ namespace eVourcher.Services
             }
             return false;
         }
-
         public async Task<User> GetUserById(Guid id)
         {
             var user = new User();
@@ -95,6 +94,30 @@ namespace eVourcher.Services
             }
 
             return user;
+        }
+        public async Task<bool> DeleteAddress(Guid id)
+        {
+            string requestURL = $"api/users/address/delete/{id}";
+
+            var response = await RestClient.APIClient.DeleteAsync(requestURL);
+
+            if (response is not null && response.Success)
+            {
+                return true;
+            }
+            return false;
+        }
+        public async Task<bool> UpdateAddess(eVoucher.Models.Address address)
+        {
+            string requestURL = "api/users/address/update";
+
+            var response = await RestClient.APIClient.PostAsync(requestURL, address);
+
+            if (response is not null && response.Success)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

@@ -3,7 +3,6 @@ using eVoucher.Models;
 using eVourcher.Services;
 using Microsoft.AspNetCore.Components;
 using System;
-using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace eVoucher.Pages.Accounts;

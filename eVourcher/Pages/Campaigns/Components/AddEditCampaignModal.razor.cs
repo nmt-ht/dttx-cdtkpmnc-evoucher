@@ -3,10 +3,7 @@ using eVoucher.Models;
 using eVourcher.Services;
 using Microsoft.AspNetCore.Components;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using static eVoucher.Models.DataType;
 
 namespace eVoucher.Pages.Campaigns.Components;
 public partial class AddEditCampaignModal : ComponentBase
@@ -14,10 +11,16 @@ public partial class AddEditCampaignModal : ComponentBase
     [Inject] public ICampaignService CampaignService { get; set; }
     [Inject] public INotificationService NotificationService { get; set; }
     [Parameter] public Campaign Campaign { get; set; } = new();
+    [Parameter] public Guid CurrentUserId { get; set; }
+
+    /// <summary>
+    /// Event callback, it means the child component (AddEditCampaignModal) would like to reload data for the list view (datagrid)
+    /// but the current data grid is from the parent component (CampaignView), hence, we have to use event callback to trigger or call
+    /// from child to parent for re-loading data.
+    /// </summary>
+    [Parameter] public EventCallback<bool> ReloadData { get; set; }
     
     private Modal campaignRef;
-    /*private bool IsAdded => Campaign is not null && Campaign.Id != Guid.Empty ? false : true;
-    */
     private bool IsAdded = false;
     private string Title => IsAdded ? "Add Campaign" : "Edit Campaign";
 
@@ -54,11 +57,13 @@ public partial class AddEditCampaignModal : ComponentBase
     {
         if(IsAdded)
         {
-            Campaign.CreatedBy = Guid.Parse("7CF80730-A4C2-4A55-96D0-811F549947C6");
-            Campaign.ModifiedBy = Guid.Parse("7CF80730-A4C2-4A55-96D0-811F549947C6");
+            Campaign.CreatedBy = Campaign.ModifiedBy = CurrentUserId;
             var result = await CampaignService.UpdateCampaign(Campaign);
             if (result)
                 await NotificationService.Info(IsAdded ? "Added Campaign successfully." : "Edit Campaign successfully.");
+            await HideModal();
         }
+
+        await ReloadData.InvokeAsync(true);
     }
 }

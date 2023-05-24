@@ -31,11 +31,6 @@ namespace eVourcher.Services
             throw new System.NotImplementedException();
         }
 
-        /*public Task<bool> DeleteCampaign(Campaign campaign)
-        {
-            throw new System.NotImplementedException();
-        }*/
-
         public async Task<bool> DeleteCampaign(Guid id)
         {
             string requestURL = $"api/campaigns/{id}/delete";
@@ -49,21 +44,18 @@ namespace eVourcher.Services
             return false;
         }
 
-
-
         public async Task<bool> UpdateCampaign(Campaign campaign)
         {
             string requestURL = "/api/campaigns/create";
 
             var response = await RestClient.APIClient.PostAsync(requestURL, campaign);
 
-            if (response != null && response.Success && response.Data != null)
+            if (response != null && response.Success)
             {
                 return true;
             }
             return false;
         }
-
 
         public async Task<Campaign> GetCampaignById(Guid id)
         {

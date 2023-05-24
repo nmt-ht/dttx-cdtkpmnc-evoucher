@@ -3,6 +3,7 @@ using eVoucher.Models;
 using eVoucher.Pages.Campaigns.Components;
 using eVourcher.Services;
 using Microsoft.AspNetCore.Components;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,14 +12,28 @@ using static eVoucher.Models.DataType;
 namespace eVoucher.Pages.Campaigns;
 public partial class CampaignView : ComponentBase
 {
+    #region External services
+    /// <summary>
+    /// Inject campaign service is to send a request to API
+    /// </summary>
     [Inject] public ICampaignService CampaignService { get; set; }
+    /// <summary>
+    /// It is using for getting the data which saved to local storage.
+    /// Ref: https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage
+    /// </summary>
+    [Inject] public ILocalStorage LocalStorage { get; set; }
+    #endregion
+
+    private Guid CurrentUserId { get; set; }
     private IList<Campaign> Campaigns { get; set; } = new List<Campaign>();
- 
     private Campaign selectedCampaign;
     private AddEditCampaignModal addEditCampaignModal;
 
     protected override async Task OnInitializedAsync()
     {
+        var userID = await LocalStorage.GetStringAsync("userId");
+        if (!string.IsNullOrEmpty(userID))
+            CurrentUserId = Guid.Parse(userID);
         await LoadData();
     }
 
@@ -39,7 +54,7 @@ public partial class CampaignView : ComponentBase
     {
         switch (action)
         {
-           case eAction.Add:
+            case eAction.Add:
                 addEditCampaignModal.SetParameters(new Campaign(), true);
                 addEditCampaignModal.InitData();
                 break;
@@ -49,8 +64,6 @@ public partial class CampaignView : ComponentBase
                 addEditCampaignModal.InitData();
                 break;
             case eAction.Delete:
-                break;
-            default:
                 break;
         }
     }

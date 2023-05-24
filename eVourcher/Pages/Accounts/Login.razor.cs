@@ -105,6 +105,7 @@ public partial class Login : ComponentBase
         errorCreateAccount = string.Empty;
         if (await registerValidationsRef.ValidateAll())
         {
+            user.EmailAddress = email;
             User userRegister = await UserService.CreateUser(user);
             await registerValidationsRef.ClearAll();
             if(userRegister != null)

@@ -15,7 +15,7 @@ public partial class AddEditAddresModal : ComponentBase
     private IList<eAddressType> AddressTypes = new List<eAddressType>() { eAddressType.ShipTo, eAddressType.BillTo, eAddressType.BillToShipTo, eAddressType.Company };
     private string Title => IsAdded ? "Add Address" : "Edit Address";
     private Modal addressRef;
-    
+    Validations validations;
     public void SetParameters(Address address)
     {
         Address = address;
@@ -37,9 +37,12 @@ public partial class AddEditAddresModal : ComponentBase
         return addressRef.Hide();
     }
 
-    private void UpdateData()
+    private async Task UpdateData()
     {
-        UpdateAddressCallBack.InvokeAsync(Address);
-        HideModal();
+        if(await validations.ValidateAll())
+        {
+            await UpdateAddressCallBack.InvokeAsync(Address);
+            await HideModal();
+        }
     }
 }

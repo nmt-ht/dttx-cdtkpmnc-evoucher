@@ -10,31 +10,57 @@
             @if (User is not null)
             {
                 <Field Class="edit-user-header">User Information:</Field>
-                <Fields>
-                    <Field>
-                        <FieldLabel>First Name</FieldLabel>
-                        <TextEdit @bind-Text="@User.FirstName" Placeholder="Enter first name..." />
-                    </Field>
-                    <Field>
-                        <FieldLabel>Last Name</FieldLabel>
-                        <TextEdit @bind-Text="User.LastName" Placeholder="Enter last name..." />
-                    </Field>
-                    <Field>
-                        <FieldLabel>Date of Birth</FieldLabel>
-                        <DateEdit TValue="DateTime?" @bind-Date=User.DateOfBirth />
-                    </Field>
-                </Fields>
-                <Fields>
-                    <Field>
-                        <FieldLabel>Email address</FieldLabel>
-                        <TextEdit @bind-Text="User.EmailAddress" Placeholder="Enter email address..." />
-                    </Field>
-                    <Field>
-                        <FieldLabel>Phone number</FieldLabel>
-                        <TextEdit @bind-Text="User.Phone" Placeholder="Enter phone number...">
-                            <FieldHelp>Include country and area prefixes</FieldHelp>
-                        </TextEdit>
-                    </Field>
+                <Validations @ref="validations">
+                    <Fields>
+                        <Validation Validator="ValidationRule.IsNotEmpty" >
+                            <Field>
+                                <FieldLabel>First Name</FieldLabel>
+                                <TextEdit @bind-Text="@User.FirstName" Placeholder="Enter first name...">
+                                    <Feedback>
+                                        <ValidationNone>Please enter first name.</ValidationNone>
+                                        <ValidationError>Enter valid name!</ValidationError>
+                                    </Feedback>
+                                </TextEdit>
+                            </Field>
+                        </Validation>
+                        <Validation Validator="ValidationRule.IsNotEmpty">
+                            <Field>
+                                <FieldLabel>Last Name</FieldLabel>
+                                <TextEdit @bind-Text="User.LastName" Placeholder="Enter last name...">
+                                    <Feedback>
+                                        <ValidationNone>Please enter Last name.</ValidationNone>
+                                        <ValidationError>Enter valid last name!</ValidationError>
+                                    </Feedback>
+                                </TextEdit>
+                            </Field>
+                        </Validation>
+                        <Field>
+                            <FieldLabel>Date of Birth</FieldLabel>
+                            <DateEdit TValue="DateTime?" @bind-Date=User.DateOfBirth />
+                        </Field>
+                    </Fields>
+                    <Fields>
+                        <Validation Validator="ValidationRule.IsEmail">
+                            <Field>
+                                <FieldLabel>Email address</FieldLabel>
+                                <TextEdit @bind-Text="User.EmailAddress" Placeholder="Enter email address...">
+                                    <Feedback>
+                                        <ValidationNone>Please enter Email Address.</ValidationNone>
+                                        <ValidationError>Enter valid email address!</ValidationError>
+                                    </Feedback>
+                                </TextEdit>
+                            </Field>
+                        </Validation>
+                        <Validation UsePattern>
+                        <Field>
+                            <FieldLabel>Phone number</FieldLabel>
+                            <TextEdit @bind-Text="User.Phone" Placeholder="Enter phone number..." Pattern="@phonePartern">
+                                <Feedback>
+                                    <ValidationError>Pattern does not match! Such as: +84978123456/0978123456</ValidationError>
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
                 </Fields>
                 <Fields>
                     <Field>
@@ -43,8 +69,7 @@
                     </Field>
                     <Field>
                         <FieldLabel>Password</FieldLabel>
-                        <TextEdit @bind-Text="User.Password" Placeholder="Enter password...">
-                            <FieldHelp>Password strength: <Text TextColor="TextColor.Danger">weak</Text></FieldHelp>
+                        <TextEdit Role="TextRole.Password" @bind-Text="User.Password" Placeholder="Enter password...">
                         </TextEdit>
                     </Field>
                 </Fields>
@@ -59,33 +84,35 @@
                 </Div>
 
                 @if (User.Addresses.Any())
-                {
-                    <DataGrid TItem="Address"
-                      Data="@User.Addresses"
-                      Responsive
-                      @bind-SelectedRow="@SelectedAddress"
-                      PageSize="20"
-                      ShowPager="true"
-                      Hoverable="true"
-                      Striped="true"
-                      Filterable
-                      RowDoubleClicked="@(() => EditAddress())">
-                    <DataGridColumn Field="@nameof(Address.Index)" Caption="#" Sortable="false" />
-                    <DataGridColumn Field="@nameof(Address.Street)" Caption="Street" Editable />
-                        <DataGridColumn Field="@nameof(Address.District)" Caption="District" Editable />
-                        <DataGridColumn Field="@nameof(Address.Country)" Caption="Country" Editable />
-                        <DataGridColumn Field="@nameof(Address.Type)" Caption="Type" Editable>
-                        <DisplayTemplate>
-                            @(eVoucher.Handlers.eVoucherHelper.GetEnumDescription(context.Type))
-                            </DisplayTemplate>
-                        </DataGridColumn>
-                    </DataGrid>
-                }
-                else
-                {
-                    <Field TextAlignment="TextAlignment.Center">The current address is empty.</Field>
-                }
+                    {
+                        <DataGrid TItem="Address"
+                          Data="@User.Addresses"
+                                Responsive
+                          @bind-SelectedRow="@SelectedAddress"
+                          PageSize="20"
+                          ShowPager="true"
+                          Hoverable="true"
+                          Striped="true"
+                                Filterable
+                          RowDoubleClicked="@(() => EditAddress())">
+                        <DataGridColumn Field="@nameof(Address.Index)" Caption="#" Sortable="false" />
+                        <DataGridColumn Field="@nameof(Address.Street)" Caption="Street" Editable />
+                            <DataGridColumn Field="@nameof(Address.District)" Caption="District" Editable />
+                            <DataGridColumn Field="@nameof(Address.Country)" Caption="Country" Editable />
+                            <DataGridColumn Field="@nameof(Address.Type)" Caption="Type" Editable>
+                            <DisplayTemplate>
+                                @(eVoucher.Handlers.eVoucherHelper.GetEnumDescription(context.Type))
+                                </DisplayTemplate>
+                            </DataGridColumn>
+                        </DataGrid>
+                    }
+                    else
+                    {
+                        <Field TextAlignment="TextAlignment.Center">The current address is empty.</Field>
+                    }
+                </Validations>
             }
+
         </ModalBody>
         <ModalFooter>
             <Button Color="Color.Secondary" Clicked="@HideModal">Close</Button>

@@ -21,6 +21,8 @@ public partial class AddEditUserModal : ComponentBase
 
     private AddEditAddresModal addEditAddressModal;
 
+    private string phonePartern = @"^(?:\+?84|0)(?:1\d{9}|3[2-9]\d{8}|5[689]\d{7}|7[0678]\d{7}|8\d{8}|9\d{8})$";
+    Validations validations;
     public void SetParameters(User user, bool isAdded)
     {
         User = user;
@@ -87,7 +89,7 @@ public partial class AddEditUserModal : ComponentBase
 
     private async Task DeleteAddress()
     {
-        if(SelectedAddress != null && SelectedAddress.ID == System.Guid.Empty)// Delete on memory only
+        if (SelectedAddress != null && SelectedAddress.ID == System.Guid.Empty)// Delete on memory only
         {
             var deletedAddress = User.Addresses.FirstOrDefault(x => x.Index == SelectedAddress.Index);
             if (deletedAddress != null) { User.Addresses.Remove(deletedAddress); }
@@ -104,22 +106,25 @@ public partial class AddEditUserModal : ComponentBase
 
     private async Task OnUpdateAddressCallBack(Address address)
     {
-        if (!IsEditingAddress)
+        if (await validations.ValidateAll())
         {
-            var maxIndex = User.Addresses.Count + 1;
-            address.Index = maxIndex;
-            User.Addresses.Add(address);
-        }
-        else
-        {
-            var editAddress = User.Addresses.Where(x => x.ID == address.ID).FirstOrDefault();
-            if (editAddress is not null)
-                User.Addresses.Remove(editAddress);
+            if (!IsEditingAddress)
+            {
+                var maxIndex = User.Addresses.Count + 1;
+                address.Index = maxIndex;
+                User.Addresses.Add(address);
+            }
+            else
+            {
+                var editAddress = User.Addresses.Where(x => x.ID == address.ID).FirstOrDefault();
+                if (editAddress is not null)
+                    User.Addresses.Remove(editAddress);
 
-            User.Addresses.Add(address);
+                User.Addresses.Add(address);
 
-            // Update Address to database
-            await UserService.UpdateAddess(address);
+                // Update Address to database
+                await UserService.UpdateAddess(address);
+            }
         }
         StateHasChanged();
     }

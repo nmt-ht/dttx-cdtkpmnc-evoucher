@@ -1,4 +1,5 @@
 ﻿using eVoucher.Models;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -8,7 +9,7 @@ namespace eVourcher.Services
     {
         Task<IList<Partner>> GetPartners();
         Task<bool> CreatePartner(Partner partner);
-        Task<bool> UpdatePartner(Partner partner);
-        Task<bool> DeletePartner(Partner partner);
+        Task<bool> UpdatePartner(Partner partner);        
+        Task<bool> DeletePartner(Guid id);
     }
 }

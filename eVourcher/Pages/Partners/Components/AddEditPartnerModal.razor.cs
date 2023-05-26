@@ -18,7 +18,10 @@ public partial class AddEditPartnerModal : ComponentBase
     private Modal modalRef;
     private bool IsAdded => Partner is not null && Partner.Id != Guid.Empty ? false : true;
     private string Title => IsAdded ? "Add Partner" : "Edit Partner";
-
+    public void SetParameters(Partner partner, bool isAdded)
+    {
+        Partner = partner;
+    }
     public void InitData(Partner partner)
     {
         Partner = partner;
@@ -37,12 +40,11 @@ public partial class AddEditPartnerModal : ComponentBase
       
     private async Task UpdateData()
     {
-        if(IsAdded)
+        if (IsAdded)
         {
             var result = await PartnerService.CreatePartner(Partner);
             if (result)
                 await NotificationService.Info("Added Partner successfully.");
-
             await HideModal();
         }
         else
@@ -50,7 +52,6 @@ public partial class AddEditPartnerModal : ComponentBase
             var result = await PartnerService.UpdatePartner(Partner);
             if (result)
                 await NotificationService.Info("Edit Partner successfully.");
-
             await HideModal();
         }
     }

@@ -1,5 +1,6 @@
 ﻿using eVoucher.Handlers;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Partner = eVoucher.Models.Partner;
@@ -38,9 +39,19 @@ namespace eVourcher.Services
             return false;
         } 
 
-        public Task<bool> DeletePartner(Partner partner)
+        public async Task<bool> DeletePartner(Guid id)
         {
-            throw new System.NotImplementedException();
+            var result = false;
+
+            string requestURL = "/api/Partners/delete/" + id;
+
+            var response = await RestClient.APIClient.PostAsync(requestURL, null);
+
+            if (response != null && response.Success && response.Data != null)
+            {
+                bool.TryParse(response.Data.ToString(),out result);
+            }
+            return result;
         }
 
         public async Task<bool> UpdatePartner(Partner partner)

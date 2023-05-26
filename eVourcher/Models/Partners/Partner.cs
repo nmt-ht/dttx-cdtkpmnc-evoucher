@@ -15,4 +15,5 @@ public class Partner
     public DateTime? JoinDate { get; set; }
     public ePartnerType Type { get; set; }
     public bool IsActive { get; set; }
+    public int Index { get; set; }
 }

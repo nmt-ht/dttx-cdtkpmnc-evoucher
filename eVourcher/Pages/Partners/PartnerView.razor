@@ -15,7 +15,7 @@
                     <Button Color="Color.Secondary" Margin="Margin.Is2.FromEnd" Clicked="ViewEditPartner">
                         <Icon Name="IconName.Edit"></Icon><Span>&nbsp; @("Edit")</Span>
                     </Button>
-                    <Button Color="Color.Danger">
+                    <Button Color="Color.Danger" Clicked="ViewDeletePartner">
                         <Icon Name="IconName.Delete"></Icon><Span>&nbsp; @("Delete")</Span>
                     </Button>
                 </Column>
@@ -41,3 +41,4 @@
 </Div>
 
 <AddEditPartnerModal @ref="addEditPartnerModal"></AddEditPartnerModal>
+<DeletePartnerModal @ref="deletePartnerModal" OnDeletePartner="OnDeletePartner"></DeletePartnerModal>

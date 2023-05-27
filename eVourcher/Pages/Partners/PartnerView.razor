@@ -4,11 +4,11 @@
 
 <PageTitle>Partners</PageTitle>
 
-<Div Class="Partner-view">
-    <Div Class="evoucher-header Partner-header">
+<Div Class="partner-view">
+    <Div Class="evoucher-header partner-header">
         <Row Display="Display.Flex">
             <Column ColumnSize="ColumnSize.Is6" Class="title">Partner Information</Column>
-            <Column ColumnSize="ColumnSize.Is6" Class="Partner-actions">
+            <Column ColumnSize="ColumnSize.Is6" Class="partner-actions">
                 <Button Color="Color.Primary" Margin="Margin.Is2.FromEnd" Clicked="ViewAddPartner">
                     <Icon Name="IconName.Add"></Icon><Span>&nbsp; @("Add")</Span>
                 </Button>
@@ -32,13 +32,15 @@
                   Striped="true"
                   Filterable>
             <DataGridCommandColumn />
-            <DataGridColumn Field="@nameof(Partner.Id)" Caption="#" Sortable="false" />
-            <DataGridColumn Field="@nameof(Partner.CompanyName)" Caption="Partner Name" Editable />
+            <DataGridColumn Field="@nameof(Partner.Index)" Caption="#" Sortable="false" />
+            <DataGridColumn Field="@nameof(Partner.CompanyName)" Caption="Company Name" Editable />
             <DataGridColumn Field="@nameof(Partner.Description)" Caption="Description" Editable />
+            <DataGridColumn Field="@nameof(Partner.CompanyEmailAddress)" Caption="Email" Editable />
             <DataGridColumn Field="@nameof(Partner.CompanyPhone)" Caption="Phone" Editable />
+            <DataGridColumn Field="@nameof(Partner.JoinDateText)" Caption="Join Date" Editable />
         </DataGrid>
     </Div>
 </Div>
 
-<AddEditPartnerModal @ref="addEditPartnerModal"></AddEditPartnerModal>
+<AddEditPartnerModal @ref="addEditPartnerModal" OnUpdatePartner="OnUpdatePartner"></AddEditPartnerModal>
 <DeletePartnerModal @ref="deletePartnerModal" OnDeletePartner="OnDeletePartner"></DeletePartnerModal>

@@ -60,7 +60,7 @@ namespace eVourcher.Services
         }
         public async Task<bool> DeleteUser(Guid id)
         {
-            string requestURL = $"api/users/delete/{id}";
+            string requestURL = $"api/users/{id}/delete";
 
             var response = await RestClient.APIClient.DeleteAsync(requestURL);
 
@@ -97,7 +97,7 @@ namespace eVourcher.Services
         }
         public async Task<bool> DeleteAddress(Guid id)
         {
-            string requestURL = $"api/users/address/delete/{id}";
+            string requestURL = $"api/users/address/{id}/delete";
 
             var response = await RestClient.APIClient.DeleteAsync(requestURL);
 

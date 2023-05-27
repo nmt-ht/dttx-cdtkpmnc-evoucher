@@ -9,7 +9,7 @@ namespace eVourcher.Services
     {
         Task<IList<Campaign>> GetCampaigns();
         Task<Campaign> GetCampaignById(Guid id);
-        Task<Campaign> CreateCampaign(Campaign campaign);
+        Task<bool> CreateCampaign(Campaign campaign);
         Task<bool> UpdateCampaign(Campaign campaign);
         Task<bool> DeleteCampaign(Guid id);
         Task<bool> DeleteGame(Guid id);

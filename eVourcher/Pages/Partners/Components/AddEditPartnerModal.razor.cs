@@ -37,36 +37,39 @@ public partial class AddEditPartnerModal : ComponentBase
     {
         return modalRef.Hide();
     }
-      
+
     private async Task UpdateData()
     {
-        if (IsAdded)
+        if (await validationsRef.ValidateAll())
         {
-            var result = await PartnerService.CreatePartner(Partner);
-            if (result)
+            if (IsAdded)
             {
-                await NotificationService.Info("Added Partner successfully.");
-                await HideModal();
-                await OnUpdatePartner.InvokeAsync();
+                var result = await PartnerService.CreatePartner(Partner);
+                if (result)
+                {
+                    await NotificationService.Info("Added Partner successfully.");
+                    await HideModal();
+                    await OnUpdatePartner.InvokeAsync();
+                }
+                else
+                {
+                    await NotificationService.Info("An error occurred please try again.");
+                }
             }
             else
             {
-                await NotificationService.Info("An error occurred please try again.");
+                var result = await PartnerService.UpdatePartner(Partner);
+                if (result)
+                {
+                    await NotificationService.Info("Added Partner successfully.");
+                    await HideModal();
+                    await OnUpdatePartner.InvokeAsync();
+                }
+                else
+                {
+                    await NotificationService.Info("An error occurred please try again.");
+                }
             }
-        }
-        else
-        {
-            var result = await PartnerService.UpdatePartner(Partner);
-            if (result)
-            {
-                await NotificationService.Info("Added Partner successfully.");
-                await HideModal();
-                await OnUpdatePartner.InvokeAsync();
-            }
-            else
-            {
-                await NotificationService.Info("An error occurred please try again.");
-            }    
-        }
+        } 
     }
 }

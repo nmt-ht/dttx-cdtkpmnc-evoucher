@@ -12,8 +12,7 @@ public partial class AddEditGameModal : ComponentBase
     private Game Game { get; set; }
     [Parameter] public EventCallback<Game> UpdateGameCallBack { get; set; }
     private bool IsAdded => Game is not null && Game.ID != Guid.Empty ? false : true;
-    //private IList<eAddressType> AddressTypes = new List<eAddressType>() { eAddressType.ShipTo, eAddressType.BillTo, eAddressType.BillToShipTo, eAddressType.Company };
-    private string Title => IsAdded ? "Add Address" : "Edit Address";
+    private string Title => IsAdded ? "Add Game" : "Edit Game";
     private Modal gameRef;
     
     public void SetParameters(Game game)

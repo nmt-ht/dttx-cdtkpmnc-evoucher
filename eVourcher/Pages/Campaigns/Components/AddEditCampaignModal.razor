@@ -2,7 +2,7 @@
 @using Game = eVoucher.Models.Game;
 
 <Modal @ref="campaignRef">
-    <ModalContent Centered Size="ModalSize.ExtraLarge">
+    <ModalContent Centered Size="ModalSize.Fullscreen">
         <ModalHeader>
             <ModalTitle>@Title</ModalTitle>
             <CloseButton />
@@ -67,4 +67,4 @@
     </ModalContent>
 </Modal>
 
-<AddEditGameModal @ref=addEditGameModal UpdateGameCallBack="OnUpdateGameCallBack"></AddEditGameModal>
+<AddEditGameModal @ref="addEditGameModal" UpdateGameCallBack="OnUpdateGameCallBack"></AddEditGameModal>

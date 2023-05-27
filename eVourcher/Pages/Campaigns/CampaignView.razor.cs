@@ -1,6 +1,7 @@
 ﻿using Blazorise;
 using eVoucher.Models;
 using eVoucher.Pages.Campaigns.Components;
+using eVoucher.Pages.Partners.Components;
 using eVoucher.Pages.Users.Components;
 using eVourcher.Services;
 using Microsoft.AspNetCore.Components;
@@ -23,13 +24,14 @@ public partial class CampaignView : ComponentBase
     /// Ref: https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage
     /// </summary>
     [Inject] public ILocalStorage LocalStorage { get; set; }
+    [Inject] public INotificationService NotificationService { get; set; }
     #endregion
 
-    private Guid CurrentUserId { get; set; }
+    private Guid? CurrentUserId { get; set; }
     private IList<Campaign> Campaigns { get; set; } = new List<Campaign>();
     private Campaign selectedCampaign;
     private AddEditCampaignModal addEditCampaignModal;
-    //private DeleteCampaignModal deleteCampaignModal;
+    private DeleteCampaignModal deleteCampaignModal;
 
     protected override async Task OnInitializedAsync()
     {
@@ -48,35 +50,57 @@ public partial class CampaignView : ComponentBase
         await ShowLoadingPage(false);
     }
 
-    private void ViewAddEditCampaign()
-    {
-        addEditCampaignModal.InitData();
-    }
     private async Task CampaignActions(eAction action)
     {
         switch (action)
         {
             case eAction.Add:
-                addEditCampaignModal.SetParameters(new Campaign(), true);
+                var campaign = new Campaign();               
+                addEditCampaignModal.SetParameters(campaign, true, CurrentUserId);
                 addEditCampaignModal.InitData();
                 break;
             case eAction.Edit:
-                var campaign = await CampaignService.GetCampaignById(selectedCampaign.ID);
-                if (campaign.Games is not null && campaign.Games.Any())
+                if (selectedCampaign != null && selectedCampaign.Id != Guid.Empty)
                 {
-                    var index = 0;
-                    campaign.Games.ToList().ForEach(a => a.Index = ++index);
+                    var editCampaign = await CampaignService.GetCampaignById(selectedCampaign.Id);
+                    if (editCampaign.Games is not null && editCampaign.Games.Any())
+                    {
+                        var index = 0;
+                        editCampaign.Games.ToList().ForEach(a => a.Index = ++index);
+                    }
+                    addEditCampaignModal.SetParameters(editCampaign, false, CurrentUserId);
+                    addEditCampaignModal.InitData();
                 }
-                addEditCampaignModal.SetParameters(campaign, false);
-                addEditCampaignModal.InitData();
                 break;
             case eAction.Delete:
+                if (selectedCampaign != null && selectedCampaign.Id != Guid.Empty)
+                {
+                    deleteCampaignModal.InitData();
+                }
                 break;
             default:
                 break;
         }
     }
-       #region Show Loading page
+    private async Task OnUpdateCampaign()
+    {
+        await LoadData();
+    }
+    private async Task OnDeleteCampaign()
+    {
+        var result = await CampaignService.DeleteCampaign(selectedCampaign.Id);
+
+        if (result)
+        {
+            await NotificationService.Info("Delete successfully.");
+            await LoadData();
+        }
+        else
+        {
+            await NotificationService.Info("An error occurred please try again.");
+        }
+    }
+    #region Show Loading page
     [Inject] IPageProgressService PageProgressService { get; set; }
     private async Task ShowLoadingPage(bool isShow)
     {

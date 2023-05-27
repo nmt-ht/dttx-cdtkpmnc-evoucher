@@ -22,6 +22,7 @@ public partial class PartnerView : ComponentBase
     private Partner selectedPartner;
     private AddEditPartnerModal addEditPartnerModal;
     private DeletePartnerModal deletePartnerModal;
+    private Guid? userID;
 
     protected override async Task OnInitializedAsync()
     {
@@ -37,8 +38,6 @@ public partial class PartnerView : ComponentBase
         Partners.ToList().ForEach(x => x.Index = ++index);
         await ShowLoadingPage(false); 
     }
-
-    private Guid? userID;
 
     private async Task GetUserID()
     {
@@ -57,7 +56,7 @@ public partial class PartnerView : ComponentBase
 
     private void ViewEditPartner()
     {
-        if (selectedPartner != null)
+        if (selectedPartner != null && selectedPartner.Id != Guid.Empty)
         {
             addEditPartnerModal.InitData(selectedPartner);
         }
@@ -65,7 +64,7 @@ public partial class PartnerView : ComponentBase
 
     private void ViewDeletePartner()
     {
-        if (selectedPartner != null)
+        if (selectedPartner != null && selectedPartner.Id != Guid.Empty)
         {
             deletePartnerModal.InitData();
         }

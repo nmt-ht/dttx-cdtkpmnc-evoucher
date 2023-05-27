@@ -15,7 +15,7 @@ namespace eVourcher.Services
         {
             IList<Partner> partners = new List<Partner>();
 
-            string requestURL = "/api/Partners";
+            string requestURL = "/api/partners";
 
             var response = await RestClient.APIClient.GetAsync(requestURL);
 
@@ -44,9 +44,9 @@ namespace eVourcher.Services
         {
             var result = false;
 
-            string requestURL = "/api/Partners/delete/" + id;
+            string requestURL = $"api/partners/{id}/delete";
 
-            var response = await RestClient.APIClient.PostAsync(requestURL, null);
+            var response = await RestClient.APIClient.DeleteAsync(requestURL);
 
             if (response != null && response.Success && response.Data != null)
             {

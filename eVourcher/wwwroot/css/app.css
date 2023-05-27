@@ -186,7 +186,7 @@ a, .btn-link {
 .modal-header{
     font-weight: bold;
 }
-.partner-actions, campaign-actions {
+.partner-actions, .campaign-actions {
     display: flex;
     justify-content: end;
 }

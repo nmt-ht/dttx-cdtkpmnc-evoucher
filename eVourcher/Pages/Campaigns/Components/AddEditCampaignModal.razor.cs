@@ -1,10 +1,11 @@
 ﻿using Blazorise;
 using eVoucher.Models;
-using eVoucher.Pages.Games.Components;
+using eVoucher.Pages.Campaigns.Components;
 using eVoucher.Pages.Users.Components;
 using eVourcher.Services;
 using Microsoft.AspNetCore.Components;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using static eVoucher.Models.DataType;
 using Game = eVoucher.Models.Game;
@@ -16,14 +17,14 @@ public partial class AddEditCampaignModal : ComponentBase
     [Inject] public ICampaignService CampaignService { get; set; }
     [Inject] public INotificationService NotificationService { get; set; }
     [Parameter] public Campaign Campaign { get; set; } = new();
-    [Parameter] public Guid CurrentUserId { get; set; }
+    [Parameter] public Guid? CurrentUserId { get; set; }
 
     /// <summary>
     /// Event callback, it means the child component (AddEditCampaignModal) would like to reload data for the list view (datagrid)
     /// but the current data grid is from the parent component (CampaignView), hence, we have to use event callback to trigger or call
     /// from child to parent for re-loading data.
     /// </summary>
-    [Parameter] public EventCallback<bool> ReloadData { get; set; }
+    [Parameter] public EventCallback OnUpdateCampaign { get; set; }
     
     private Modal campaignRef;
     private bool IsAdded = false;
@@ -32,24 +33,16 @@ public partial class AddEditCampaignModal : ComponentBase
       
     private Game SelectedGame { get; set; }
 
-    private AddEditAddresModal addEditGameModal;
+    private AddEditGameModal addEditGameModal;
 
-    public void SetParameters(Campaign campaign, bool isAdded)
+    public void SetParameters(Campaign campaign, bool isAdded, Guid? currentUserId)
     {
         Campaign = campaign;
         IsAdded = isAdded;
+        CurrentUserId = currentUserId;
     }
     public void InitData()
     {
-        if (!IsAdded)
-        {
-            
-        }
-        else
-        {
-            Campaign = new();
-        }
-
         ShowModal();
     }
 
@@ -63,15 +56,48 @@ public partial class AddEditCampaignModal : ComponentBase
         return campaignRef.Hide();
     }
 
+    //private async Task UpdateData()
+    //{
+    //    Campaign.CreatedBy = Campaign.ModifiedBy = CurrentUserId;
+    //    var result = await CampaignService.UpdateCampaign(Campaign);
+    //    if (result)
+    //        await NotificationService.Info(IsAdded ? "Added Campaign successfully." : "Edit Campaign successfully.");
+    //    await HideModal();
+    //}
+
     private async Task UpdateData()
     {
-        if(IsAdded)
+        if (IsAdded)
         {
-            Campaign.CreatedBy = Campaign.ModifiedBy = CurrentUserId;
+            Campaign.CreatedBy = CurrentUserId != null ? CurrentUserId.Value : Guid.Empty;
+            Campaign.ModifiedBy = CurrentUserId != null ? CurrentUserId.Value : Guid.Empty;
+            var result = await CampaignService.CreateCampaign(Campaign);
+            if (result)
+            {
+                await NotificationService.Info("Added Campaign successfully.");
+                await HideModal();
+                await OnUpdateCampaign.InvokeAsync();
+            }
+            else
+            {
+                await NotificationService.Info("An error occurred please try again.");
+            }
+        }
+        else
+        {
+
             var result = await CampaignService.UpdateCampaign(Campaign);
             if (result)
-                await NotificationService.Info(IsAdded ? "Added Campaign successfully." : "Edit Campaign successfully.");
-            await HideModal();
+            {
+                Campaign.ModifiedBy = CurrentUserId != null ? CurrentUserId.Value : Guid.Empty;
+                await NotificationService.Info("Added Campaign successfully.");
+                await HideModal();
+                await OnUpdateCampaign.InvokeAsync();
+            }
+            else
+            {
+                await NotificationService.Info("An error occurred please try again.");
+            }
         }
     }
 
@@ -105,15 +131,15 @@ public partial class AddEditCampaignModal : ComponentBase
     {
         if (SelectedGame != null && SelectedGame.ID == System.Guid.Empty)// Delete on memory only
         {
-            var deletedGame = Campaign.Games.FirstOrDefault(x => x.Index == SelectedGame.Index);
+            var deletedGame = Campaign.Games.Where(x => x.Index == SelectedGame.Index).FirstOrDefault();
             if (deletedGame != null) { Campaign.Games.Remove(deletedGame); }
         }
         else
         {
-            await GameService.DeleteGame(SelectedGame.ID);
+            await CampaignService.DeleteGame(SelectedGame.ID);
 
             //Reload data on memory
-            var deletedGame = Campaign.Games.FirstOrDefault(x => x.ID == SelectedGame.ID);
+            var deletedGame = Campaign.Games.Where(x => x.ID == SelectedGame.ID).FirstOrDefault();
             if (deletedGame != null) { Campaign.Games.Remove(deletedGame); }
         }
     }
@@ -130,7 +156,7 @@ public partial class AddEditCampaignModal : ComponentBase
         {
             var editGame = Campaign.Games.Where(x => x.ID == game.ID).FirstOrDefault();
             if (editGame is not null)
-                UCampaign.Games.Remove(editGame);
+                Campaign.Games.Remove(editGame);
 
             Campaign.Games.Add(game);
 

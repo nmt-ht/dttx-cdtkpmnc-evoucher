@@ -32,7 +32,7 @@
                   Striped="true"
                   Filterable>
             <DataGridCommandColumn />
-            <DataGridColumn Field="@nameof(Campaign.ID)" Caption="#" Sortable="false" />
+            <DataGridColumn Field="@nameof(Campaign.Index)" Caption="#" Sortable="false" />
             <DataGridColumn Field="@nameof(Campaign.Name)" Caption="Campaign Name" Editable />
             <DataGridColumn Field="@nameof(Campaign.Description)" Caption="Description" Editable />
             <DataGridColumn Field="@nameof(Campaign.StartedDate)" Caption="Started Date" Editable />
@@ -41,4 +41,5 @@
     </Div>
 </Div>
 
-<AddEditCampaignModal @ref="addEditCampaignModal" ReloadData="LoadData"></AddEditCampaignModal>
+<AddEditCampaignModal @ref="addEditCampaignModal" OnUpdateCampaign="OnUpdateCampaign"></AddEditCampaignModal>
+<DeleteCampaignModal @ref="deleteCampaignModal" OnDeleteCampaign="OnDeleteCampaign"></DeleteCampaignModal>

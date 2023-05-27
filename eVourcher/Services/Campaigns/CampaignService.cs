@@ -1,4 +1,5 @@
 ﻿using eVoucher.Handlers;
+using eVoucher.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -26,41 +27,52 @@ namespace eVourcher.Services
 
             return campaigns;
         }
-        public Task<Campaign> CreateCampaign(Campaign campaign)
+        public async Task<bool> CreateCampaign(Campaign campaign)
         {
-            throw new System.NotImplementedException();
-        }
-
-        public async Task<bool> DeleteCampaign(Guid id)
-        {
-            string requestURL = $"api/campaigns/{id}/delete";
-
-            var response = await RestClient.APIClient.DeleteAsync(requestURL);
-
-            if (response is not null && response.Success)
-            {
-                return true;
-            }
-            return false;
-        }
-
-        public async Task<bool> UpdateCampaign(Campaign campaign)
-        {
+            var result = false;
             string requestURL = "/api/campaigns/create";
 
             var response = await RestClient.APIClient.PostAsync(requestURL, campaign);
 
-            if (response != null && response.Success)
+            if (response != null && response.Success && response.Data != null)
             {
-                return true;
+                bool.TryParse(response.Data.ToString(), out result);
             }
-            return false;
+            return result;
+        }
+
+        public async Task<bool> DeleteCampaign(Guid id)
+        {
+            var result = false;
+            string requestURL = $"api/campaigns/{id}/delete";
+
+            var response = await RestClient.APIClient.DeleteAsync(requestURL);
+
+            if (response != null && response.Success && response.Data != null)
+            {
+                bool.TryParse(response.Data.ToString(), out result);
+            }
+            return result;
+        }
+
+        public async Task<bool> UpdateCampaign(Campaign campaign)
+        {
+            var result = false;
+            string requestURL = "/api/campaigns/update";
+
+            var response = await RestClient.APIClient.PostAsync(requestURL, campaign);
+
+            if (response != null && response.Success && response.Data != null)
+            {
+                bool.TryParse(response.Data.ToString(), out result);
+            }
+            return result;
         }
 
         public async Task<Campaign> GetCampaignById(Guid id)
         {
             var campaign = new Campaign();
-            string requestURL = $"/api/campaigns/{id}";
+            string requestURL = $"/api/campaigns/campaigns/{id}";
             var response = await RestClient.APIClient.GetAsync(requestURL);
 
             if (response != null && response.Success && response.Data != null)
@@ -73,27 +85,29 @@ namespace eVourcher.Services
 
         public async Task<bool> DeleteGame(Guid id)
         {
-            string requestURL = $"api/campaigns/game/delete/{id}";
+            var result = false;
+            string requestURL = $"api/campaigns/game/{id}/delete";
 
             var response = await RestClient.APIClient.DeleteAsync(requestURL);
 
-            if (response is not null && response.Success)
+            if (response != null && response.Success && response.Data != null)
             {
-                return true;
+                bool.TryParse(response.Data.ToString(), out result);
             }
-            return false;
+            return result;
         }
         public async Task<bool> UpdateGame(eVoucher.Models.Game game)
         {
+            var result = false;
             string requestURL = "api/users/game/update";
 
             var response = await RestClient.APIClient.PostAsync(requestURL, game);
 
-            if (response is not null && response.Success)
+            if (response != null && response.Success && response.Data != null)
             {
-                return true;
+                bool.TryParse(response.Data.ToString(), out result);
             }
-            return false;
+            return result;
         }
     }
 }

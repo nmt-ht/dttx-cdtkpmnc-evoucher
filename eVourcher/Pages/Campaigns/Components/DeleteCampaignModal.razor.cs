@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using static eVoucher.Models.DataType;
 
 namespace eVoucher.Pages.Campaigns.Components;
-public partial class DeletePartnerModal : ComponentBase
+public partial class DeleteCampaignModal : ComponentBase
 {
     private Modal deleteCampaignRef;
     [Parameter] public EventCallback OnDeleteCampaign { get; set; }
@@ -29,7 +29,7 @@ public partial class DeletePartnerModal : ComponentBase
         return deleteCampaignRef.Hide();
     }
       
-    private async Task DeletePartner()
+    private async Task DeleteCampaign()
     {
         await HideModal();
         await OnDeleteCampaign.InvokeAsync();

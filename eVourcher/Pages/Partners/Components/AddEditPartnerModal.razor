@@ -6,38 +6,35 @@
             <CloseButton />
         </ModalHeader> 
         <ModalBody> 
-            @if (Partner is not null)
-            {
-                <Field Class="edit-user-header">Partner Information:</Field>
+            <Field Class="edit-user-header">Partner Information:</Field>
+            <Validations @ref="@validationsRef" Mode="ValidationMode.Manual" ValidateOnLoad="false">
                 <Validation Validator="ValidationRule.IsNotEmpty">
                     <Field>
                         <FieldLabel>Name</FieldLabel>
-                        <TextEdit @bind-Text="@Partner.CompanyName" Placeholder="Enter first name..." />
+                        <TextEdit @bind-Text="@Partner.CompanyName" Placeholder="Enter company name..." />
                     </Field>
                     <Field>
                         <FieldLabel>Description</FieldLabel>
-                        <TextEdit @bind-Text="Partner.Description" Placeholder="Enter last name..." />
+                        <TextEdit @bind-Text="Partner.Description" Placeholder="Enter description..." />
                     </Field>
                 </Validation>
                 <Field>
                     <FieldLabel>Join Date</FieldLabel>
                     <DateEdit TValue="DateTime?" @bind-Date=Partner.JoinDate />
                 </Field>
-                <Fields> 
-                    <Validation Validator="ValidationRule.IsEmail">
-                        <Field>
-                            <FieldLabel>Company Email address</FieldLabel>
-                            <TextEdit @bind-Text="Partner.CompanyEmailAddress" Placeholder="Enter company email address..." />
-                        </Field>
-                    </Validation>
-                        <Field>
-                            <FieldLabel>Company Phone number</FieldLabel>
-                            <TextEdit @bind-Text="Partner.CompanyPhone" Placeholder="Enter company phone number...">
-                                <FieldHelp>Include country and area prefixes</FieldHelp>
-                            </TextEdit>
-                        </Field>
-                </Fields>
-            }
+                <Validation Validator="ValidationRule.IsEmail">
+                    <Field>
+                        <FieldLabel>Company Email address</FieldLabel>
+                        <TextEdit @bind-Text="Partner.CompanyEmailAddress" Placeholder="Enter company email address..." />
+                    </Field>
+                </Validation>
+                <Field>
+                    <FieldLabel>Company Phone number</FieldLabel>
+                    <TextEdit @bind-Text="Partner.CompanyPhone" Placeholder="Enter company phone number...">
+                        <FieldHelp>Include country and area prefixes</FieldHelp>
+                    </TextEdit>
+                </Field>
+            </Validations>
         </ModalBody>
         <ModalFooter>
             <Button Color="Color.Secondary" Clicked="@HideModal">Close</Button>

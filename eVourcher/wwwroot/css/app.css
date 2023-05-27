@@ -183,8 +183,10 @@ a, .btn-link {
 .register-account .modal-body {
     min-height: 350px;
 }
-}
-
 .modal-header{
     font-weight: bold;
+}
+.partner-actions, campaign-actions {
+    display: flex;
+    justify-content: end;
 }

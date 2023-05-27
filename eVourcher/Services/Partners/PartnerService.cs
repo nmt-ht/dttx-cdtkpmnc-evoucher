@@ -28,15 +28,16 @@ namespace eVourcher.Services
         }
         public async Task<bool> CreatePartner(Partner partner)
         {
+            var result = false;
             string requestURL = "/api/partners/create";
 
             var response = await RestClient.APIClient.PostAsync(requestURL, partner);
 
             if (response != null && response.Success && response.Data != null)
             {
-                return true;
+                bool.TryParse(response.Data.ToString(), out result);
             }
-            return false;
+            return result;
         } 
 
         public async Task<bool> DeletePartner(Guid id)
@@ -56,15 +57,16 @@ namespace eVourcher.Services
 
         public async Task<bool> UpdatePartner(Partner partner)
         {
+            var result = false;
             string requestURL = "/api/partners/update";
 
             var response = await RestClient.APIClient.PostAsync(requestURL, partner);
 
             if (response != null && response.Success && response.Data != null)
             {
-                return true;
+                bool.TryParse(response.Data.ToString(), out result);
             } 
-            return false;
+            return result;
         } 
     }
 }

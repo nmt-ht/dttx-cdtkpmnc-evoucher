@@ -19,7 +19,7 @@ public partial class Login : ComponentBase
     private Validations registerValidationsRef;
     private string email;
     private string password;
-    private User user;
+    private User user = new User();
     private Modal modalRef;
     private bool showPassWordLogin = false;
     private bool showPasswordCreateAccount = false;
@@ -27,17 +27,18 @@ public partial class Login : ComponentBase
     private string typePassWordCreateAccount;
     private string errorLogin;
     private string errorCreateAccount;
-
-    protected override async Task OnInitializedAsync()
+    public async void InitData()
     {
+        email = string.Empty;
+        password = string.Empty;
         errorLogin = errorCreateAccount = string.Empty;
         typePassWordLogin = typePassWordCreateAccount = "password";
         user = new User();
         user.DateOfBirth = DateTime.Now;
-    }
-    public void InitData()
-    {
-        ShowModal();
+        await loginValidationsRef.ClearAll();
+        await registerValidationsRef.ClearAll();
+        await ShowModal();
+        StateHasChanged();
     }
     private Task ShowModal()
     {
@@ -97,6 +98,7 @@ public partial class Login : ComponentBase
                 errorLogin = "The email address or password is incorrect. Please try again.";
             }
         }
+        StateHasChanged();
     }
 
     async Task OnRegisterClicked()
@@ -118,5 +120,6 @@ public partial class Login : ComponentBase
                 errorCreateAccount = "An error occurred please try again.";
             }    
         }
+        StateHasChanged();
     }
 }

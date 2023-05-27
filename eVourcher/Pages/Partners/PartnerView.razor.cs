@@ -4,6 +4,7 @@ using eVoucher.Pages.Partners.Components;
 using eVoucher.Pages.Users.Components;
 using eVourcher.Services;
 using Microsoft.AspNetCore.Components;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext
 namespace eVoucher.Pages.Partners;
 public partial class PartnerView : ComponentBase
 {
+    [Inject] public ILocalStorage LocalStorage { get; set; }
     [Inject] public INotificationService NotificationService { get; set; }
     [Inject] public IPartnerService PartnerService { get; set; }
     private IList<Partner> Partners { get; set; } = new List<Partner>();
@@ -23,6 +25,7 @@ public partial class PartnerView : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
+        await GetUserID();
         await BindData();
     }
 
@@ -32,17 +35,32 @@ public partial class PartnerView : ComponentBase
         Partners = await PartnerService.GetPartners();
         var index = 0;
         Partners.ToList().ForEach(x => x.Index = ++index);
-        await ShowLoadingPage(false);
+        await ShowLoadingPage(false); 
+    }
+
+    private Guid? userID;
+
+    private async Task GetUserID()
+    {
+        var userIDString = await LocalStorage.GetStringAsync("userId");
+
+        userID = string.IsNullOrEmpty(userIDString) ? null : new Guid(userIDString);
+
     }
     
     private void ViewAddPartner()
     {
-        addEditPartnerModal.InitData(new Partner());
+        Partner partner = new Partner();
+        partner.User_ID_FK = userID != null ? userID.Value : Guid.Empty;
+        addEditPartnerModal.InitData(partner);
     }
 
     private void ViewEditPartner()
     {
-        addEditPartnerModal.InitData(selectedPartner);
+        if (selectedPartner != null)
+        {
+            addEditPartnerModal.InitData(selectedPartner);
+        }
     }
 
     private void ViewDeletePartner()
@@ -66,6 +84,11 @@ public partial class PartnerView : ComponentBase
         {
             await NotificationService.Info("An error occurred please try again.");
         }
+    }
+
+    private async Task OnUpdatePartner()
+    {
+        await BindData();
     }
 
     #region Show Loading page

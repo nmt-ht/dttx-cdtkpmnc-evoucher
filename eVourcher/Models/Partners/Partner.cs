@@ -16,4 +16,13 @@ public class Partner
     public ePartnerType Type { get; set; }
     public bool IsActive { get; set; }
     public int Index { get; set; }
+    public Guid User_ID_FK { get; set; }
+    public string JoinDateText
+    {
+        get
+        {
+            return JoinDate == null ? string.Empty : JoinDate.Value.ToShortDateString();
+
+        }
+    }
 }

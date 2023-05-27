@@ -22,7 +22,6 @@ public class Partner
         get
         {
             return JoinDate == null ? string.Empty : JoinDate.Value.ToShortDateString();
-
         }
     }
 }

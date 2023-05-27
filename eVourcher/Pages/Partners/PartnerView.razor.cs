@@ -1,27 +1,24 @@
 ﻿using Blazorise;
 using eVoucher.Models;
 using eVoucher.Pages.Partners.Components;
-using eVoucher.Pages.Users.Components;
 using eVourcher.Services;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using static eVoucher.Models.DataType;
-using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
 
 namespace eVoucher.Pages.Partners;
 public partial class PartnerView : ComponentBase
 {
     [Inject] public ILocalStorage LocalStorage { get; set; }
     [Inject] public INotificationService NotificationService { get; set; }
+    [Inject] public IMessageService MessageService { get; set; }
     [Inject] public IPartnerService PartnerService { get; set; }
     private IList<Partner> Partners { get; set; } = new List<Partner>();
 
     private Partner selectedPartner;
     private AddEditPartnerModal addEditPartnerModal;
-    private DeletePartnerModal deletePartnerModal;
     private Guid? userID;
 
     protected override async Task OnInitializedAsync()
@@ -62,26 +59,22 @@ public partial class PartnerView : ComponentBase
         }
     }
 
-    private void ViewDeletePartner()
-    {
-        if (selectedPartner != null && selectedPartner.Id != Guid.Empty)
-        {
-            deletePartnerModal.InitData();
-        }
-    }
-
     private async Task OnDeletePartner()
     {
-        var result = await PartnerService.DeletePartner(selectedPartner.Id);
+        var confirm = await MessageService.Confirm("Are you sure delete this partner?");
+        if (confirm) 
+        {
+            var result = await PartnerService.DeletePartner(selectedPartner.Id);
 
-        if (result)
-        {
-            await NotificationService.Info("Delete successfully.");
-            await BindData();
-        }
-        else
-        {
-            await NotificationService.Info("An error occurred please try again.");
+            if (result)
+            {
+                await NotificationService.Info("Delete successfully.");
+                await BindData();
+            }
+            else
+            {
+                await NotificationService.Info("An error occurred please try again.");
+            }
         }
     }
 

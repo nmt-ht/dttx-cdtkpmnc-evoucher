@@ -1,7 +1,5 @@
 ﻿using Blazorise;
 using eVoucher.Models;
-using eVoucher.Pages.Campaigns.Components;
-using eVoucher.Pages.Users.Components;
 using eVourcher.Services;
 using Microsoft.AspNetCore.Components;
 using System;
@@ -16,6 +14,7 @@ public partial class AddEditCampaignModal : ComponentBase
 {
     [Inject] public ICampaignService CampaignService { get; set; }
     [Inject] public INotificationService NotificationService { get; set; }
+    [Inject] public IMessageService MessageService { get; set; }
     [Parameter] public Campaign Campaign { get; set; } = new();
     [Parameter] public Guid? CurrentUserId { get; set; }
 
@@ -129,18 +128,22 @@ public partial class AddEditCampaignModal : ComponentBase
 
     private async Task DeleteGame()
     {
-        if (SelectedGame != null && SelectedGame.ID == System.Guid.Empty)// Delete on memory only
+        var confirm = await MessageService.Confirm("Are you sure delete this game?");
+        if(confirm) 
         {
-            var deletedGame = Campaign.Games.Where(x => x.Index == SelectedGame.Index).FirstOrDefault();
-            if (deletedGame != null) { Campaign.Games.Remove(deletedGame); }
-        }
-        else
-        {
-            await CampaignService.DeleteGame(SelectedGame.ID);
+            if (SelectedGame != null && SelectedGame.ID == System.Guid.Empty)// Delete on memory only
+            {
+                var deletedGame = Campaign.Games.Where(x => x.Index == SelectedGame.Index).FirstOrDefault();
+                if (deletedGame != null) { Campaign.Games.Remove(deletedGame); }
+            }
+            else
+            {
+                await CampaignService.DeleteGame(SelectedGame.ID);
 
-            //Reload data on memory
-            var deletedGame = Campaign.Games.Where(x => x.ID == SelectedGame.ID).FirstOrDefault();
-            if (deletedGame != null) { Campaign.Games.Remove(deletedGame); }
+                //Reload data on memory
+                var deletedGame = Campaign.Games.Where(x => x.ID == SelectedGame.ID).FirstOrDefault();
+                if (deletedGame != null) { Campaign.Games.Remove(deletedGame); }
+            }
         }
     }
 

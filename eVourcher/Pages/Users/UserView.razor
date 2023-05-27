@@ -9,13 +9,13 @@
         <Row Display="Display.Flex">
             <Column ColumnSize="ColumnSize.Is6" Class="title">User Information</Column>
             <Column ColumnSize="ColumnSize.Is6" Class="user-actions">
-                <Button Color="Color.Primary" Margin="Margin.Is2.FromEnd" Clicked="@(() => UserActions(eAction.Add))">
-                    <Icon Name="IconName.Add"></Icon><Span>&nbsp; @("Add")</Span>
-                </Button>
-                    <Button Color="Color.Secondary" Margin="Margin.Is2.FromEnd" Clicked="@(() => UserActions(eAction.Edit))">
+                    <Button Color="Color.Primary" Margin="Margin.Is2.FromEnd" Clicked="@(() => UserActions(eAction.Add))">
+                        <Icon Name="IconName.Add"></Icon><Span>&nbsp; @("Add")</Span>
+                    </Button>
+                    <Button Disabled="@(selectedUser is not null ? false : true)" Color="@(selectedUser is not null ? Color.Secondary : Color.Dark)" Margin="Margin.Is2.FromEnd" Clicked="@(() => UserActions(eAction.Edit))">
                         <Icon Name="IconName.Edit"></Icon><Span>&nbsp; @("Edit")</Span>
                     </Button>
-                    <Button Color="Color.Danger" Clicked="@(() => UserActions(eAction.Delete))">
+                    <Button Disabled="@(selectedUser is not null ? false : true)" Color="@(selectedUser is not null ? Color.Danger : Color.Dark)" Clicked="@(() => UserActions(eAction.Delete))">
                         <Icon Name="IconName.Delete"></Icon><Span>&nbsp; @("Delete")</Span>
                     </Button>
                 </Column>
@@ -30,7 +30,8 @@
                   ShowPager="true"
                   Hoverable="true"
                   Striped="true"
-                  Filterable>
+                  Filterable
+                  RowDoubleClicked="@(() => EditUser())">
             <DataGridColumn Field="@nameof(User.Index)" Caption="#" Sortable="false" />
             <DataGridColumn Field="@nameof(User.FirstName)" Caption="First Name" Editable />
             <DataGridColumn Field="@nameof(User.LastName)" Caption="Last Name" Editable />

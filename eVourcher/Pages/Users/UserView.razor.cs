@@ -5,13 +5,14 @@ using eVourcher.Services;
 using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using static eVoucher.Models.DataType;
 
 namespace eVoucher.Pages.Users;
 public partial class UserView : ComponentBase
 {
+    [Inject] public INotificationService NotificationService { get; set; }
+    [Inject] public IMessageService MessageService { get; set; }
     [Inject] public IUserService UserService { get; set; }
     private IList<User> Users { get; set; } = new List<User>();
 
@@ -41,20 +42,33 @@ public partial class UserView : ComponentBase
                 addEditUserModal.InitData();
                 break;
             case eAction.Edit:
-                var user = await UserService.GetUserById(selectedUser.ID);
-                if(user.Addresses is not null && user.Addresses.Any())
-                {
-                    var index = 0;
-                    user.Addresses.ToList().ForEach(a => a.Index = ++index);
-                }
-                addEditUserModal.SetParameters(user, false);
-                addEditUserModal.InitData();
+                await EditUser();
                 break;
             case eAction.Delete:
-                break;
-            default:
+                var confirm = await MessageService.Confirm("Are you sure delete this user?");
+                if (confirm)
+                {
+                    var result = await UserService.DeleteUser(selectedUser.ID);
+                    if (result)
+                    {
+                        await NotificationService.Info("Delete user successfully.");
+                        await LoadData();
+                    }
+                }
                 break;
         }
+    }
+
+    private async Task EditUser()
+    {
+        var user = await UserService.GetUserById(selectedUser.ID);
+        if (user.Addresses is not null && user.Addresses.Any())
+        {
+            var index = 0;
+            user.Addresses.ToList().ForEach(a => a.Index = ++index);
+        }
+        addEditUserModal.SetParameters(user, false);
+        addEditUserModal.InitData();
     }
 
     #region Show Loading page

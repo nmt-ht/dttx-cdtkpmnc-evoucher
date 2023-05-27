@@ -1,4 +1,5 @@
 ﻿using eVoucher.Handlers;
+using eVoucher.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -107,7 +108,7 @@ namespace eVourcher.Services
             }
             return false;
         }
-        public async Task<bool> UpdateAddess(eVoucher.Models.Address address)
+        public async Task<bool> UpdateAddess(Address address)
         {
             string requestURL = "api/users/address/update";
 
@@ -118,6 +119,22 @@ namespace eVourcher.Services
                 return true;
             }
             return false;
+        }
+
+        public async Task<IList<UserGroup>> GetUserGroups()
+        {
+            IList<UserGroup> users = new List<UserGroup>();
+
+            string requestURL = "/api/users/usergroups";
+
+            var response = await RestClient.APIClient.GetAsync(requestURL);
+
+            if (response != null && response.Success && response.Data != null)
+            {
+                users = JsonConvert.DeserializeObject<IList<UserGroup>>(response.Data.ToString());
+            }
+
+            return users;
         }
     }
 }

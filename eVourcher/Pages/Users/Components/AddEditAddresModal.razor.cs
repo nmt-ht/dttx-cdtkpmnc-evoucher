@@ -1,6 +1,5 @@
 ﻿using Blazorise;
 using Microsoft.AspNetCore.Components;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using static eVoucher.Models.DataType;
@@ -9,22 +8,23 @@ using Address = eVoucher.Models.Address;
 namespace eVoucher.Pages.Users.Components;
 public partial class AddEditAddresModal : ComponentBase
 {
-    private Address Address { get; set; }
+    private Address Address { get; set; } = new();
     [Parameter] public EventCallback<Address> UpdateAddressCallBack { get; set; }
-    private bool IsAdded => Address is not null && Address.ID != Guid.Empty ? false : true;
+    private eAction Action;
     private IList<eAddressType> AddressTypes = new List<eAddressType>() { eAddressType.ShipTo, eAddressType.BillTo, eAddressType.BillToShipTo, eAddressType.Company };
-    private string Title => IsAdded ? "Add Address" : "Edit Address";
+    private string Title => Action == eAction.Add ? "Add Address" : "Edit Address";
     private Modal addressRef;
     Validations validations;
-    public void SetParameters(Address address)
+    public void SetParameters(Address address, eAction action = eAction.Add)
     {
+        Action = action;
         Address = address;
     }
-    public void InitData()
+    public async void InitData()
     {
-        Address = IsAdded ? new() : Address;
+        await validations.ClearAll();
         StateHasChanged();
-        ShowModal();
+        await ShowModal();
     }
 
     private Task ShowModal()

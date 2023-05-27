@@ -2,6 +2,9 @@
 using eVoucher.Models;
 using eVourcher.Services;
 using Microsoft.AspNetCore.Components;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using static eVoucher.Models.DataType;
@@ -9,40 +12,47 @@ using Address = eVoucher.Models.Address;
 namespace eVoucher.Pages.Users.Components;
 public partial class AddEditUserModal : ComponentBase
 {
+    #region External service
     [Inject] public IUserService UserService { get; set; }
     [Inject] public INotificationService NotificationService { get; set; }
-    [Parameter] public EventCallback<bool> ReloadData { get; set; }
-    private User User { get; set; }
+    #endregion
 
+    #region Paramters
+    [Parameter] public EventCallback<bool> ReloadData { get; set; }
+    #endregion
+
+    #region Private varialbles
+    private User User { get; set; } = new();
     private Modal userRef;
     private bool IsAdded = false;
     private string Title => IsAdded ? "Add User" : "Edit User";
     private Address SelectedAddress { get; set; }
-
     private AddEditAddresModal addEditAddressModal;
-
-    private string phonePartern = @"^(?:\+?84|0)(?:1\d{9}|3[2-9]\d{8}|5[689]\d{7}|7[0678]\d{7}|8\d{8}|9\d{8})$";
+    private bool IsEditingAddress = false;
     Validations validations;
+    private IList<UserGroup> UserGroups { get; set; }   
+    private UserGroup SelectedUserGroup { get; set; }
+    #endregion
+
     public void SetParameters(User user, bool isAdded)
     {
         User = user;
         IsAdded = isAdded;
     }
-    public void InitData()
+    public async void InitData()
     {
-        ShowModal();
+        await validations.ClearAll();
+        UserGroups = await UserService.GetUserGroups();
+        await ShowModal();
     }
-
     private Task ShowModal()
     {
         return userRef.Show();
     }
-
     private Task HideModal()
     {
         return userRef.Hide();
     }
-
     private async Task UpdateData()
     {
         var result = false;
@@ -60,15 +70,13 @@ public partial class AddEditUserModal : ComponentBase
         await HideModal();
         await ReloadData.InvokeAsync(true);
     }
-
-    private bool IsEditingAddress = false;
     private async Task AddressActions(eAction action)
     {
         IsEditingAddress = false;
         switch (action)
         {
             case eAction.Add:
-                addEditAddressModal.SetParameters(new Address());
+                addEditAddressModal.SetParameters(new Address(), eAction.Add);
                 addEditAddressModal.InitData();
                 break;
             case eAction.Edit:
@@ -79,14 +87,12 @@ public partial class AddEditUserModal : ComponentBase
                 break;
         }
     }
-
     private void EditAddress()
     {
         IsEditingAddress = true;
-        addEditAddressModal.SetParameters(SelectedAddress);
+        addEditAddressModal.SetParameters(SelectedAddress, eAction.Edit);
         addEditAddressModal.InitData();
     }
-
     private async Task DeleteAddress()
     {
         if (SelectedAddress != null && SelectedAddress.ID == System.Guid.Empty)// Delete on memory only
@@ -103,7 +109,6 @@ public partial class AddEditUserModal : ComponentBase
             if (deletedAddress != null) { User.Addresses.Remove(deletedAddress); }
         }
     }
-
     private async Task OnUpdateAddressCallBack(Address address)
     {
         if (await validations.ValidateAll())
@@ -127,5 +132,17 @@ public partial class AddEditUserModal : ComponentBase
             }
         }
         StateHasChanged();
+    }
+    void ValidateDate(ValidatorEventArgs e)
+    {
+        if (e.Value == null)
+            e.Status = ValidationStatus.Error;
+        else
+        {
+            var dateOfBirth = DateTime.Parse(e.Value.ToString());
+            e.Status = dateOfBirth.Date.Equals(DateTime.MinValue.Date) || dateOfBirth.Date < DateTime.Now.Date || (DateTime.Now.Year - dateOfBirth.Date.Year) <= 16
+                ? ValidationStatus.Error 
+                : ValidationStatus.Success;
+        }
     }
 }

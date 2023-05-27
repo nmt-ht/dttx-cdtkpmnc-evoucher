@@ -5,80 +5,77 @@
             <CloseButton />
         </ModalHeader>
         <ModalBody>
-            @if (Address is not null)
-            {
-                <Validations @ref="validations">
-                    <Fields>
-                        <Validation Validator="ValidationRule.IsNotEmpty">
-                            <Field ColumnSize="ColumnSize.Is6.OnDesktop">
-                                <FieldLabel>Street</FieldLabel>
-                                <TextEdit @bind-Text="Address.Street" Placeholder="Enter street...">
-                                    <Feedback>
-                                        <ValidationNone>Please strest.</ValidationNone>
-                                        <ValidationError>Enter valid street!</ValidationError>
-                                    </Feedback>
-                                </TextEdit>
-                            </Field>
-                        </Validation>
-                        <Validation Validator="ValidationRule.IsNotEmpty">
-                            <Field ColumnSize="ColumnSize.Is6.OnDesktop">
-                                <FieldLabel>District</FieldLabel>
-                                <TextEdit @bind-Text="Address.District" Placeholder="Enter district...">
-                                    <Feedback>
-                                        <ValidationNone>Please district.</ValidationNone>
-                                        <ValidationError>Enter valid district!</ValidationError>
-                                    </Feedback>
-                                </TextEdit>
-                            </Field>
-                        </Validation>
-                    </Fields>
-                    <Fields>
-                        <Validation Validator="ValidationRule.IsNotEmpty">
-                            <Field ColumnSize="ColumnSize.Is4.OnDesktop">
-                                <FieldLabel>City</FieldLabel>
-                                <TextEdit @bind-Text="Address.City" Placeholder="Enter city...">
-                                    <Feedback>
-                                        <ValidationNone>Please city.</ValidationNone>
-                                        <ValidationError>Enter valid city!</ValidationError>
-                                    </Feedback>
-                                </TextEdit>
-                            </Field>
-                        </Validation>
-                        <Validation Validator="ValidationRule.IsNotEmpty">
-                            <Field ColumnSize="ColumnSize.Is4.OnDesktop">
-                                <FieldLabel>Country</FieldLabel>
-                                <TextEdit @bind-Text="Address.Country" Placeholder="Enter country...">
-                                    <Feedback>
-                                        <ValidationNone>Please country.</ValidationNone>
-                                        <ValidationError>Enter valid country!</ValidationError>
-                                    </Feedback>
-                                </TextEdit>
-                            </Field>
-                        </Validation>
+            <Validations @ref="validations" Mode="ValidationMode.Manual" ValidateOnLoad="false">
+                <Fields>
+                    <Validation Validator="ValidationRule.IsNotEmpty">
+                        <Field ColumnSize="ColumnSize.Is6.OnDesktop">
+                            <FieldLabel>Street</FieldLabel>
+                            <TextEdit @bind-Text="Address.Street" Placeholder="Enter street...">
+                                <Feedback>
+                                    <ValidationNone>Please strest.</ValidationNone>
+                                    <ValidationError>Enter valid street!</ValidationError>
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+                    <Validation Validator="ValidationRule.IsNotEmpty">
+                        <Field ColumnSize="ColumnSize.Is6.OnDesktop">
+                            <FieldLabel>District</FieldLabel>
+                            <TextEdit @bind-Text="Address.District" Placeholder="Enter district...">
+                                <Feedback>
+                                    <ValidationNone>Please district.</ValidationNone>
+                                    <ValidationError>Enter valid district!</ValidationError>
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+                </Fields>
+                <Fields>
+                    <Validation Validator="ValidationRule.IsNotEmpty">
                         <Field ColumnSize="ColumnSize.Is4.OnDesktop">
-                            <FieldLabel>Type of Address</FieldLabel>
-                            <Validation Validator="ValidationRule.IsSelected">
-                                <SelectList TItem="eAddressType"
+                            <FieldLabel>City</FieldLabel>
+                            <TextEdit @bind-Text="Address.City" Placeholder="Enter city...">
+                                <Feedback>
+                                    <ValidationNone>Please city.</ValidationNone>
+                                    <ValidationError>Enter valid city!</ValidationError>
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+                    <Validation Validator="ValidationRule.IsNotEmpty">
+                        <Field ColumnSize="ColumnSize.Is4.OnDesktop">
+                            <FieldLabel>Country</FieldLabel>
+                            <TextEdit @bind-Text="Address.Country" Placeholder="Enter country...">
+                                <Feedback>
+                                    <ValidationNone>Please country.</ValidationNone>
+                                    <ValidationError>Enter valid country!</ValidationError>
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+                    <Field ColumnSize="ColumnSize.Is4.OnDesktop">
+                        <FieldLabel>Type of Address</FieldLabel>
+                        <Validation Validator="ValidationRule.IsSelected">
+                            <SelectList TItem="eAddressType"
                                         TValue="eAddressType"
                                         Data="@AddressTypes"
                                         TextField="@((item)=>eVoucherHelper.GetEnumDescription(item))"
                                         ValueField="@((item)=>item)"
                                         @bind-SelectedValue="@(Address.Type)"
                                         DefaultItemText="Choose type of address">
-                                    <Feedback>
-                                        <ValidationNone>Please type of address.</ValidationNone>
-                                        <ValidationError>Choose valid type of address!</ValidationError>
-                                    </Feedback>
-                                </SelectList>
-                            </Validation>
-                        </Field>
-                    </Fields>
-                </Validations>
-            }
+                                <Feedback>
+                                    <ValidationNone>Please type of address.</ValidationNone>
+                                    <ValidationError>Choose valid type of address!</ValidationError>
+                                </Feedback>
+                            </SelectList>
+                        </Validation>
+                    </Field>
+                </Fields>
+            </Validations>
         </ModalBody>
         <ModalFooter>
             <Button Color="Color.Secondary" Clicked="@HideModal">Close</Button>
             <Button Color="Color.Primary" Clicked="@UpdateData">Save Changes</Button>
         </ModalFooter>
     </ModalContent>
-</Modal>
+    </Modal>

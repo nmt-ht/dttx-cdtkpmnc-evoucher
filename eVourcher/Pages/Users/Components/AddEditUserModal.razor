@@ -7,54 +7,56 @@
             <CloseButton />
         </ModalHeader>
         <ModalBody>
-            @if (User is not null)
-            {
-                <Field Class="edit-user-header">User Information:</Field>
-                <Validations @ref="validations">
-                    <Fields>
-                        <Validation Validator="ValidationRule.IsNotEmpty" >
-                            <Field>
-                                <FieldLabel>First Name</FieldLabel>
-                                <TextEdit @bind-Text="@User.FirstName" Placeholder="Enter first name...">
-                                    <Feedback>
-                                        <ValidationNone>Please enter first name.</ValidationNone>
-                                        <ValidationError>Enter valid name!</ValidationError>
-                                    </Feedback>
-                                </TextEdit>
-                            </Field>
-                        </Validation>
-                        <Validation Validator="ValidationRule.IsNotEmpty">
-                            <Field>
-                                <FieldLabel>Last Name</FieldLabel>
-                                <TextEdit @bind-Text="User.LastName" Placeholder="Enter last name...">
-                                    <Feedback>
-                                        <ValidationNone>Please enter Last name.</ValidationNone>
-                                        <ValidationError>Enter valid last name!</ValidationError>
-                                    </Feedback>
-                                </TextEdit>
-                            </Field>
-                        </Validation>
+            <Field Class="edit-user-header">User Information:</Field>
+            <Validations @ref="validations" Mode="ValidationMode.Manual" ValidateOnLoad="false">
+                <Fields>
+                    <Validation Validator="ValidationRule.IsNotEmpty">
+                        <Field>
+                            <FieldLabel>First Name</FieldLabel>
+                            <TextEdit @bind-Text="@User.FirstName" Placeholder="Enter first name...">
+                                <Feedback>
+                                    <ValidationNone>Please enter first name.</ValidationNone>
+                                    <ValidationError>Enter valid name!</ValidationError>
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+                    <Validation Validator="ValidationRule.IsNotEmpty">
+                        <Field>
+                            <FieldLabel>Last Name</FieldLabel>
+                            <TextEdit @bind-Text="User.LastName" Placeholder="Enter last name...">
+                                <Feedback>
+                                    <ValidationNone>Please enter Last name.</ValidationNone>
+                                    <ValidationError>Enter valid last name!</ValidationError>
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+                    <Validation Validator="@ValidateDate">
                         <Field>
                             <FieldLabel>Date of Birth</FieldLabel>
-                            <DateEdit TValue="DateTime?" @bind-Date=User.DateOfBirth />
+                            <DateEdit TValue="DateTime?" @bind-Date=User.DateOfBirth>
+                                <ValidationError>Date of birth is greather than 16 years old!</ValidationError>
+                            </DateEdit>
                         </Field>
-                    </Fields>
-                    <Fields>
-                        <Validation Validator="ValidationRule.IsEmail">
-                            <Field>
-                                <FieldLabel>Email address</FieldLabel>
-                                <TextEdit @bind-Text="User.EmailAddress" Placeholder="Enter email address...">
-                                    <Feedback>
-                                        <ValidationNone>Please enter Email Address.</ValidationNone>
-                                        <ValidationError>Enter valid email address!</ValidationError>
-                                    </Feedback>
-                                </TextEdit>
-                            </Field>
-                        </Validation>
-                        <Validation UsePattern>
+                    </Validation>
+                </Fields>
+                <Fields>
+                    <Validation Validator="ValidationRule.IsEmail">
+                        <Field>
+                            <FieldLabel>Email address</FieldLabel>
+                            <TextEdit @bind-Text="User.EmailAddress" Placeholder="Enter email address...">
+                                <Feedback>
+                                    <ValidationNone>Please enter Email Address.</ValidationNone>
+                                    <ValidationError>Enter valid email address!</ValidationError>
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+                    <Validation UsePattern>
                         <Field>
                             <FieldLabel>Phone number</FieldLabel>
-                            <TextEdit @bind-Text="User.Phone" Placeholder="Enter phone number..." Pattern="@phonePartern">
+                            <TextEdit @bind-Text="User.Phone" Placeholder="Enter phone number..." Pattern="@(eVoucherHelper.PhonePartern)">
                                 <Feedback>
                                     <ValidationError>Pattern does not match! Such as: +84978123456/0978123456</ValidationError>
                                 </Feedback>
@@ -73,45 +75,67 @@
                         </TextEdit>
                     </Field>
                 </Fields>
+                
+                <Row>
+                    <Column ColumnSize="ColumnSize.Is7">
+                        <Div Display="Display.Flex">
+                            <Field Class="edit-user-header">Address Information:</Field>
+                            <Buttons>
+                                <Button Color="Color.Primary" Clicked="@(() => AddressActions(eAction.Add))">Add</Button>
+                                <Button Color="@(SelectedAddress is not null ? Color.Secondary :Color.Dark)" Disabled="@(SelectedAddress is not null ? false : true)"
+                                        Clicked="@(() => AddressActions(eAction.Edit))">
+                                    Edit
+                                </Button>
+                                <Button Color="@(SelectedAddress is not null ? Color.Danger :Color.Dark)" Disabled="@(SelectedAddress is not null ? false : true)"
+                                        Clicked="@(() => AddressActions(eAction.Delete))">
+                                    Delete
+                                </Button>
+                            </Buttons>
+                        </Div>
 
-                <Div Display="Display.Flex">
-                    <Field Class="edit-user-header">Address Information:</Field>
-                    <Buttons>
-                        <Button Color="Color.Primary" Clicked="@(() => AddressActions(eAction.Add))">Add</Button>
-                        <Button Color="Color.Secondary" Clicked="@(() => AddressActions(eAction.Edit))">Edit</Button>
-                        <Button Color="Color.Danger" Clicked="@(() => AddressActions(eAction.Delete))">Delete</Button>
-                    </Buttons>
-                </Div>
-
-                @if (User.Addresses.Any())
-                    {
-                        <DataGrid TItem="Address"
-                          Data="@User.Addresses"
-                                Responsive
-                          @bind-SelectedRow="@SelectedAddress"
-                          PageSize="20"
-                          ShowPager="true"
-                          Hoverable="true"
-                          Striped="true"
-                                Filterable
-                          RowDoubleClicked="@(() => EditAddress())">
-                        <DataGridColumn Field="@nameof(Address.Index)" Caption="#" Sortable="false" />
-                        <DataGridColumn Field="@nameof(Address.Street)" Caption="Street" Editable />
-                            <DataGridColumn Field="@nameof(Address.District)" Caption="District" Editable />
-                            <DataGridColumn Field="@nameof(Address.Country)" Caption="Country" Editable />
-                            <DataGridColumn Field="@nameof(Address.Type)" Caption="Type" Editable>
-                            <DisplayTemplate>
-                                @(eVoucher.Handlers.eVoucherHelper.GetEnumDescription(context.Type))
-                                </DisplayTemplate>
-                            </DataGridColumn>
-                        </DataGrid>
-                    }
-                    else
-                    {
-                        <Field TextAlignment="TextAlignment.Center">The current address is empty.</Field>
-                    }
-                </Validations>
-            }
+                        @if (User is not null && User.Addresses.Any())
+                        {
+                            <DataGrid TItem="Address"
+                                  Data="@User.Addresses"
+                                    Responsive
+                                  @bind-SelectedRow="@SelectedAddress"
+                                  PageSize="20"
+                                  ShowPager="true"
+                                  Hoverable="true"
+                                  Striped="true"
+                                    Filterable
+                                  RowDoubleClicked="@(() => EditAddress())">
+                            <DataGridColumn Field="@nameof(Address.Index)" Caption="#" Sortable="false" />
+                            <DataGridColumn Field="@nameof(Address.Street)" Caption="Street" Editable />
+                                <DataGridColumn Field="@nameof(Address.District)" Caption="District" Editable />
+                                <DataGridColumn Field="@nameof(Address.Country)" Caption="Country" Editable />
+                                <DataGridColumn Field="@nameof(Address.Type)" Caption="Type" Editable>
+                                <DisplayTemplate>
+                                    @(eVoucher.Handlers.eVoucherHelper.GetEnumDescription(context.Type))
+                                    </DisplayTemplate>
+                                </DataGridColumn>
+                            </DataGrid>
+                        }
+                        else
+                        {
+                            <Field TextAlignment="TextAlignment.Center">The current address is empty.</Field>
+                        }
+                    </Column>
+                    <Column ColumnSize="ColumnSize.Is5">
+                        <SelectList TItem="UserGroup"
+                                    TValue="UserGroup"
+                                    Data="@UserGroups"
+                                    TextField="@((item)=>item.Name)"
+                                    ValueField="@((item)=>item)"
+                                    @bind-SelectedValue="@SelectedUserGroup"
+                                    DefaultItemText="Select user group">
+                            <Feedback>
+                                <ValidationError>Choose valid user group!</ValidationError>
+                            </Feedback>
+                        </SelectList>
+                    </Column>
+                </Row>
+            </Validations>
 
         </ModalBody>
         <ModalFooter>

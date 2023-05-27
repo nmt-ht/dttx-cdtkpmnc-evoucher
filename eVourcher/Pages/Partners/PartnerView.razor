@@ -11,16 +11,18 @@
             <Column ColumnSize="ColumnSize.Is6" Class="partner-actions">
                 <Button Color="Color.Primary" Margin="Margin.Is2.FromEnd" Clicked="ViewAddPartner">
                     <Icon Name="IconName.Add"></Icon><Span>&nbsp; @("Add")</Span>
-                </Button>
-                    <Button Color="Color.Secondary" Margin="Margin.Is2.FromEnd" Clicked="ViewEditPartner">
+                    </Button>
+                    <Button Color="@(selectedPartner is not null ? Color.Secondary : Color.Dark)" 
+                        Disabled="@(selectedPartner is not null ? false:true)" Margin="Margin.Is2.FromEnd" Clicked="ViewEditPartner">
                         <Icon Name="IconName.Edit"></Icon><Span>&nbsp; @("Edit")</Span>
                     </Button>
-                    <Button Color="Color.Danger" Clicked="ViewDeletePartner">
+                    <Button Color="@(selectedPartner is not null ? Color.Danger : Color.Dark)" 
+                        Disabled="@(selectedPartner is not null ? false:true)" Clicked="OnDeletePartner">
                         <Icon Name="IconName.Delete"></Icon><Span>&nbsp; @("Delete")</Span>
                     </Button>
                 </Column>
-            </Row> 
-        </Div> 
+            </Row>
+        </Div>
         <Div Class="evoucher-content Partner-content">
             <DataGrid TItem="Partner"
                   Data="@Partners"
@@ -28,7 +30,7 @@
                   Responsive
                   PageSize="20"
                   ShowPager="true"
-                  Hoverable="true" 
+                  Hoverable="true"
                   Striped="true"
                   Filterable>
             <DataGridCommandColumn />
@@ -43,4 +45,3 @@
 </Div>
 
 <AddEditPartnerModal @ref="addEditPartnerModal" OnUpdatePartner="OnUpdatePartner"></AddEditPartnerModal>
-<DeletePartnerModal @ref="deletePartnerModal" OnDeletePartner="OnDeletePartner"></DeletePartnerModal>

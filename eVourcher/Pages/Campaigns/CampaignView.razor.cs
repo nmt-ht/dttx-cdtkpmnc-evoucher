@@ -1,8 +1,6 @@
 ﻿using Blazorise;
 using eVoucher.Models;
 using eVoucher.Pages.Campaigns.Components;
-using eVoucher.Pages.Partners.Components;
-using eVoucher.Pages.Users.Components;
 using eVourcher.Services;
 using Microsoft.AspNetCore.Components;
 using System;
@@ -25,13 +23,13 @@ public partial class CampaignView : ComponentBase
     /// </summary>
     [Inject] public ILocalStorage LocalStorage { get; set; }
     [Inject] public INotificationService NotificationService { get; set; }
+    [Inject] public IMessageService MessageService { get; set; }
     #endregion
 
     private Guid? CurrentUserId { get; set; }
     private IList<Campaign> Campaigns { get; set; } = new List<Campaign>();
     private Campaign selectedCampaign;
     private AddEditCampaignModal addEditCampaignModal;
-    private DeleteCampaignModal deleteCampaignModal;
 
     protected override async Task OnInitializedAsync()
     {
@@ -73,10 +71,9 @@ public partial class CampaignView : ComponentBase
                 }
                 break;
             case eAction.Delete:
-                if (selectedCampaign != null && selectedCampaign.Id != Guid.Empty)
-                {
-                    deleteCampaignModal.InitData();
-                }
+                var confirm = await MessageService.Confirm("Are you sure delete this campaign?");
+                if (confirm)
+                    await OnDeleteCampaign();
                 break;
             default:
                 break;
@@ -100,6 +97,7 @@ public partial class CampaignView : ComponentBase
             await NotificationService.Info("An error occurred please try again.");
         }
     }
+
     #region Show Loading page
     [Inject] IPageProgressService PageProgressService { get; set; }
     private async Task ShowLoadingPage(bool isShow)
@@ -121,6 +119,4 @@ public partial class CampaignView : ComponentBase
         return PageProgressService.Go(-1);
     }
     #endregion
-       
-
 }

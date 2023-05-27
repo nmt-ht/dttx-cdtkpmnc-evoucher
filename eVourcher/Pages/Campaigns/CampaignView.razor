@@ -12,13 +12,13 @@
                 <Button Color="Color.Primary" Margin="Margin.Is2.FromEnd" Clicked="@(() => CampaignActions(eAction.Add))">
                     <Icon Name="IconName.Add"></Icon><Span>&nbsp; @("Add")</Span>
                     </Button>
-                    <Button Color="Color.Secondary" Margin="Margin.Is2.FromEnd" Clicked="@(() => CampaignActions(eAction.Edit))">
+                    <Button Color="@(selectedCampaign is not null ? Color.Secondary : Color.Dark)" Disabled="@(selectedCampaign is not null ? false : true)" Margin="Margin.Is2.FromEnd" Clicked="@(() => CampaignActions(eAction.Edit))">
                         <Icon Name="IconName.Edit"></Icon><Span>&nbsp; @("Edit")</Span>
                     </Button>
-                    <Button Color="Color.Danger" Clicked="@(() => CampaignActions(eAction.Delete))">
+                    <Button Color="@(selectedCampaign is not null ? Color.Danger : Color.Dark)" Disabled="@(selectedCampaign is not null ? false : true)" Clicked="@(() => CampaignActions(eAction.Delete))">
                         <Icon Name="IconName.Delete"></Icon><Span>&nbsp; @("Delete")</Span>
                     </Button>
-            </Column>
+                </Column>
             </Row>
         </Div>
         <Div Class="evoucher-content campaign-content">
@@ -42,4 +42,3 @@
 </Div>
 
 <AddEditCampaignModal @ref="addEditCampaignModal" OnUpdateCampaign="OnUpdateCampaign"></AddEditCampaignModal>
-<DeleteCampaignModal @ref="deleteCampaignModal" OnDeleteCampaign="OnDeleteCampaign"></DeleteCampaignModal>

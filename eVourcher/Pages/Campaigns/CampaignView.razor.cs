@@ -1,6 +1,7 @@
 ﻿using Blazorise;
 using eVoucher.Models;
 using eVoucher.Pages.Campaigns.Components;
+using eVoucher.Pages.Users.Components;
 using eVourcher.Services;
 using Microsoft.AspNetCore.Components;
 using System;
@@ -28,6 +29,7 @@ public partial class CampaignView : ComponentBase
     private IList<Campaign> Campaigns { get; set; } = new List<Campaign>();
     private Campaign selectedCampaign;
     private AddEditCampaignModal addEditCampaignModal;
+    //private DeleteCampaignModal deleteCampaignModal;
 
     protected override async Task OnInitializedAsync()
     {
@@ -60,15 +62,21 @@ public partial class CampaignView : ComponentBase
                 break;
             case eAction.Edit:
                 var campaign = await CampaignService.GetCampaignById(selectedCampaign.ID);
+                if (campaign.Games is not null && campaign.Games.Any())
+                {
+                    var index = 0;
+                    campaign.Games.ToList().ForEach(a => a.Index = ++index);
+                }
                 addEditCampaignModal.SetParameters(campaign, false);
                 addEditCampaignModal.InitData();
                 break;
             case eAction.Delete:
                 break;
+            default:
+                break;
         }
     }
-
-    #region Show Loading page
+       #region Show Loading page
     [Inject] IPageProgressService PageProgressService { get; set; }
     private async Task ShowLoadingPage(bool isShow)
     {
@@ -89,6 +97,6 @@ public partial class CampaignView : ComponentBase
         return PageProgressService.Go(-1);
     }
     #endregion
-
+       
 
 }

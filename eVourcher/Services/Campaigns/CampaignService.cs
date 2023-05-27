@@ -70,5 +70,30 @@ namespace eVourcher.Services
 
             return campaign;
         }
+
+        public async Task<bool> DeleteGame(Guid id)
+        {
+            string requestURL = $"api/campaigns/game/delete/{id}";
+
+            var response = await RestClient.APIClient.DeleteAsync(requestURL);
+
+            if (response is not null && response.Success)
+            {
+                return true;
+            }
+            return false;
+        }
+        public async Task<bool> UpdateGame(eVoucher.Models.Game game)
+        {
+            string requestURL = "api/users/game/update";
+
+            var response = await RestClient.APIClient.PostAsync(requestURL, game);
+
+            if (response is not null && response.Success)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

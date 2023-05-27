@@ -14,4 +14,5 @@ public class Game
     public Guid CreatedBy { get; set; }
     public Guid ModifiedBy { get; set; }
     public bool IsDeleted { get; set; }
+    public int Index { get; set; }
 }

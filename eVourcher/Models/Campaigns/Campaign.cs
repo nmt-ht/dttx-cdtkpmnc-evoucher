@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace eVoucher.Models;
-public class Campaign : Entity
+public class Campaign
 {
     public Guid ID { get; set; }
     public string Name { get; set; }
@@ -14,4 +15,5 @@ public class Campaign : Entity
     public bool IsDeleted { get; set; }
     public Guid CreatedBy { get; set; }
     public int Index { get; set; }
+    public IList<Game> Games { get; set; } = new List<Game>();
 }

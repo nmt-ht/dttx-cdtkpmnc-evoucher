@@ -1,4 +1,6 @@
 ﻿@using static eVoucher.Models.DataType;
+@using Game = eVoucher.Models.Game;
+
 <Modal @ref="campaignRef">
     <ModalContent Centered Size="ModalSize.ExtraLarge">
         <ModalHeader>
@@ -24,6 +26,38 @@
                     <FieldLabel>Expired Date</FieldLabel>
                     <DateEdit @bind-Date=Campaign.ExpiredDate></DateEdit>
                 </Field>
+
+                <Div Display="Display.Flex">
+                    <Field Class="edit-user-header">Game Information:</Field>
+                    <Buttons>
+                        <Button Color="Color.Primary" Clicked="@(() => GameActions(eAction.Add))">Add</Button>
+                        <Button Color="Color.Secondary" Clicked="@(() => GameActions(eAction.Edit))">Edit</Button>
+                        <Button Color="Color.Danger" Clicked="@(() => GameActions(eAction.Delete))">Delete</Button>
+                    </Buttons>
+                </Div>
+
+                @if (Campaign.Games.Any())
+                {
+                    <DataGrid TItem="Game"
+                      Data="@Campaign.Games"
+                            Responsive
+                      @bind-SelectedRow="@SelectedGame"
+                      PageSize="20"
+                      ShowPager="true"
+                      Hoverable="true"
+                      Striped="true"
+                            Filterable
+                      RowDoubleClicked="@(() => EditGame())">
+                    <DataGridColumn Field="@nameof(Game.Index)" Caption="#" Sortable="false" />
+                    <DataGridColumn Field="@nameof(Game.Name)" Caption="Name" Editable />
+                    <DataGridColumn Field="@nameof(Game.Description)" Caption="Description" Editable />
+                    
+                    </DataGrid>
+                }
+                else
+                {
+                    <Field TextAlignment="TextAlignment.Center">The current game is empty.</Field>
+                }
             }
         </ModalBody>
         <ModalFooter>
@@ -32,3 +66,5 @@
         </ModalFooter>
     </ModalContent>
 </Modal>
+
+<AddEditGameModal @ref=addEditGameModal UpdateGameCallBack="OnUpdateGameCallBack"></AddEditGameModal>

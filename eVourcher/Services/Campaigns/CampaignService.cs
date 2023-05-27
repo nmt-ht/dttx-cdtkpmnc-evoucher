@@ -82,6 +82,21 @@ namespace eVourcher.Services
 
             return campaign;
         }
+        public async Task<IList<Game>> GetGames()
+        {
+            IList<Game> games = new List<Game>();
+
+            string requestURL = "/api/games";
+
+            var response = await RestClient.APIClient.GetAsync(requestURL);
+
+            if (response != null && response.Success && response.Data != null)
+            {
+                games = JsonConvert.DeserializeObject<IList<Game>>(response.Data.ToString());
+            }
+
+            return games;
+        }
 
         public async Task<bool> DeleteGame(Guid id)
         {

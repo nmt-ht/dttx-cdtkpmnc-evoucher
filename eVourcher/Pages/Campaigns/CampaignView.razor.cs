@@ -30,15 +30,14 @@ public partial class CampaignView : ComponentBase
     private IList<Campaign> Campaigns { get; set; } = new List<Campaign>();
     private Campaign selectedCampaign;
     private AddEditCampaignModal addEditCampaignModal;
-
-    protected override async Task OnInitializedAsync()
+    
+    public async Task InitData()
     {
         var userID = await LocalStorage.GetStringAsync("userId");
         if (!string.IsNullOrEmpty(userID))
             CurrentUserId = Guid.Parse(userID);
         await LoadData();
     }
-
     private async Task LoadData()
     {
         await ShowLoadingPage(true);
@@ -47,7 +46,6 @@ public partial class CampaignView : ComponentBase
         Campaigns.ToList().ForEach(x => x.Index = ++index);
         await ShowLoadingPage(false);
     }
-
     private async Task CampaignActions(eAction action)
     {
         switch (action)

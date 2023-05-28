@@ -1,0 +1,70 @@
+﻿@page "/admin"
+@page "/admin/users"
+@page "/admin/partners"
+@page "/admin/campaigns"
+
+@inject IJSRuntime JS
+@inject IMessageService MessageService
+@inherits LayoutComponentBase
+@using eVoucher.Pages.Accounts
+
+<Layout>
+    <LayoutHeader Class="row col-12 pr-0">
+        <Bar Class="col-6" Breakpoint="Breakpoint.Desktop"
+             Background="Background.White"
+             ThemeContrast="ThemeContrast.Light"
+             style="box-shadow: none; border-style: none;" Padding="Padding.Is2.FromStart">
+            <BarBrand Style="cursor:pointer;">
+                @Title
+            </BarBrand>
+            <BarToggler />
+        </Bar>
+        <div Class="col-6  pr-0" style="text-align:right;">
+            @if (loggedIn)
+            {
+                <p style="margin-bottom: 0px; font-size:18px;line-height: 28px;">Hello, @GetUserName()</p>
+                <button class="btn btn-sm btn-danger" style="margin-bottom: 0px;" title="Logout" @onclick="Logout"><span class="oi oi-account-logout"></span></button>
+            }
+            else
+            {
+                <button class="btn btn-sm btn-success" style="margin-bottom: 0px; margin-top: 16px;" title="Login" @onclick="OpenLogin"><span class="oi oi-account-login"></span></button>
+            }
+        </div>
+    </LayoutHeader>
+    <Layout Sider="true">
+        @if (CurrentUser is not null && !CurrentUser.IsCustomerView)
+        {
+            <LayoutSider>
+                <LayoutSiderContent>
+                    <LeftMenu CurrentUser="CurrentUser"></LeftMenu>
+                </LayoutSiderContent>
+            </LayoutSider>
+            <Layout>
+                <LayoutContent Margin="Margin.Is2" style="background-color: #E3F2FD;border-bottom-left-radius: 0;border-bottom-right-radius: 0;border-top-left-radius: 6pt; border-top-right-radius: 6pt">
+                    @{
+                        switch (SelectedComponent)
+                        {
+                            case eAdminComponent.Dasboard:
+                                break;
+                            case eAdminComponent.Campaign:
+                                <eVoucher.Pages.Campaigns.CampaignView @ref="campaignView"></eVoucher.Pages.Campaigns.CampaignView>
+                                break;
+                            case eAdminComponent.Partner:
+                                <eVoucher.Pages.Partners.PartnerView @ref="partnerView"></eVoucher.Pages.Partners.PartnerView>
+                                break;
+                            case eAdminComponent.User:
+                                <eVoucher.Pages.Users.UserView @ref="userView"></eVoucher.Pages.Users.UserView>
+                                break;
+                        }
+                    }
+                </LayoutContent>
+            </Layout>
+        }
+        else
+        {
+            <Field TextAlignment="TextAlignment.Center">Please login to use Admin page. Thank you.</Field>
+        }
+    </Layout>
+</Layout>
+
+<Login @ref="login" OnloginSuccess="OnloginSuccess"></Login>

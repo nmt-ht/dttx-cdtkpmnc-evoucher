@@ -19,7 +19,12 @@ public partial class UserView : ComponentBase
     private User selectedUser;
     private AddEditUserModal addEditUserModal;
 
-    protected override async Task OnInitializedAsync()
+    //protected override async Task OnInitializedAsync()
+    //{
+    //    await LoadData();
+    //}
+
+    public async Task InitData()
     {
         await LoadData();
     }

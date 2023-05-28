@@ -21,7 +21,7 @@ public partial class PartnerView : ComponentBase
     private AddEditPartnerModal addEditPartnerModal;
     private Guid? userID;
 
-    protected override async Task OnInitializedAsync()
+    public async Task InitData()
     {
         await GetUserID();
         await BindData();

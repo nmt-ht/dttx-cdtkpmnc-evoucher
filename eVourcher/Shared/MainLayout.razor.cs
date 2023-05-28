@@ -2,13 +2,12 @@
 using eVoucher.Pages.Accounts;
 using eVourcher.Services;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Routing;
 using System;
 using System.Threading.Tasks;
 
 namespace eVoucher.Shared;
 
-public partial class MainLayout : LayoutComponentBase, IDisposable
+public partial class MainLayout : LayoutComponentBase
 {
     [Inject] public NavigationManager NavManager { get; set; }
     [Inject] public ILocalStorage LocalStorage { get; set; }
@@ -17,7 +16,9 @@ public partial class MainLayout : LayoutComponentBase, IDisposable
     private string? user;
     private Login login;
     private User CurrentUser { get; set; }
+    private string Title = "eVoucher System";
 
+    private bool IsHomePage { get { return NavManager.BaseUri == NavManager.Uri; } }
     public string? GetUserName()
     {
         return loggedIn ? user : null;
@@ -40,6 +41,7 @@ public partial class MainLayout : LayoutComponentBase, IDisposable
         loggedIn = false;
         await LocalStorage.RemoveAsync("userId");
         await LocalStorage.RemoveAsync("user");
+        NavManager.NavigateTo("/");
     }
 
     private async Task Close()
@@ -57,29 +59,15 @@ public partial class MainLayout : LayoutComponentBase, IDisposable
             loggedIn = true;
             await LocalStorage.SaveStringAsync("userId", userLogin.ID.ToString());
             await LocalStorage.SaveStringAsync("user", user);
-        }
-    }
 
-    protected override async Task OnInitializedAsync()
-    {
-        await base.OnInitializedAsync();
-        NavManager.LocationChanged += LocationChanged;
-    }
-    private async void LocationChanged(object sender, LocationChangedEventArgs e)
-    {
-        var sortUrl = NavManager.Uri.Replace(NavManager.BaseUri, string.Empty);
-        if (sortUrl.Contains("admin"))
-        {
-            login.InitData();
-            user = await LocalStorage.GetStringAsync("user");
-            loggedIn = !string.IsNullOrEmpty(user);
+            user = await LocalStorage.GetStringAsync("userId");
             CurrentUser = await UserService.GetUserById(Guid.Parse(user));
         }
         StateHasChanged();
     }
 
-    public void Dispose()
+    protected override async Task OnInitializedAsync()
     {
-        NavManager.LocationChanged -= LocationChanged;
+        await base.OnInitializedAsync();
     }
 }

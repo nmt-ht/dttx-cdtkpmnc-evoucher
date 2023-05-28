@@ -190,3 +190,7 @@ a, .btn-link {
     display: flex;
     justify-content: end;
 }
+
+.b-layout-sider{
+    background: unset !important;
+}

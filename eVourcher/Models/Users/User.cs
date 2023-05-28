@@ -69,4 +69,12 @@ public class User
             return false;
         }
     }
+
+    public bool IsCustomerView
+    {
+        get
+        {
+            return !IsPartnerView && !IsAdminView;
+        }
+    }
 }

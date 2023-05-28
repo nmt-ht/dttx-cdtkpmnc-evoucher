@@ -38,5 +38,12 @@ namespace eVoucher.Models
             Edit = 1,
             Delete = 2
         }
+        public enum eAdminComponent
+        {
+            Campaign = 0,
+            Partner = 1,
+            User = 2,
+            Dasboard = 3
+        }
     }
 }

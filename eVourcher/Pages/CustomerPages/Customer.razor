@@ -16,7 +16,6 @@
                 <a>
                     <img src="./images/image1.png" alt="logo" class="img-thumbnail" />
                 </a>
-
             </Div>
         </Column>
         <Column ColumnSize="ColumnSize.Is2" Class="title">Welcome</Column>
@@ -31,8 +30,8 @@
                 </DropdownMenu>
             </Dropdown>
         </Column>
-            
-        
+
+
         <Column ColumnSize="ColumnSize.Is6" Class="customer-navigation">
             <Tabs SelectedTab="@selectedTab" SelectedTabChanged="@OnSelectedTabChanged">
                 <Items>
@@ -53,8 +52,8 @@
                 </Content>
             </Tabs>
         </Column>
-    </Row >
-    
+    </Row>
+
     <Row HorizontalGutter="32" VerticalGutter="16">
         <Column ColumnSize="ColumnSize.Is12">
             <Field>
@@ -117,8 +116,8 @@
                 </CarouselSlide>
             </Carousel>
         </Column>
-        </Row>
-    </Div>
+    </Row>
+</Div>
 @code {
     string selectedTab = "sport";
 

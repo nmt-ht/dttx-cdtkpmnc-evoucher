@@ -122,12 +122,13 @@
                         }
                     </Column>
                     <Column ColumnSize="ColumnSize.Is5">
+                        <Field>Belong to group?</Field>
                         <SelectList TItem="UserGroup"
-                                    TValue="UserGroup"
+                                    TValue="Guid"
                                     Data="@UserGroups"
-                                    TextField="@((item)=>item.Name)"
-                                    ValueField="@((item)=>item)"
-                                    @bind-SelectedValue="@SelectedUserGroup"
+                                    TextField="@((item) => item.Name)"
+                                    ValueField="@((item) => item.ID)"
+                                    @bind-SelectedValue="@SelectedUserGroupID"
                                     DefaultItemText="Select user group">
                             <Feedback>
                                 <ValidationError>Choose valid user group!</ValidationError>

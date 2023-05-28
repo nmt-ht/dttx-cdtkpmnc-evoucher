@@ -9,7 +9,6 @@
                 <a>
                     <img src="./images/image1.png" alt="logo" class="img-thumbnail" />
                 </a>
-
             </Div>
         </Column>
         <Column ColumnSize="ColumnSize.Is2" Class="title">Welcome</Column>
@@ -24,8 +23,8 @@
                 </DropdownMenu>
             </Dropdown>
         </Column>
-            
-        
+
+
         <Column ColumnSize="ColumnSize.Is6" Class="customer-navigation">
             <Tabs SelectedTab="@selectedTab" SelectedTabChanged="@OnSelectedTabChanged">
                 <Items>
@@ -46,8 +45,8 @@
                 </Content>
             </Tabs>
         </Column>
-    </Row >
-    
+    </Row>
+
     <Row HorizontalGutter="32" VerticalGutter="16">
         <Column ColumnSize="ColumnSize.Is12">
             <Field>
@@ -65,40 +64,40 @@
         <Row Display="Display.Flex">
             <Column ColumnSize="ColumnSize.Is10">
 
-            
-            <Table Striped>
-            <TableHeader>
-                <TableRow>
-                    <TableHeaderCell>#</TableHeaderCell>
-                    <TableHeaderCell>First Name</TableHeaderCell>
-                    <TableHeaderCell>Last Name</TableHeaderCell>
-                    <TableHeaderCell>Username</TableHeaderCell>
-                </TableRow>
-            </TableHeader>
-            <TableBody>
-                <TableRow>
-                    <TableRowHeader>1</TableRowHeader>
-                    <TableRowCell>Mark</TableRowCell>
-                    <TableRowCell>Otto</TableRowCell>
-                    <TableRowCell>@@mdo</TableRowCell>
-                </TableRow>
-                <TableRow>
-                    <TableRowHeader>2</TableRowHeader>
-                    <TableRowCell>Jacob</TableRowCell>
-                    <TableRowCell>Thornton</TableRowCell>
-                    <TableRowCell>@@fat</TableRowCell>
-                </TableRow>
-                <TableRow>
-                    <TableRowHeader>3</TableRowHeader>
-                    <TableRowCell>Larry</TableRowCell>
-                    <TableRowCell>the Bird</TableRowCell>
-                    <TableRowCell>@@twitter</TableRowCell>
-                </TableRow>
-            </TableBody>
-        </Table>
+
+                <Table Striped>
+                <TableHeader>
+                    <TableRow>
+                        <TableHeaderCell>#</TableHeaderCell>
+                        <TableHeaderCell>First Name</TableHeaderCell>
+                        <TableHeaderCell>Last Name</TableHeaderCell>
+                        <TableHeaderCell>Username</TableHeaderCell>
+                    </TableRow>
+                </TableHeader>
+                <TableBody>
+                    <TableRow>
+                        <TableRowHeader>1</TableRowHeader>
+                        <TableRowCell>Mark</TableRowCell>
+                        <TableRowCell>Otto</TableRowCell>
+                        <TableRowCell>@@mdo</TableRowCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableRowHeader>2</TableRowHeader>
+                        <TableRowCell>Jacob</TableRowCell>
+                        <TableRowCell>Thornton</TableRowCell>
+                        <TableRowCell>@@fat</TableRowCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableRowHeader>3</TableRowHeader>
+                        <TableRowCell>Larry</TableRowCell>
+                        <TableRowCell>the Bird</TableRowCell>
+                        <TableRowCell>@@twitter</TableRowCell>
+                    </TableRow>
+                </TableBody>
+            </Table>
         </Column>
-        </Row>
-    </Div>
+    </Row>
+</Div>
 @code {
     string selectedTab = "sport";
 

@@ -31,7 +31,7 @@ public partial class AddEditUserModal : ComponentBase
     private bool IsEditingAddress = false;
     Validations validations;
     private IList<UserGroup> UserGroups { get; set; }   
-    private UserGroup SelectedUserGroup { get; set; }
+    private Guid SelectedUserGroupID { get; set; }
     #endregion
 
     public void SetParameters(User user, bool isAdded)
@@ -55,6 +55,12 @@ public partial class AddEditUserModal : ComponentBase
     }
     private async Task UpdateData()
     {
+        if(SelectedUserGroupID != Guid.Empty)
+        {
+            User.UserGroups = new List<UserGroup>();
+            User.UserGroups.Add(new UserGroup { ID = SelectedUserGroupID});
+        }
+
         var result = false;
         if (IsAdded)
         {
@@ -133,6 +139,7 @@ public partial class AddEditUserModal : ComponentBase
         }
         StateHasChanged();
     }
+
     void ValidateDate(ValidatorEventArgs e)
     {
         if (e.Value == null)

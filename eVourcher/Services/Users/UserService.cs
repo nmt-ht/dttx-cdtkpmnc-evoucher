@@ -120,7 +120,6 @@ namespace eVourcher.Services
             }
             return false;
         }
-
         public async Task<IList<UserGroup>> GetUserGroups()
         {
             IList<UserGroup> users = new List<UserGroup>();

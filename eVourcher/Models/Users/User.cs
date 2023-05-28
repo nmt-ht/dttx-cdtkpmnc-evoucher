@@ -43,4 +43,5 @@ public class User
             return $"{FirstName} {LastName}";
         }
     }
+    public IList<UserGroup> UserGroups { get; set; } = new List<UserGroup>();
 }

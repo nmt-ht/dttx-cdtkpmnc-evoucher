@@ -12,7 +12,7 @@ public class Partner
     public string CompanyPhone { get; set; }
     public IList<Address> CompanyAddess { get; set; }
     public byte[] Image { get; set; }
-    public DateTime? JoinDate { get; set; }
+    public DateTime? JoinDate { get; set; } = DateTime.Now;
     public ePartnerType Type { get; set; }
     public bool IsActive { get; set; }
     public int Index { get; set; }

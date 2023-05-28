@@ -12,7 +12,6 @@
                             <FieldLabel>Street</FieldLabel>
                             <TextEdit @bind-Text="Address.Street" Placeholder="Enter street...">
                                 <Feedback>
-                                    <ValidationNone>Please strest.</ValidationNone>
                                     <ValidationError>Enter valid street!</ValidationError>
                                 </Feedback>
                             </TextEdit>
@@ -23,7 +22,6 @@
                             <FieldLabel>District</FieldLabel>
                             <TextEdit @bind-Text="Address.District" Placeholder="Enter district...">
                                 <Feedback>
-                                    <ValidationNone>Please district.</ValidationNone>
                                     <ValidationError>Enter valid district!</ValidationError>
                                 </Feedback>
                             </TextEdit>
@@ -36,7 +34,6 @@
                             <FieldLabel>City</FieldLabel>
                             <TextEdit @bind-Text="Address.City" Placeholder="Enter city...">
                                 <Feedback>
-                                    <ValidationNone>Please city.</ValidationNone>
                                     <ValidationError>Enter valid city!</ValidationError>
                                 </Feedback>
                             </TextEdit>
@@ -47,7 +44,6 @@
                             <FieldLabel>Country</FieldLabel>
                             <TextEdit @bind-Text="Address.Country" Placeholder="Enter country...">
                                 <Feedback>
-                                    <ValidationNone>Please country.</ValidationNone>
                                     <ValidationError>Enter valid country!</ValidationError>
                                 </Feedback>
                             </TextEdit>
@@ -64,7 +60,6 @@
                                         @bind-SelectedValue="@(Address.Type)"
                                         DefaultItemText="Choose type of address">
                                 <Feedback>
-                                    <ValidationNone>Please type of address.</ValidationNone>
                                     <ValidationError>Choose valid type of address!</ValidationError>
                                 </Feedback>
                             </SelectList>

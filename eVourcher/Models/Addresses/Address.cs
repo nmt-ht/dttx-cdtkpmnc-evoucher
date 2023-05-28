@@ -13,5 +13,6 @@ namespace eVoucher.Models
         public eAddressType Type { get; set; }
         public bool IsDeleted { get; set; }
         public int Index { get; set; }
+        public Guid UserId { get; set; }
     }
 }

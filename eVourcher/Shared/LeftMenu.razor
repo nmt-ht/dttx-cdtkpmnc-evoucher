@@ -1,41 +1,48 @@
 ﻿@inject NavigationManager NavManager
 @inject IJSRuntime JS
 
-<Div Class="evoucher-left-menu-container">
-    <Bar Mode="BarMode.VerticalInline"
+@if (CurrentUser is not null)
+{
+    if (CurrentUser.IsAdminView)
+    {
+        <Div Class="evoucher-left-menu-container">
+            <Bar Mode="BarMode.VerticalInline"
          CollapseMode="BarCollapseMode.Small"
          Breakpoint="Breakpoint.Desktop"
          NavigationBreakpoint="Breakpoint.Tablet"
          ThemeContrast="ThemeContrast.Light"
          Class="evoucher-left-menu">
-        <BarMenu>
-            <BarStart>
-                <BarToggler Style="height: 48px; color:black;" Padding="Padding.Is0.FromBottom" />
-                <BarItem Margin="Margin.Is2.FromTop" Style="font-size: 15px;">
-                    <BarLink To="/" Padding="Padding.Is2.FromStart.Is2.FromEnd">
-                        <BarIcon Padding="Padding.Is1.FromBottom" IconName="@("fa-square-d")" />
-                        <Span>Dashboard</Span>
-                    </BarLink>
-                </BarItem>
-                <BarItem Style="font-size: 15px;">
-                    <BarLink To="/campaigns" Padding="Padding.Is2.FromStart.Is2.FromEnd">
-                        <BarIcon Padding="Padding.Is1.FromBottom" IconName="@("fa-square-c")" />
-                        <Span>Campaigns</Span>
-                    </BarLink>
-                </BarItem>
-                <BarItem Style="font-size: 15px;">
-                    <BarLink To="/partners" Padding="Padding.Is2.FromStart.Is2.FromEnd">
-                        <BarIcon Padding="Padding.Is1.FromBottom" IconName="@("fa-square-p")" />
-                        <Span>Partners</Span>
-                    </BarLink>
-                </BarItem>
-                <BarItem Style="font-size: 15px;">
-                    <BarLink To="/users" Padding="Padding.Is2.FromStart.Is2.FromEnd">
-                        <BarIcon Padding="Padding.Is1.FromBottom" IconName="@("fa-square-u")" />
-                        <Span>Users</Span>
-                    </BarLink>
-                </BarItem>
-            </BarStart>
-        </BarMenu>
-    </Bar>
-</Div>
+                <BarMenu>
+                    <BarStart>
+                        <BarToggler Style="height: 48px; color:black;" Padding="Padding.Is0.FromBottom" />
+                        <BarItem Margin="Margin.Is2.FromTop" Style="font-size: 15px;">
+                            <BarLink To="/admin" Padding="Padding.Is2.FromStart.Is2.FromEnd">
+                                <BarIcon Padding="Padding.Is1.FromBottom" IconName="@("fa-square-d")" />
+                                <Span>Dashboard</Span>
+                            </BarLink>
+                        </BarItem>
+                        <BarItem Style="font-size: 15px;">
+                            <BarLink To="/admin/campaigns" Padding="Padding.Is2.FromStart.Is2.FromEnd">
+                                <BarIcon Padding="Padding.Is1.FromBottom" IconName="@("fa-square-c")" />
+                                <Span>Campaigns</Span>
+                            </BarLink>
+                        </BarItem>
+                        <BarItem Style="font-size: 15px;">
+                            <BarLink To="/admin/partners" Padding="Padding.Is2.FromStart.Is2.FromEnd">
+                                <BarIcon Padding="Padding.Is1.FromBottom" IconName="@("fa-square-p")" />
+                                <Span>Partners</Span>
+                            </BarLink>
+                        </BarItem>
+                        <BarItem Style="font-size: 15px;">
+                            <BarLink To="/admin/users" Padding="Padding.Is2.FromStart.Is2.FromEnd">
+                                <BarIcon Padding="Padding.Is1.FromBottom" IconName="@("fa-square-u")" />
+                                <Span>Users</Span>
+                            </BarLink>
+                        </BarItem>
+                    </BarStart>
+                </BarMenu>
+            </Bar>
+        </Div>
+    }
+}
+

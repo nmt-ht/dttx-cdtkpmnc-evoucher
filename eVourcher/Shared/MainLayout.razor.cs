@@ -1,16 +1,22 @@
 ﻿using eVoucher.Models;
 using eVoucher.Pages.Accounts;
+using eVourcher.Services;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Routing;
+using System;
 using System.Threading.Tasks;
 
 namespace eVoucher.Shared;
 
-public partial class MainLayout : LayoutComponentBase
+public partial class MainLayout : LayoutComponentBase, IDisposable
 {
+    [Inject] public NavigationManager NavManager { get; set; }
     [Inject] public ILocalStorage LocalStorage { get; set; }
+    [Inject] public IUserService UserService { get; set; }
     private bool show, display, loggedIn;
     private string? user;
     private Login login;
+    private User CurrentUser { get; set; }
 
     public string? GetUserName()
     {
@@ -57,7 +63,23 @@ public partial class MainLayout : LayoutComponentBase
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        user = await LocalStorage.GetStringAsync("user");
-        loggedIn = !string.IsNullOrEmpty(user);
+        NavManager.LocationChanged += LocationChanged;
+    }
+    private async void LocationChanged(object sender, LocationChangedEventArgs e)
+    {
+        var sortUrl = NavManager.Uri.Replace(NavManager.BaseUri, string.Empty);
+        if (sortUrl.Contains("admin"))
+        {
+            login.InitData();
+            user = await LocalStorage.GetStringAsync("user");
+            loggedIn = !string.IsNullOrEmpty(user);
+            CurrentUser = await UserService.GetUserById(Guid.Parse(user));
+        }
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        NavManager.LocationChanged -= LocationChanged;
     }
 }

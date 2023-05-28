@@ -1,9 +1,9 @@
 ﻿using Blazorise;
 using eVoucher.Models;
+using eVoucher.Pages.Partners.Components;
 using eVourcher.Services;
 using Microsoft.AspNetCore.Components;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -32,12 +32,16 @@ public partial class AddEditUserModal : ComponentBase
     Validations validations;
     private IList<UserGroup> UserGroups { get; set; }   
     private Guid SelectedUserGroupID { get; set; }
+    private AddEditPartnerModal addEditPartnerModal;
     #endregion
 
     public void SetParameters(User user, bool isAdded)
     {
         User = user;
         IsAdded = isAdded;
+
+        var userGroup = User.UserGroups.FirstOrDefault();
+        SelectedUserGroupID = userGroup is not null ? userGroup.ID : Guid.Empty;
     }
     public async void InitData()
     {
@@ -55,26 +59,29 @@ public partial class AddEditUserModal : ComponentBase
     }
     private async Task UpdateData()
     {
-        if(SelectedUserGroupID != Guid.Empty)
+        if (await validations.ValidateAll())
         {
-            User.UserGroups = new List<UserGroup>();
-            User.UserGroups.Add(new UserGroup { ID = SelectedUserGroupID});
+            if (SelectedUserGroupID != Guid.Empty)
+            {
+                User.UserGroups = new List<UserGroup>();
+                User.UserGroups.Add(new UserGroup { ID = SelectedUserGroupID });
+            }
+
+            var result = false;
+            if (IsAdded)
+            {
+                var user = await UserService.CreateUser(User);
+                result = user is not null ? true : false;
+            }
+            else
+                result = await UserService.UpdateUser(User);
+
+            if (result)
+                await NotificationService.Info(IsAdded ? "Added user successfully." : "Edit user successfully.");
+
+            await HideModal();
+            await ReloadData.InvokeAsync(true);
         }
-
-        var result = false;
-        if (IsAdded)
-        {
-            var user = await UserService.CreateUser(User);
-            result = user is not null ? true : false;
-        }
-        else
-            result = await UserService.UpdateUser(User);
-
-        if (result)
-            await NotificationService.Info(IsAdded ? "Added user successfully." : "Edit user successfully.");
-
-        await HideModal();
-        await ReloadData.InvokeAsync(true);
     }
     private async Task AddressActions(eAction action)
     {
@@ -117,25 +124,23 @@ public partial class AddEditUserModal : ComponentBase
     }
     private async Task OnUpdateAddressCallBack(Address address)
     {
-        if (await validations.ValidateAll())
+        if (!IsEditingAddress)
         {
-            if (!IsEditingAddress)
-            {
-                var maxIndex = User.Addresses.Count + 1;
-                address.Index = maxIndex;
-                User.Addresses.Add(address);
-            }
-            else
-            {
-                var editAddress = User.Addresses.Where(x => x.ID == address.ID).FirstOrDefault();
-                if (editAddress is not null)
-                    User.Addresses.Remove(editAddress);
+            var maxIndex = User.Addresses.Count + 1;
+            address.Index = maxIndex;
+            User.Addresses.Add(address);
+        }
+        else
+        {
+            var editAddress = User.Addresses.Where(x => x.ID == address.ID).FirstOrDefault();
+            if (editAddress is not null)
+                User.Addresses.Remove(editAddress);
 
-                User.Addresses.Add(address);
+            User.Addresses.Add(address);
 
-                // Update Address to database
-                await UserService.UpdateAddess(address);
-            }
+            address.UserId = User.ID;
+            // Update Address to database
+            await UserService.UpdateAddess(address);
         }
         StateHasChanged();
     }
@@ -147,9 +152,29 @@ public partial class AddEditUserModal : ComponentBase
         else
         {
             var dateOfBirth = DateTime.Parse(e.Value.ToString());
-            e.Status = dateOfBirth.Date.Equals(DateTime.MinValue.Date) || dateOfBirth.Date < DateTime.Now.Date || (DateTime.Now.Year - dateOfBirth.Date.Year) <= 16
+            e.Status = dateOfBirth.Date.Equals(DateTime.MinValue.Date) 
+                || dateOfBirth.Date > DateTime.Now.Date 
+                || (DateTime.Now.Year - dateOfBirth.Date.Year) <= 16
                 ? ValidationStatus.Error 
                 : ValidationStatus.Success;
+        }
+    }
+
+    private async void OnGroupValueChanged(Guid selectedValue)
+    {
+        if(selectedValue != Guid.Empty || selectedValue != null)
+        {
+            SelectedUserGroupID = selectedValue;
+            var currentGroup = UserGroups.FirstOrDefault(x => x.ID == selectedValue);
+            if (currentGroup is not null && currentGroup.Name == "Partner")
+            {
+                if(!User.UserGroups.ToList().Exists(x => x.Name == "Partner"))
+                    addEditPartnerModal.InitData(new Partner() { User_ID_FK = User.ID });
+                else
+                {
+                    await NotificationService.Info("Current user is already partner.");
+                }
+            }
         }
     }
 }

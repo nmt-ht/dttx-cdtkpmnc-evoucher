@@ -41,7 +41,6 @@ public partial class PartnerView : ComponentBase
         var userIDString = await LocalStorage.GetStringAsync("userId");
 
         userID = string.IsNullOrEmpty(userIDString) ? null : new Guid(userIDString);
-
     }
     
     private void ViewAddPartner()

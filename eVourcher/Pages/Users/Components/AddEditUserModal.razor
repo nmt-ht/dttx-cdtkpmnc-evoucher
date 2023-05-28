@@ -1,4 +1,5 @@
 ﻿@using Address = eVoucher.Models.Address;
+@using eVoucher.Pages.Partners.Components;
 
 <Modal @ref="userRef">
     <ModalContent Centered Size="ModalSize.Fullscreen" Class="add-edit-user-modal">
@@ -15,7 +16,6 @@
                             <FieldLabel>First Name</FieldLabel>
                             <TextEdit @bind-Text="@User.FirstName" Placeholder="Enter first name...">
                                 <Feedback>
-                                    <ValidationNone>Please enter first name.</ValidationNone>
                                     <ValidationError>Enter valid name!</ValidationError>
                                 </Feedback>
                             </TextEdit>
@@ -26,7 +26,6 @@
                             <FieldLabel>Last Name</FieldLabel>
                             <TextEdit @bind-Text="User.LastName" Placeholder="Enter last name...">
                                 <Feedback>
-                                    <ValidationNone>Please enter Last name.</ValidationNone>
                                     <ValidationError>Enter valid last name!</ValidationError>
                                 </Feedback>
                             </TextEdit>
@@ -47,7 +46,6 @@
                             <FieldLabel>Email address</FieldLabel>
                             <TextEdit @bind-Text="User.EmailAddress" Placeholder="Enter email address...">
                                 <Feedback>
-                                    <ValidationNone>Please enter Email Address.</ValidationNone>
                                     <ValidationError>Enter valid email address!</ValidationError>
                                 </Feedback>
                             </TextEdit>
@@ -75,69 +73,68 @@
                         </TextEdit>
                     </Field>
                 </Fields>
-                
-                <Row>
-                    <Column ColumnSize="ColumnSize.Is7">
-                        <Div Display="Display.Flex">
-                            <Field Class="edit-user-header">Address Information:</Field>
-                            <Buttons>
-                                <Button Color="Color.Primary" Clicked="@(() => AddressActions(eAction.Add))">Add</Button>
-                                <Button Color="@(SelectedAddress is not null ? Color.Secondary :Color.Dark)" Disabled="@(SelectedAddress is not null ? false : true)"
-                                        Clicked="@(() => AddressActions(eAction.Edit))">
-                                    Edit
-                                </Button>
-                                <Button Color="@(SelectedAddress is not null ? Color.Danger :Color.Dark)" Disabled="@(SelectedAddress is not null ? false : true)"
-                                        Clicked="@(() => AddressActions(eAction.Delete))">
-                                    Delete
-                                </Button>
-                            </Buttons>
-                        </Div>
-
-                        @if (User is not null && User.Addresses.Any())
-                        {
-                            <DataGrid TItem="Address"
-                                  Data="@User.Addresses"
-                                    Responsive
-                                  @bind-SelectedRow="@SelectedAddress"
-                                  PageSize="20"
-                                  ShowPager="true"
-                                  Hoverable="true"
-                                  Striped="true"
-                                    Filterable
-                                  RowDoubleClicked="@(() => EditAddress())">
-                            <DataGridColumn Field="@nameof(Address.Index)" Caption="#" Sortable="false" />
-                            <DataGridColumn Field="@nameof(Address.Street)" Caption="Street" Editable />
-                                <DataGridColumn Field="@nameof(Address.District)" Caption="District" Editable />
-                                <DataGridColumn Field="@nameof(Address.Country)" Caption="Country" Editable />
-                                <DataGridColumn Field="@nameof(Address.Type)" Caption="Type" Editable>
-                                <DisplayTemplate>
-                                    @(eVoucher.Handlers.eVoucherHelper.GetEnumDescription(context.Type))
-                                    </DisplayTemplate>
-                                </DataGridColumn>
-                            </DataGrid>
-                        }
-                        else
-                        {
-                            <Field TextAlignment="TextAlignment.Center">The current address is empty.</Field>
-                        }
-                    </Column>
-                    <Column ColumnSize="ColumnSize.Is5">
-                        <Field>Belong to group?</Field>
-                        <SelectList TItem="UserGroup"
-                                    TValue="Guid"
-                                    Data="@UserGroups"
-                                    TextField="@((item) => item.Name)"
-                                    ValueField="@((item) => item.ID)"
-                                    @bind-SelectedValue="@SelectedUserGroupID"
-                                    DefaultItemText="Select user group">
-                            <Feedback>
-                                <ValidationError>Choose valid user group!</ValidationError>
-                            </Feedback>
-                        </SelectList>
-                    </Column>
-                </Row>
             </Validations>
+            <Row>
+                <Column ColumnSize="ColumnSize.Is7">
+                    <Div Display="Display.Flex">
+                        <Field Class="edit-user-header">Address Information:</Field>
+                        <Buttons>
+                            <Button Color="Color.Primary" Clicked="@(() => AddressActions(eAction.Add))">Add</Button>
+                            <Button Color="@(SelectedAddress is not null ? Color.Secondary :Color.Dark)" Disabled="@(SelectedAddress is not null ? false : true)"
+                                    Clicked="@(() => AddressActions(eAction.Edit))">
+                                Edit
+                            </Button>
+                            <Button Color="@(SelectedAddress is not null ? Color.Danger :Color.Dark)" Disabled="@(SelectedAddress is not null ? false : true)"
+                                    Clicked="@(() => AddressActions(eAction.Delete))">
+                                Delete
+                            </Button>
+                        </Buttons>
+                    </Div>
 
+                    @if (User is not null && User.Addresses.Any())
+                    {
+                        <DataGrid TItem="Address"
+                              Data="@User.Addresses"
+                                Responsive
+                              @bind-SelectedRow="@SelectedAddress"
+                              PageSize="20"
+                              ShowPager="true"
+                              Hoverable="true"
+                              Striped="true"
+                                Filterable
+                              RowDoubleClicked="@(() => EditAddress())">
+                        <DataGridColumn Field="@nameof(Address.Index)" Caption="#" Sortable="false" />
+                        <DataGridColumn Field="@nameof(Address.Street)" Caption="Street" Editable />
+                            <DataGridColumn Field="@nameof(Address.District)" Caption="District" Editable />
+                            <DataGridColumn Field="@nameof(Address.Country)" Caption="Country" Editable />
+                            <DataGridColumn Field="@nameof(Address.Type)" Caption="Type" Editable>
+                            <DisplayTemplate>
+                                @(eVoucher.Handlers.eVoucherHelper.GetEnumDescription(context.Type))
+                                </DisplayTemplate>
+                            </DataGridColumn>
+                        </DataGrid>
+                    }
+                    else
+                    {
+                        <Field TextAlignment="TextAlignment.Center">The current address is empty.</Field>
+                    }
+                </Column>
+                <Column ColumnSize="ColumnSize.Is5">
+                    <Field>Belong to group?</Field>
+                    <SelectList TItem="UserGroup"
+                                TValue="Guid"
+                                Data="@UserGroups"
+                                TextField="@((item) => item.Name)"
+                                ValueField="@((item) => item.ID)"
+                                SelectedValue="@SelectedUserGroupID"
+                                SelectedValueChanged="OnGroupValueChanged"
+                                DefaultItemText="Select user group">
+                        <Feedback>
+                            <ValidationError>Choose valid user group!</ValidationError>
+                        </Feedback>
+                    </SelectList>
+                </Column>
+            </Row>
         </ModalBody>
         <ModalFooter>
             <Button Color="Color.Secondary" Clicked="@HideModal">Close</Button>
@@ -147,3 +144,4 @@
 </Modal>
 
 <AddEditAddresModal @ref=addEditAddressModal UpdateAddressCallBack="OnUpdateAddressCallBack"></AddEditAddresModal>
+<AddEditPartnerModal @ref=addEditPartnerModal></AddEditPartnerModal>

@@ -1,4 +1,11 @@
 ﻿@page "/customer"
+@using eVourcher.Services;
+@using System.Linq;
+@using Microsoft.AspNetCore.Components;
+@using System;
+@using System.Collections.Generic;
+@using System.Threading.Tasks;
+
 <PageTitle>Customer Homepage</PageTitle>
 
 
@@ -52,7 +59,7 @@
         <Column ColumnSize="ColumnSize.Is12">
             <Field>
                 <Field>
-                    <FieldLabel>Search Game</FieldLabel>
+                    <FieldLabel Size="Size.Big">Search Game</FieldLabel>
                     <TextEdit Placeholder="Enter game name" />
                 </Field>
                 <Button Color="Color.Success" Margin="Margin.Is2.FromEnd">
@@ -65,37 +72,50 @@
         <Row Display="Display.Flex">
             <Column ColumnSize="ColumnSize.Is10">
 
-            
-            <Table Striped>
-            <TableHeader>
-                <TableRow>
-                    <TableHeaderCell>#</TableHeaderCell>
-                    <TableHeaderCell>First Name</TableHeaderCell>
-                    <TableHeaderCell>Last Name</TableHeaderCell>
-                    <TableHeaderCell>Username</TableHeaderCell>
-                </TableRow>
-            </TableHeader>
-            <TableBody>
-                <TableRow>
-                    <TableRowHeader>1</TableRowHeader>
-                    <TableRowCell>Mark</TableRowCell>
-                    <TableRowCell>Otto</TableRowCell>
-                    <TableRowCell>@@mdo</TableRowCell>
-                </TableRow>
-                <TableRow>
-                    <TableRowHeader>2</TableRowHeader>
-                    <TableRowCell>Jacob</TableRowCell>
-                    <TableRowCell>Thornton</TableRowCell>
-                    <TableRowCell>@@fat</TableRowCell>
-                </TableRow>
-                <TableRow>
-                    <TableRowHeader>3</TableRowHeader>
-                    <TableRowCell>Larry</TableRowCell>
-                    <TableRowCell>the Bird</TableRowCell>
-                    <TableRowCell>@@twitter</TableRowCell>
-                </TableRow>
-            </TableBody>
-        </Table>
+                <DataGrid TItem="Game"
+                      Responsive
+                      PageSize="20"
+                      ShowPager="true"
+                      Hoverable="true"
+                      Striped="true"
+                      Filterable>
+                <DataGridCommandColumn />
+                <DataGridColumn Field="1" Caption="#" Sortable="false" />
+                <DataGridColumn Field="1" Caption="Game Name" Editable />
+                <DataGridColumn Field="1" Caption="Description" Editable />
+                </DataGrid>
+            <!--
+                <DataGrid TItem="Game"
+                      Data="@gameList"
+                      @bind-SelectedRow="@selectedGame"
+                      Editable
+                      Responsive>
+                <DataGridCommandColumn>
+                    <NewCommandTemplate>
+                        <Button Color="Color.Success" Clicked="@context.Clicked">New</Button>
+                    </NewCommandTemplate>
+                    <EditCommandTemplate>
+                        <Button Color="Color.Primary" Clicked="@context.Clicked">Edit</Button>
+                    </EditCommandTemplate>
+                </DataGridCommandColumn>
+                <DataGridColumn Field="@nameof(Game.Index)" Caption="#" Sortable="false" />
+                <DataGridColumn Field="@nameof(Game.Name)" Caption="First Name" Editable />
+                <DataGridColumn Field="@nameof(Game.Description)" Caption="Last Name" Editable />
+                                
+            </DataGrid>
+            -->
+
+            <Carousel @bind-SelectedSlide="@selectedSlide">
+                <CarouselSlide Name="1">
+                    <Image Source="./images/sport.jpg" Text="sport img" Display="Display.Block" Width="Width.Is100" />
+                </CarouselSlide>
+                <CarouselSlide Name="2">
+                    <Image Source="./images/food.jpg" Text="food img" Display="Display.Block" Width="Width.Is100" />
+                </CarouselSlide>
+                <CarouselSlide Name="3">
+                    <Image Source="./images/drink.jpg" Text="drink img" Display="Display.Block" Width="Width.Is100" />
+                </CarouselSlide>
+            </Carousel>
         </Column>
         </Row>
     </Div>
@@ -108,4 +128,48 @@
 
         return Task.CompletedTask;
     }
+
+    private string selectedSlide = "2";
+
+    /*
+    [Inject]
+    public Game Games { get; set; }
+    private List<Game> gameList;
+    private Game selectedGame;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+    }
+    #region Show Loading page
+    [Inject] IPageProgressService PageProgressService { get; set; }
+    private async Task ShowLoadingPage(bool isShow)
+    {
+        if (isShow)
+        {
+            await SetPageProgressIndeterminate();
+        }
+        else { await SetPageProgressHidden(); }
+        StateHasChanged();
+    }
+    Task SetPageProgressIndeterminate()
+    {
+        return PageProgressService.Go(null, options => { options.Color = Color.Info; });
+    }
+    Task SetPageProgressHidden()
+    {
+        // setting it to -1 will hide the progress bar
+        return PageProgressService.Go(-1);
+    }
+    #endregion
+
+    private async Task LoadData()
+         {
+         await ShowLoadingPage(true);
+         Games = await CampaignService.GetGames();
+         var index = 0;
+         Games.ToList().ForEach(x => x.Index = ++index);
+         await ShowLoadingPage(false);
+    }
+    */
 }

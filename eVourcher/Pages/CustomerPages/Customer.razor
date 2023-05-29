@@ -14,7 +14,7 @@
     <Row Display="Display.Flex">
         <Column ColumnSize="ColumnSize.Is1" Class="logo">
             <Div id="logo-row" style="display: inline-block; width: 50px; height: 50px">
-                <img src="./images/image1.png" alt="logo" class="img-thumbnail" />
+                <img src="./Images/Image1.png" alt="logo" class="img-thumbnail" />
             </Div>
         </Column>
         <Column ColumnSize="ColumnSize.Is3" Class="dropdown">
@@ -37,37 +37,74 @@
         </Column>
     </Row>
     <Row Class="customer-content">
-        @for (int i = 0; i < 5; i++)
+        @for (int i = 0; i < 3; i++)
         {
             <CardDeck>
                 <Card>
-                    <CardImage Source="/img/gallery/2.jpg" Alt="Card image cap 3"></CardImage>
+                    <CardImage Source="./Images/Thecoffeehouse.jpeg" Alt="The coffeehouse đường D9"></CardImage>
                     <CardBody>
-                        <CardTitle Size="5">Card title 1</CardTitle>
-                        <CardText>
+                        <CardTitle Size="5">The Coffeehouse</CardTitle>
+                       @* <CardText>
                             This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
-                        </CardText>
+                        </CardText>*@
+                        <Button Color="Color.Primary">Giảm món</Button>
+                    </CardBody>
+                </Card>
+                <Card>
+                    <CardImage Source="./Images/BanhXeo.jpg" Alt="Banh xèo cô Năm"></CardImage>
+                    <CardBody>
+                        <CardTitle Size="5">Cô Năm bánh xèo</CardTitle>
+                        @* <CardText>
+                    This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
+                    </CardText>*@
                         <Button Color="Color.Primary">Button</Button>
                     </CardBody>
                 </Card>
                 <Card>
-                    <CardImage Source="/img/gallery/2.jpg" Alt="Card image cap 3"></CardImage>
+                    <CardImage Source="./Images/KhachSan.jpg" Alt="Chuỗi khách sạn 5 sao"></CardImage>
                     <CardBody>
-                        <CardTitle Size="5">Card title 1</CardTitle>
-                        <CardText>
-                            This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
-                        </CardText>
-                        <Button Color="Color.Primary">Button</Button>
+                        <CardTitle Size="5">Chuỗi nhà hàng khách sạn luxury</CardTitle>
+                        @* <CardText>
+                    This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
+                    </CardText>*@
+                        <Button Color="Color.Primary">Giảm món</Button>
+                    </CardBody>
+                </Card>
+                
+            </CardDeck>
+        }
+        @for (int i = 0; i < 3; i++)
+        {
+            <CardDeck>
+                <Card>
+                    <CardImage Source="./Images/RauMa.jpg" Alt="Chuỗi cung ứng bán lẻ rau má"></CardImage>
+                    <CardBody>
+                        <CardTitle Size="5">Rau má 9999</CardTitle>
+                        @* <CardText>
+                    This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
+                    </CardText>*@
+                        <Button Color="Color.Primary">Giảm giá cho thẻ visa</Button>
+                    </CardBody>
+                </Card>               
+                
+                <Card>
+                    <CardImage Source="./Images/Maytinh.jpg" Alt="Bàn Phím cơ đẹp"></CardImage>
+                    <CardBody>
+                        <CardTitle Size="5">Bàn phím cơ</CardTitle>
+                        @*<CardText>
+                    This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
+                    </CardText>*@
+                        <Button Color="Color.Primary">Giảm giá cho thẻ visa</Button>
                     </CardBody>
                 </Card>
                 <Card>
-                    <CardImage Source="/img/gallery/2.jpg" Alt="Card image cap 3"></CardImage>
+                    <CardImage Source="./Images/BanhKhoc.jpg" Alt="Bánh khọc cô Ba"></CardImage>
                     <CardBody>
-                        <CardTitle Size="5">Card title 1</CardTitle>
-                        <CardText>
-                            This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
-                        </CardText>
-                        <Button Color="Color.Primary">Button</Button>
+                        <CardTitle Size="5">Cô Ba bánh khọc</CardTitle>
+                        @*<CardText>
+                    This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
+                    </CardText>*@
+                        <Button Color="Color.Primary">Giảm giá cho thẻ visa</Button>
                     </CardBody>
                 </Card>
             </CardDeck>

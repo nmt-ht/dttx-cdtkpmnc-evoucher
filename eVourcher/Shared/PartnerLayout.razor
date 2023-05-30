@@ -1,7 +1,5 @@
-﻿@page "/admin"
-@page "/admin/users"
-@page "/admin/partners"
-@page "/admin/campaigns"
+﻿@page "/partner"
+@page "/partner/campaigns"
 
 @inject IJSRuntime JS
 @inject IMessageService MessageService
@@ -19,8 +17,8 @@
             </BarBrand>
             <BarToggler />
         </Bar>
-        <div Class="col-6 pr-0" style="text-align:right;">
-            @if (loggedIn)
+        <div Class="col-6  pr-0" style="text-align:right;">
+            @if (LoggedIn)
             {
                 <p style="margin-bottom: 0px; font-size:18px;line-height: 28px;">Hello, @GetUserName()</p>
                 <button class="btn btn-sm btn-danger" style="margin-bottom: 0px;" title="Logout" @onclick="Logout"><span class="oi oi-account-logout"></span></button>
@@ -32,7 +30,7 @@
         </div>
     </LayoutHeader>
     <Layout Sider="true">
-        @if (CurrentUser is not null && !CurrentUser.IsCustomerView)
+        @if (CurrentUser is not null && CurrentUser.IsPartnerView)
         {
             <LayoutSider>
                 <LayoutSiderContent>
@@ -44,16 +42,8 @@
                     @{
                         switch (SelectedComponent)
                         {
-                            case eAdminComponent.Dasboard:
-                                break;
                             case eAdminComponent.Campaign:
                                 <eVoucher.Pages.Campaigns.CampaignView @ref="campaignView"></eVoucher.Pages.Campaigns.CampaignView>
-                                break;
-                            case eAdminComponent.Partner:
-                                <eVoucher.Pages.Partners.PartnerView @ref="partnerView"></eVoucher.Pages.Partners.PartnerView>
-                                break;
-                            case eAdminComponent.User:
-                                <eVoucher.Pages.Users.UserView @ref="userView"></eVoucher.Pages.Users.UserView>
                                 break;
                         }
                     }
@@ -62,7 +52,7 @@
         }
         else
         {
-            <Field Style="font-style:italic; text-decoration: underline; margin: 0 auto;">Please login to use Admin page. Thank you.</Field>
+            <Field Style="font-style:italic; text-decoration: underline; margin: 0 auto;">Please login to use Partner page. Thank you.</Field>
         }
     </Layout>
 </Layout>

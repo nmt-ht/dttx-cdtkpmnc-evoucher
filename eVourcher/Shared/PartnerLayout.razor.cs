@@ -1,8 +1,6 @@
 ﻿using eVoucher.Models;
 using eVoucher.Pages.Accounts;
 using eVoucher.Pages.Campaigns;
-using eVoucher.Pages.Partners;
-using eVoucher.Pages.Users;
 using eVourcher.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
@@ -12,25 +10,21 @@ using static eVoucher.Models.DataType;
 
 namespace eVoucher.Shared;
 
-public partial class AdminLayout : LayoutComponentBase, IDisposable
+public partial class PartnerLayout : LayoutComponentBase, IDisposable
 {
-    #region External Service
+    #region External services
     [Inject] public NavigationManager NavManager { get; set; }
     [Inject] public ILocalStorage LocalStorage { get; set; }
     [Inject] public IUserService UserService { get; set; }
     #endregion
-
+    
     [Parameter] public User CurrentUser { get; set; }
 
     #region Private variables
     private bool show, display;
     private string? user;
     private Login login;
-    private string Title = "eVoucher Administrator";
-    private UserView userView;
-    private PartnerView partnerView;
-    private CampaignView campaignView;
-    private eAdminComponent SelectedComponent { get; set; } = eAdminComponent.Dasboard;
+
     private bool loggedIn;
     private bool LoggedIn
     {
@@ -40,6 +34,10 @@ public partial class AdminLayout : LayoutComponentBase, IDisposable
         }
         set { loggedIn = value; }
     }
+
+    private string Title = "eVoucher Partner";
+    private CampaignView campaignView;
+    private eAdminComponent SelectedComponent { get; set; } = eAdminComponent.Dasboard;
     #endregion
 
     public string? GetUserName()
@@ -84,7 +82,8 @@ public partial class AdminLayout : LayoutComponentBase, IDisposable
             await LocalStorage.SaveStringAsync("userId", userLogin.ID.ToString());
             await LocalStorage.SaveStringAsync("user", user);
 
-            CurrentUser = await UserService.GetUserById(userLogin.ID);
+            var userId = await LocalStorage.GetStringAsync("userId");
+            CurrentUser = await UserService.GetUserById(Guid.Parse(userId));
         }
         StateHasChanged();
     }
@@ -108,24 +107,13 @@ public partial class AdminLayout : LayoutComponentBase, IDisposable
     private async void LocationChanged(object sender, LocationChangedEventArgs e)
     {
         var url = NavManager.Uri.ToString();
-        if (url.Contains("users"))
-        {
-            SelectedComponent = eAdminComponent.User;
-            StateHasChanged();
-            await userView.InitData();
-        }
-        else if (url.Contains("partners"))
-        {
-            SelectedComponent = eAdminComponent.Partner;
-            StateHasChanged();
-            await partnerView.InitData();
-        }
-        else if (url.Contains("campaigns"))
+        if (url.Contains("campaigns"))
         {
             SelectedComponent = eAdminComponent.Campaign;
             StateHasChanged();
             await campaignView.InitData();
         }
+
         StateHasChanged();
     }
 }

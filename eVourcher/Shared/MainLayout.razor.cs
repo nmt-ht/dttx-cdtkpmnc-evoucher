@@ -1,17 +1,18 @@
 ﻿using eVoucher.Models;
 using eVoucher.Pages.Accounts;
-using eVourcher.Services;
 using Microsoft.AspNetCore.Components;
-using System;
 using System.Threading.Tasks;
 
 namespace eVoucher.Shared;
 
 public partial class MainLayout : LayoutComponentBase
 {
+    #region External services
     [Inject] public NavigationManager NavManager { get; set; }
     [Inject] public ILocalStorage LocalStorage { get; set; }
-    [Inject] public IUserService UserService { get; set; }
+    #endregion
+
+    #region Private variables
     private bool show, display, loggedIn;
     private string? user;
     private Login login;
@@ -19,6 +20,10 @@ public partial class MainLayout : LayoutComponentBase
     private string Title = "eVoucher System";
 
     private bool IsHomePage { get { return NavManager.BaseUri == NavManager.Uri; } }
+    private bool IsAdminPage { get { return NavManager.Uri.Contains("admin"); } }
+    private bool IsPartnerPage { get { return NavManager.Uri.Contains("partner"); } }
+    #endregion
+
     public string? GetUserName()
     {
         return loggedIn ? user : null;
@@ -32,6 +37,7 @@ public partial class MainLayout : LayoutComponentBase
     private async Task OnloginSuccess(User userLogin)
     {
         user = userLogin.FirstName + " " + userLogin.LastName;
+        CurrentUser = userLogin;
         await Login(userLogin);
     }
 
@@ -39,6 +45,7 @@ public partial class MainLayout : LayoutComponentBase
     {
         user = null;
         loggedIn = false;
+        CurrentUser = null;
         await LocalStorage.RemoveAsync("userId");
         await LocalStorage.RemoveAsync("user");
         NavManager.NavigateTo("/");
@@ -59,10 +66,8 @@ public partial class MainLayout : LayoutComponentBase
             loggedIn = true;
             await LocalStorage.SaveStringAsync("userId", userLogin.ID.ToString());
             await LocalStorage.SaveStringAsync("user", user);
-
-            user = await LocalStorage.GetStringAsync("userId");
-            CurrentUser = await UserService.GetUserById(Guid.Parse(user));
         }
+
         StateHasChanged();
     }
 

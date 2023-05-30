@@ -34,10 +34,13 @@
         </LayoutContent>
     </Layout>
 }
-else
+else if(IsAdminPage)
 {
-    <AdminLayout />
+    <AdminLayout CurrentUser="CurrentUser" />
 }
-
+else if (IsPartnerPage)
+{
+    <PartnerLayout />
+}
 
 <Login @ref="login" OnloginSuccess="OnloginSuccess"></Login>

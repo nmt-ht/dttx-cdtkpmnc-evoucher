@@ -3,9 +3,9 @@
 @inherits LayoutComponentBase
 @using eVoucher.Pages.Accounts
 
-@if (IsHomePage)
+@if (!IsAdminPage && !IsPartnerPage)
 {
-    <Layout Display="@(IsHomePage ? Display.Block : Display.None)">
+    <Layout Display="@((!IsAdminPage && !IsPartnerPage) ? Display.Block : Display.None)">
         <LayoutHeader Class="row col-12 pr-0">
             <Bar Class="col-6" Breakpoint="Breakpoint.Desktop"
              Background="Background.White"

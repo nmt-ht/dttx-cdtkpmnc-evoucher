@@ -12,6 +12,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Remove="Pages\Campaigns\Components\AddEditGameModal.razor~RF3a748953.TMP" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="AutoMapper" Version="12.0.1" />
 		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
 		<PackageReference Include="Blazored.SessionStorage" Version="2.3.0" />
@@ -35,6 +39,15 @@
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="System.Configuration.ConfigurationManager" Version="7.0.0" />
 		<PackageReference Include="System.Net.Http.Json" Version="7.0.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Update="Pages\Games\Components\AddEditGameModal.razor">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	  </Content>
+	  <Content Update="Pages\Games\GameView.razor">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	  </Content>
 	</ItemGroup>
 	
 </Project>

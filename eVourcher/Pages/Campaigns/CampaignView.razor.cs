@@ -5,6 +5,7 @@ using eVourcher.Services;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using static eVoucher.Models.DataType;
@@ -59,10 +60,14 @@ public partial class CampaignView : ComponentBase
                 if (selectedCampaign != null && selectedCampaign.Id != Guid.Empty)
                 {
                     var editCampaign = await CampaignService.GetCampaignById(selectedCampaign.Id);
-                    if (editCampaign.Games is not null && editCampaign.Games.Any())
+                    if (editCampaign.CampaignGames is not null && editCampaign.CampaignGames.Any())
                     {
                         var index = 0;
-                        editCampaign.Games.ToList().ForEach(a => a.Index = ++index);
+                        editCampaign.CampaignGames.ToList().ForEach(a => a.Index = ++index);
+                    }
+                    else
+                    {
+                        editCampaign.CampaignGames = new List<CampaignGame>();
                     }
                     addEditCampaignModal.SetParameters(editCampaign, false, CurrentUserId);
                     addEditCampaignModal.InitData();

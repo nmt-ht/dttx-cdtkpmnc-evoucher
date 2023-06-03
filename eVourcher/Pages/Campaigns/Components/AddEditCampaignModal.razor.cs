@@ -3,6 +3,8 @@ using eVoucher.Models;
 using eVourcher.Services;
 using Microsoft.AspNetCore.Components;
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using static eVoucher.Models.DataType;
@@ -12,6 +14,7 @@ using Game = eVoucher.Models.Game;
 namespace eVoucher.Pages.Campaigns.Components;
 public partial class AddEditCampaignModal : ComponentBase
 {
+    private Validations validationsRef;
     [Inject] public ICampaignService CampaignService { get; set; }
     [Inject] public INotificationService NotificationService { get; set; }
     [Inject] public IMessageService MessageService { get; set; }
@@ -30,19 +33,27 @@ public partial class AddEditCampaignModal : ComponentBase
     private string Title => IsAdded ? "Add Campaign" : "Edit Campaign";
 
       
-    private Game SelectedGame { get; set; }
+    private CampaignGame SelectedCampaignGame { get; set; }
 
-    private AddEditGameModal addEditGameModal;
+    private AddEditGameCampaignModal addEditGameModal;
+    public IList<Guid> GameIds => Campaign != null && Campaign.CampaignGames != null ? Campaign.CampaignGames.Select(x => x.Game.ID).ToList() : new List<Guid>();
 
     public void SetParameters(Campaign campaign, bool isAdded, Guid? currentUserId)
     {
-        Campaign = campaign;
+        Campaign = campaign;      
         IsAdded = isAdded;
         CurrentUserId = currentUserId;
+        if(IsAdded)
+        {
+            Campaign.StartedDate = DateTime.Now;
+            Campaign.ExpiredDate = DateTime.Now;
+        }    
     }
-    public void InitData()
+    public async void InitData()
     {
-        ShowModal();
+        ImageDataUrl = GetImageDataUrlFromBytes(Campaign.Image);
+        await validationsRef.ClearAll();
+        await ShowModal();
     }
 
     private Task ShowModal()
@@ -54,48 +65,41 @@ public partial class AddEditCampaignModal : ComponentBase
     {
         return campaignRef.Hide();
     }
-
-    //private async Task UpdateData()
-    //{
-    //    Campaign.CreatedBy = Campaign.ModifiedBy = CurrentUserId;
-    //    var result = await CampaignService.UpdateCampaign(Campaign);
-    //    if (result)
-    //        await NotificationService.Info(IsAdded ? "Added Campaign successfully." : "Edit Campaign successfully.");
-    //    await HideModal();
-    //}
-
     private async Task UpdateData()
     {
-        if (IsAdded)
+        if (await validationsRef.ValidateAll())
         {
-            Campaign.CreatedBy = CurrentUserId != null ? CurrentUserId.Value : Guid.Empty;
-            Campaign.ModifiedBy = CurrentUserId != null ? CurrentUserId.Value : Guid.Empty;
-            var result = await CampaignService.CreateCampaign(Campaign);
-            if (result)
+            if (IsAdded)
             {
-                await NotificationService.Info("Added Campaign successfully.");
-                await HideModal();
-                await OnUpdateCampaign.InvokeAsync();
-            }
-            else
-            {
-                await NotificationService.Info("An error occurred please try again.");
-            }
-        }
-        else
-        {
-
-            var result = await CampaignService.UpdateCampaign(Campaign);
-            if (result)
-            {
+                Campaign.CreatedBy = CurrentUserId != null ? CurrentUserId.Value : Guid.Empty;
                 Campaign.ModifiedBy = CurrentUserId != null ? CurrentUserId.Value : Guid.Empty;
-                await NotificationService.Info("Added Campaign successfully.");
-                await HideModal();
-                await OnUpdateCampaign.InvokeAsync();
+                var result = await CampaignService.CreateCampaign(Campaign);
+                if (result)
+                {
+                    await NotificationService.Info("Added Campaign successfully.");
+                    await HideModal();
+                    await OnUpdateCampaign.InvokeAsync();
+                }
+                else
+                {
+                    await NotificationService.Info("An error occurred please try again.");
+                }
             }
             else
             {
-                await NotificationService.Info("An error occurred please try again.");
+
+                var result = await CampaignService.UpdateCampaign(Campaign);
+                if (result)
+                {
+                    Campaign.ModifiedBy = CurrentUserId != null ? CurrentUserId.Value : Guid.Empty;
+                    await NotificationService.Info("Updated campaign successfully.");
+                    await HideModal();
+                    await OnUpdateCampaign.InvokeAsync();
+                }
+                else
+                {
+                    await NotificationService.Info("An error occurred please try again.");
+                }
             }
         }
     }
@@ -107,7 +111,7 @@ public partial class AddEditCampaignModal : ComponentBase
         switch (action)
         {
             case eAction.Add:
-                addEditGameModal.SetParameters(new Game());
+                addEditGameModal.SetParameters(new CampaignGame(), true, GameIds);
                 addEditGameModal.InitData();
                 break;
             case eAction.Edit:
@@ -122,7 +126,7 @@ public partial class AddEditCampaignModal : ComponentBase
     private void EditGame()
     {
         IsEditingGame = true;
-        addEditGameModal.SetParameters(SelectedGame);
+        addEditGameModal.SetParameters(SelectedCampaignGame, false, GameIds);
         addEditGameModal.InitData();
     }
 
@@ -131,41 +135,101 @@ public partial class AddEditCampaignModal : ComponentBase
         var confirm = await MessageService.Confirm("Are you sure delete this game?");
         if(confirm) 
         {
-            if (SelectedGame != null && SelectedGame.ID == System.Guid.Empty)// Delete on memory only
+            if (SelectedCampaignGame != null)// Delete on memory only
             {
-                var deletedGame = Campaign.Games.Where(x => x.Index == SelectedGame.Index).FirstOrDefault();
-                if (deletedGame != null) { Campaign.Games.Remove(deletedGame); }
-            }
-            else
-            {
-                await CampaignService.DeleteGame(SelectedGame.ID);
-
-                //Reload data on memory
-                var deletedGame = Campaign.Games.Where(x => x.ID == SelectedGame.ID).FirstOrDefault();
-                if (deletedGame != null) { Campaign.Games.Remove(deletedGame); }
+                Campaign.CampaignGames.Remove(SelectedCampaignGame);
+                if (Campaign.CampaignGames is not null && Campaign.CampaignGames.Any())
+                {
+                    var index = 0;
+                    Campaign.CampaignGames.ToList().ForEach(a => a.Index = ++index);
+                }
             }
         }
     }
 
-    private async Task OnUpdateGameCallBack(Game game)
+    private async Task OnUpdateGameCallBack(CampaignGame campaignGame)
     {
         if (!IsEditingGame)
         {
-            var maxIndex = Campaign.Games.Count + 1;
-            game.Index = maxIndex;
-            Campaign.Games.Add(game);
+            var maxIndex = Campaign.CampaignGames.Count + 1;
+            campaignGame.Index = maxIndex;
+            Campaign.CampaignGames.Add(campaignGame);
         }
         else
         {
-            var editGame = Campaign.Games.Where(x => x.ID == game.ID).FirstOrDefault();
-            if (editGame is not null)
-                Campaign.Games.Remove(editGame);
-
-            Campaign.Games.Add(game);
-
-            // Update Address to database
-            await CampaignService.UpdateGame(game);
+            SelectedCampaignGame = campaignGame;
         }
         StateHasChanged();
+    }
+
+    protected string ImageDataUrl { get; set; }
+    async Task OnFileUpload(FileUploadEventArgs e)
+    {
+        try
+        {
+            using (var stream = new MemoryStream())
+            {
+                await e.File.WriteToStreamAsync(stream);
+
+                stream.Seek(0, SeekOrigin.Begin);
+
+                // Convert the image stream to a base64-encoded data URL
+                ImageDataUrl = await GetImageDataUrl(stream);
+            }
+        }
+        catch (Exception exc)
+        {
+            Console.WriteLine(exc.Message);
+        }
+        finally
+        {
+            this.StateHasChanged();
+        }
+    }
+    private string GetImageDataUrlFromBytes(byte[] imageBytes)
+    {
+        if (imageBytes is not null && imageBytes.Length > 0)
+        {
+            var imageBase64 = Convert.ToBase64String(imageBytes);
+            var imageDataUrl = $"data:image/png;base64,{imageBase64}";
+            return imageDataUrl;
+        }
+        return string.Empty;
+    }
+    private async Task<string> GetImageDataUrl(Stream imageStream)
+    {
+        using (var memoryStream = new MemoryStream())
+        {
+            // Copy the image stream to the memory stream
+            await imageStream.CopyToAsync(memoryStream);
+
+            // Convert the image bytes to a base64-encoded data URL
+            var imageBytes = memoryStream.ToArray();
+            Campaign.Image = imageBytes;
+            var imageBase64 = Convert.ToBase64String(imageBytes);
+            var imageDataUrl = $"data:image/png;base64,{imageBase64}";
+
+            return imageDataUrl;
+        }
+    }
+    void ValidateStartedDate(ValidatorEventArgs e)
+    {
+        if (e.Value == null)
+            e.Status = ValidationStatus.Error;
+        else
+        {
+            var startedDate = DateTime.Parse(e.Value.ToString());
+            e.Status = startedDate.Date.Equals(DateTime.MinValue.Date) || (IsAdded && startedDate.Date < DateTime.Now.Date) || (Campaign.ExpiredDate != null && Campaign.ExpiredDate < startedDate.Date) ? ValidationStatus.Error : ValidationStatus.Success;
+        }
+    }
+    void ValidateExpiredDate(ValidatorEventArgs e)
+    {
+        if (e.Value == null)
+            e.Status = ValidationStatus.Error;
+        else
+        {
+            var expiredDate = DateTime.Parse(e.Value.ToString());
+            e.Status = expiredDate.Date.Equals(DateTime.MinValue.Date) || (IsAdded && expiredDate.Date < DateTime.Now.Date) || (Campaign.StartedDate != null && Campaign.StartedDate > expiredDate.Date) ? ValidationStatus.Error : ValidationStatus.Success;
+        }
     }
 }

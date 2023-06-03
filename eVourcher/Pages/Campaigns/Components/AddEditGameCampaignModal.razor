@@ -1,0 +1,31 @@
+﻿<Modal @ref="gameRef">
+    <ModalContent Centered Size="ModalSize.ExtraLarge">
+        <ModalHeader>
+            <ModalTitle>@Title</ModalTitle>
+            <CloseButton />
+        </ModalHeader>
+        <ModalBody>
+            <Div Class="evoucher-content Game-content" Style="min-height: 650px;">
+                <DataGrid TItem="Game"
+                          Data="@Games"
+                          @bind-SelectedRow="@SelectedGame"
+                          Responsive
+                          PageSize="20"
+                          ShowPager="true"
+                          Hoverable="true"
+                          Striped="true"
+                          Filterable>
+                    <DataGridCommandColumn />
+                    <DataGridColumn Field="@nameof(Game.Index)" Caption="#" Sortable="false" />
+                    <DataGridColumn Field="@nameof(Game.Name)" Caption="Game" Editable />
+                    <DataGridColumn Field="@nameof(Game.Description)" Caption="Description" Editable />
+                    <DataGridColumn Field="@nameof(Game.CreatedDate)" Caption="Created Date" Editable />
+                </DataGrid>
+            </Div>           
+        </ModalBody>
+        <ModalFooter>
+            <Button Color="Color.Secondary" Clicked="@HideModal">Close</Button>
+            <Button Color="@(SelectedGame is not null ? Color.Primary : Color.Dark)" Disabled="@(SelectedGame is not null ? false : true)" Clicked="@UpdateData">OK</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>

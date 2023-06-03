@@ -1,0 +1,45 @@
+﻿<Modal @ref="modalRef">
+    <ModalContent Centered Size="ModalSize.Fullscreen">
+        <ModalHeader>
+            <ModalTitle>@Title</ModalTitle>
+            <CloseButton />
+        </ModalHeader>
+        <ModalBody>
+            <Row>
+                <Column ColumnSize="ColumnSize.Is7">
+                    <Field Class="edit-user-header">Game Information:</Field>
+                    <Validations @ref="@validationsRef" Mode="ValidationMode.Manual" ValidateOnLoad="false">
+                        <Validation Validator="ValidationRule.IsNotEmpty">
+                            <Field ColumnSize="ColumnSize.Is11.OnDesktop">
+                                <FieldLabel>Name</FieldLabel>
+                                <TextEdit @bind-Text="Game.Name" Placeholder="Enter name..." />
+                            </Field>
+                        </Validation>
+                        <Validation Validator="ValidationRule.IsNotEmpty">
+                            <Field ColumnSize="ColumnSize.Is11.OnDesktop">
+                                <FieldLabel>Description</FieldLabel>
+                                <TextEdit @bind-Text="Game.Description" Placeholder="Enter description..." />
+                            </Field>
+                        </Validation>
+                    </Validations>
+                </Column>
+                <Column ColumnSize="ColumnSize.Is5" Display="Display.Flex" Style="flex-direction:column; align-items:center">
+                    <Field>
+                        <FieldLabel>Game Image</FieldLabel>
+                        <FilePicker Multiple=false Upload="OnFileUpload" ShowMode="FilePickerShowMode.List" />
+                    </Field>
+                    <Field Style="max-width: 400px;max-height: 400px;border: 2px solid #6852c1;">
+                        @if (!string.IsNullOrEmpty(ImageDataUrl))
+                        {
+                            <Image Source="@ImageDataUrl" Width="Width.Is100" Height="Height.Is100"></Image>
+                        }
+                    </Field>
+                </Column>
+            </Row>
+        </ModalBody>
+        <ModalFooter>
+            <Button Color="Color.Secondary" Clicked="@HideModal">Close</Button>
+            <Button Color="Color.Primary" Clicked="@UpdateData">Save Changes</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>

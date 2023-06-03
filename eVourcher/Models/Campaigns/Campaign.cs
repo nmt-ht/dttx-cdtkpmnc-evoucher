@@ -15,5 +15,10 @@ public class Campaign
     public bool IsDeleted { get; set; }
     public Guid CreatedBy { get; set; }
     public int Index { get; set; }
-    public IList<Game> Games { get; set; } = new List<Game>();
+    public byte[] Image { get; set; }
+    public IList<CampaignGame> CampaignGames { get; set; } = new List<CampaignGame>();
+
+    public string CreatedDateText => CreatedDate == null ? string.Empty : CreatedDate.Value.ToShortDateString();
+    public string StartedDateText => StartedDate == null ? string.Empty : StartedDate.Value.ToShortDateString();
+    public string ExpiredDateText => ExpiredDate == null ? string.Empty : ExpiredDate.Value.ToShortDateString();
 }

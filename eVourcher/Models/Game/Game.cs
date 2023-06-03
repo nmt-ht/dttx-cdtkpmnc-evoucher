@@ -4,8 +4,6 @@ using System.Collections.Generic;
 namespace eVoucher.Models;
 public class Game
 {
-
-
     public Guid ID { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
@@ -15,4 +13,7 @@ public class Game
     public Guid ModifiedBy { get; set; }
     public bool IsDeleted { get; set; }
     public int Index { get; set; }
+    public byte[] Image { get; set; }
+    public IList<CampaignGame> CampaignGames { get; set; }
+    public string CreatedDateText => CreatedDate.ToShortDateString();
 }

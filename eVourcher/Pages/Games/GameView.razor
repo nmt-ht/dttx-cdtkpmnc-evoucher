@@ -1,0 +1,45 @@
+﻿@page "/admin/games"
+@using eVoucher.Models;
+@using eVoucher.Pages.Games.Components;
+
+<PageTitle>Games</PageTitle>
+
+<Div Class="partner-view">
+    <Div Class="evoucher-header partner-header">
+        <Row Display="Display.Flex">
+            <Column ColumnSize="ColumnSize.Is6" Class="title">Game Information</Column>
+            <Column ColumnSize="ColumnSize.Is6" Class="partner-actions">
+                <Button Color="Color.Primary" Margin="Margin.Is2.FromEnd" Clicked="ViewAddGame">
+                    <Icon Name="IconName.Add"></Icon><Span>&nbsp; @("Add")</Span>
+                    </Button>
+                    <Button Color="@(selectedGame is not null ? Color.Secondary : Color.Dark)" 
+                        Disabled="@(selectedGame is not null ? false:true)" Margin="Margin.Is2.FromEnd" Clicked="ViewEditGame">
+                        <Icon Name="IconName.Edit"></Icon><Span>&nbsp; @("Edit")</Span>
+                    </Button>
+                    <Button Color="@(selectedGame is not null ? Color.Danger : Color.Dark)" 
+                        Disabled="@(selectedGame is not null ? false:true)" Clicked="OnDeleteGame">
+                        <Icon Name="IconName.Delete"></Icon><Span>&nbsp; @("Delete")</Span>
+                    </Button>
+                </Column>
+            </Row>
+        </Div>
+        <Div Class="evoucher-content Game-content">
+            <DataGrid TItem="Game"
+                  Data="@Games"
+                  @bind-SelectedRow="@selectedGame"
+                  Responsive
+                  PageSize="20"
+                  ShowPager="true"
+                  Hoverable="true"
+                  Striped="true"
+                  Filterable>
+            <DataGridCommandColumn />
+            <DataGridColumn Field="@nameof(Game.Index)" Caption="#" Sortable="false" />
+            <DataGridColumn Field="@nameof(Game.Name)" Caption="Game" Editable />
+            <DataGridColumn Field="@nameof(Game.Description)" Caption="Description" Editable />
+            <DataGridColumn Field="@nameof(Game.CreatedDateText)" Caption="Created Date" Editable />
+        </DataGrid>
+    </Div>
+</Div>
+
+<AddEditGameModal @ref="addEditGameModal" OnUpdateGame="OnUpdateGame"></AddEditGameModal>

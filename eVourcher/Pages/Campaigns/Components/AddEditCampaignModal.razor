@@ -10,47 +10,71 @@
         <ModalBody>
             @if (Campaign is not null)
             {
-                <Field>
-                    <FieldLabel>Name</FieldLabel>
-                    <TextEdit @bind-Text="@Campaign.Name" Placeholder="Enter campaign name..." />
-                </Field>
-                <Field>
-                    <FieldLabel>Description</FieldLabel>
-                    <TextEdit @bind-Text="Campaign.Description" Placeholder="Enter campaign description..." />
-                </Field>
-                <Field>
-                    <FieldLabel>Started Date</FieldLabel>
-                    <DateEdit @bind-Date=Campaign.StartedDate></DateEdit>
-                </Field>
-                <Field>
-                    <FieldLabel>Expired Date</FieldLabel>
-                    <DateEdit @bind-Date=Campaign.ExpiredDate></DateEdit>
-                </Field>
-
+                <Row>
+                    <Column ColumnSize="ColumnSize.Is7">
+                        <Field Class="edit-user-header">Game Information:</Field>
+                        <Validations @ref="@validationsRef" Mode="ValidationMode.Manual" ValidateOnLoad="false">
+                            <Validation Validator="ValidationRule.IsNotEmpty">
+                                <Field>
+                                    <FieldLabel>Name</FieldLabel>
+                                    <TextEdit @bind-Text="@Campaign.Name" Placeholder="Enter campaign name..." />
+                                </Field>
+                                <Field>
+                                    <FieldLabel>Description</FieldLabel>
+                                    <TextEdit @bind-Text="Campaign.Description" Placeholder="Enter campaign description..." />
+                                </Field>
+                            </Validation>
+                            <Fields>
+                                <Validation Validator="@ValidateStartedDate">
+                                    <Field ColumnSize="ColumnSize.Is6.OnDesktop">
+                                        <FieldLabel>Started Date</FieldLabel>
+                                        <DateEdit @bind-Date=Campaign.StartedDate></DateEdit>
+                                    </Field>
+                                </Validation>
+                                <Validation Validator="@ValidateExpiredDate">
+                                    <Field ColumnSize="ColumnSize.Is6.OnDesktop">
+                                        <FieldLabel>Expired Date</FieldLabel>
+                                        <DateEdit @bind-Date=Campaign.ExpiredDate></DateEdit>
+                                    </Field>
+                                </Validation>
+                            </Fields>
+                        </Validations>
+                    </Column>
+                    <Column ColumnSize="ColumnSize.Is5" Display="Display.Flex" Style="flex-direction:column; align-items:center">
+                        <Field>
+                            <FieldLabel>Campaign Image</FieldLabel>
+                            <FilePicker Multiple=false Upload="OnFileUpload" ShowMode="FilePickerShowMode.List" />
+                        </Field>
+                        <Field Style="max-width: 400px;max-height: 400px;border: 2px solid #6852c1;">
+                            @if (!string.IsNullOrEmpty(ImageDataUrl))
+                            {
+                                <Image Source="@ImageDataUrl" Width="Width.Is100" Height="Height.Is100"></Image>
+                            }
+                        </Field>
+                    </Column>
+                </Row>
                 <Div Display="Display.Flex">
                     <Field Class="edit-user-header">Game Information:</Field>
                     <Buttons>
                         <Button Color="Color.Primary" Clicked="@(() => GameActions(eAction.Add))">Add</Button>
-                        <Button Color="Color.Secondary" Clicked="@(() => GameActions(eAction.Edit))">Edit</Button>
-                        <Button Color="Color.Danger" Clicked="@(() => GameActions(eAction.Delete))">Delete</Button>
+                        <Button Color="@(SelectedCampaignGame is not null ? Color.Danger : Color.Dark)" Disabled="@(SelectedCampaignGame is not null ? false : true)" Clicked="@(() => GameActions(eAction.Delete))">Delete</Button>
                     </Buttons>
                 </Div>
 
-                @if (Campaign.Games.Any())
+                @if (Campaign.CampaignGames.Any())
                 {
-                    <DataGrid TItem="Game"
-                      Data="@Campaign.Games"
+                    <DataGrid TItem="CampaignGame"
+                      Data="@Campaign.CampaignGames"
                             Responsive
-                      @bind-SelectedRow="@SelectedGame"
+                      @bind-SelectedRow="@SelectedCampaignGame"
                       PageSize="20"
                       ShowPager="true"
                       Hoverable="true"
                       Striped="true"
-                            Filterable
-                      RowDoubleClicked="@(() => EditGame())">
-                    <DataGridColumn Field="@nameof(Game.Index)" Caption="#" Sortable="false" />
-                    <DataGridColumn Field="@nameof(Game.Name)" Caption="Name" Editable />
-                        <DataGridColumn Field="@nameof(Game.Description)" Caption="Description" Editable />
+                      Filterable>
+                    <DataGridColumn Field="@nameof(CampaignGame.Index)" Caption="#" Sortable="false" />
+                    <DataGridColumn Field="@nameof(CampaignGame.Name)" Caption="Name" />
+                    <DataGridColumn Field="@nameof(CampaignGame.Description)" Caption="Description" />
 
                     </DataGrid>
                 }
@@ -67,4 +91,4 @@
     </ModalContent>
 </Modal>
 
-<AddEditGameModal @ref="addEditGameModal" UpdateGameCallBack="OnUpdateGameCallBack"></AddEditGameModal>
+<AddEditGameCampaignModal @ref="addEditGameModal" UpdateGameCallBack="OnUpdateGameCallBack"></AddEditGameCampaignModal>

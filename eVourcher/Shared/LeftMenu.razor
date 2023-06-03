@@ -40,9 +40,11 @@
                             </BarLink>
                         </BarItem>
                         <BarItem Display="@(CurrentUser.IsAdminView ? Display.Block : Display.None)" Style="font-size: 15px;">
-                            <BarLink To="/admin/games" Padding="Padding.Is2.FromStart.Is2.FromEnd">
-                                <BarIcon Padding="Padding.Is1.FromBottom" IconName="@("fa-square-g")" />
-                                <Span>Games</Span>
+                            <BarLink To="/admin/games" Padding="Padding.Is2.FromStart.Is2.FromEnd" Style="padding-top:6px;">
+                                <Div Style="display: flex; width: 30px; height: 30px; background-color: #4527A0;border-radius: 5px;margin-left: 3px;">
+                                    <i class="b-bar-icon fas pb-1" style="font-size: 22px;color: white;position: relative;margin-right: 12px !important;font-weight: unset !important;font-family: unset !important;padding-left: 3px;padding-top: 1.5px;">G</i>
+                                    <Span Style="display: flex; padding-top: 3px;padding-left: 4px;">Games</Span>
+                                </Div>
                             </BarLink>
                         </BarItem>
                     </BarStart>

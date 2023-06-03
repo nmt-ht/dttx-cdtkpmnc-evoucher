@@ -28,13 +28,21 @@
                                 <Validation Validator="@ValidateStartedDate">
                                     <Field ColumnSize="ColumnSize.Is6.OnDesktop">
                                         <FieldLabel>Started Date</FieldLabel>
-                                        <DateEdit @bind-Date=Campaign.StartedDate></DateEdit>
+                                        <DateEdit Disabled="@(!IsAdded)" @bind-Date=Campaign.StartedDate>
+                                            <Feedback>
+                                                <ValidationError>Start date cannot be in the past.</ValidationError>
+                                            </Feedback>
+                                        </DateEdit>
                                     </Field>
                                 </Validation>
                                 <Validation Validator="@ValidateExpiredDate">
                                     <Field ColumnSize="ColumnSize.Is6.OnDesktop">
                                         <FieldLabel>Expired Date</FieldLabel>
-                                        <DateEdit @bind-Date=Campaign.ExpiredDate></DateEdit>
+                                        <DateEdit Disabled="@(!IsAdded)" @bind-Date=Campaign.ExpiredDate>
+                                            <Feedback>
+                                                <ValidationError>Expire date must be greater than start date.</ValidationError>
+                                            </Feedback>
+                                        </DateEdit>
                                     </Field>
                                 </Validation>
                             </Fields>

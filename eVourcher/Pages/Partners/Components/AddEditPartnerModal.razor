@@ -39,7 +39,7 @@
                         <Validation Validator="@ValidateDate">
                             <Field>
                                 <FieldLabel>Join Date</FieldLabel>
-                                <DateEdit TValue="DateTime?" @bind-Date=Partner.JoinDate>
+                                <DateEdit TValue="DateTime?" Disabled="@(!IsAdded)" @bind-Date=Partner.JoinDate>
                                     <Feedback>
                                         <ValidationError>Join date cannot be in the past.</ValidationError>
                                     </Feedback>

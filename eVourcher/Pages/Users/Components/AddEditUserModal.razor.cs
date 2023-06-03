@@ -1,4 +1,5 @@
 ﻿using Blazorise;
+using Blazorise.Extensions;
 using eVoucher.Models;
 using eVoucher.Pages.Partners.Components;
 using eVourcher.Services;
@@ -35,9 +36,10 @@ public partial class AddEditUserModal : ComponentBase
     private AddEditPartnerModal addEditPartnerModal;
     #endregion
 
-    public void SetParameters(User user, bool isAdded)
+    public async void SetParameters(User user, bool isAdded)
     {
         User = user;
+        await UpdateAddressesIndex();
         IsAdded = isAdded;
 
         var userGroup = User.UserGroups.FirstOrDefault();
@@ -70,17 +72,22 @@ public partial class AddEditUserModal : ComponentBase
             var result = false;
             if (IsAdded)
             {
-                var user = await UserService.CreateUser(User);
+                var response = await UserService.CreateUser(User);
+                var user = response.Item1;
                 result = user is not null ? true : false;
+                if(!string.IsNullOrEmpty(response.Item2))
+                    await NotificationService.Error(response.Item2);
             }
             else
                 result = await UserService.UpdateUser(User);
 
             if (result)
+            {
                 await NotificationService.Info(IsAdded ? "Added user successfully." : "Edit user successfully.");
 
-            await HideModal();
-            await ReloadData.InvokeAsync(true);
+                await HideModal();
+                await ReloadData.InvokeAsync(true);
+            }
         }
     }
     private async Task AddressActions(eAction action)
@@ -106,6 +113,15 @@ public partial class AddEditUserModal : ComponentBase
         addEditAddressModal.SetParameters(SelectedAddress, eAction.Edit);
         addEditAddressModal.InitData();
     }
+
+    private async Task UpdateAddressesIndex()
+    {
+        if (User.Addresses is not null && User.Addresses.Any())
+        {
+            var index = 0;
+            User.Addresses.ToList().ForEach(a => a.Index = ++index);
+        }
+    }
     private async Task DeleteAddress()
     {
         if (SelectedAddress != null && SelectedAddress.ID == System.Guid.Empty)// Delete on memory only
@@ -121,6 +137,7 @@ public partial class AddEditUserModal : ComponentBase
             var deletedAddress = User.Addresses.FirstOrDefault(x => x.ID == SelectedAddress.ID);
             if (deletedAddress != null) { User.Addresses.Remove(deletedAddress); }
         }
+        await UpdateAddressesIndex();
     }
     private async Task OnUpdateAddressCallBack(Address address)
     {

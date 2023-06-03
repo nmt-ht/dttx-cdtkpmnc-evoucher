@@ -62,7 +62,7 @@ public partial class AddEditGameModal : ComponentBase
                 }
                 else
                 {
-                    await NotificationService.Info("An error occurred please try again.");
+                    await NotificationService.Error("An error occurred please try again.");
                 }
             }
             else
@@ -78,7 +78,7 @@ public partial class AddEditGameModal : ComponentBase
                 }
                 else
                 {
-                    await NotificationService.Info("An error occurred please try again.");
+                    await NotificationService.Error("An error occurred please try again.");
                 }
             }
         }

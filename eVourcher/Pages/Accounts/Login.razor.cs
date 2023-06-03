@@ -107,7 +107,8 @@ public partial class Login : ComponentBase
         if (await registerValidationsRef.ValidateAll())
         {
             user.EmailAddress = email;
-            User userRegister = await UserService.CreateUser(user);
+            var result = await UserService.CreateUser(user);
+            var userRegister = result.Item1;
             await registerValidationsRef.ClearAll();
             if(userRegister != null)
             {
@@ -117,7 +118,7 @@ public partial class Login : ComponentBase
             }
             else
             {
-                errorCreateAccount = "An error occurred please try again.";
+                errorCreateAccount = !string.IsNullOrEmpty(result.Item2) ? result.Item2 : "An error occurred please try again.";
             }    
         }
         StateHasChanged();

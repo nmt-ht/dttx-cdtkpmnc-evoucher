@@ -66,12 +66,7 @@ public partial class UserView : ComponentBase
 
     private async Task EditUser()
     {
-        var user = await UserService.GetUserById(selectedUser.ID);
-        if (user.Addresses is not null && user.Addresses.Any())
-        {
-            var index = 0;
-            user.Addresses.ToList().ForEach(a => a.Index = ++index);
-        }
+        var user = await UserService.GetUserById(selectedUser.ID);      
         addEditUserModal.SetParameters(user, false);
         addEditUserModal.InitData();
     }

@@ -44,7 +44,7 @@
                     <Validation Validator="ValidationRule.IsEmail">
                         <Field>
                             <FieldLabel>Email address</FieldLabel>
-                            <TextEdit @bind-Text="User.EmailAddress" Placeholder="Enter email address...">
+                            <TextEdit Disabled=@(!IsAdded) @bind-Text="User.EmailAddress" Placeholder="Enter email address...">
                                 <Feedback>
                                     <ValidationError>Enter valid email address!</ValidationError>
                                 </Feedback>

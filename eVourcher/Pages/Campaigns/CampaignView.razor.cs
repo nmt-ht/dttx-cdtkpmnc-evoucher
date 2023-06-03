@@ -97,7 +97,7 @@ public partial class CampaignView : ComponentBase
         }
         else
         {
-            await NotificationService.Info("An error occurred please try again.");
+            await NotificationService.Error("An error occurred please try again.");
         }
     }
 

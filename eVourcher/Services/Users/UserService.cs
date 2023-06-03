@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
 using User = eVoucher.Models.User;
 
 namespace eVourcher.Services
@@ -43,21 +44,29 @@ namespace eVourcher.Services
 
             return users;
         }
-        public async Task<User> CreateUser(User userRegister)
+        public async Task<Tuple<User, string>> CreateUser(User userRegister)
         {
+            User user = null;
             if (userRegister != null)
             {
                 string requestURL = "/api/users/create";
 
                 var response = await RestClient.APIClient.PostAsync(requestURL, userRegister);
 
-                if (response != null && response.Success && response.Data != null)
-                {
-                    var user = JsonConvert.DeserializeObject<User>(response.Data.ToString());
-                    return user;
+                if (response != null && response.Success)
+                {                  
+                    if(response.Data is null && !string.IsNullOrEmpty(response.Message))
+                    {
+                        return Tuple.Create(user, response.Message);
+                    }
+
+                    if(response.Data != null)
+                        user = JsonConvert.DeserializeObject<User>(response.Data.ToString());
+
+                    return Tuple.Create(user, string.Empty);
                 }
             }
-            return null;
+            return Tuple.Create(user, string.Empty);
         }
         public async Task<bool> DeleteUser(Guid id)
         {

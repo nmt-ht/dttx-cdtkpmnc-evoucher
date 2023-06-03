@@ -72,7 +72,7 @@ public partial class GameView : ComponentBase
             }
             else
             {
-                await NotificationService.Info("An error occurred please try again.");
+                await NotificationService.Error("An error occurred please try again.");
             }
         }
     }

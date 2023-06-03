@@ -10,7 +10,7 @@ namespace eVourcher.Services
         Task<User> Login(string email, string passWord);
         Task<IList<User>> GetUsers();
         Task<User> GetUserById(Guid id);
-        Task<User> CreateUser(User user);
+        Task<Tuple<User, string>> CreateUser(User user);
         Task<bool> UpdateUser(User user);
         Task<bool> DeleteUser(Guid id);
         Task<bool> DeleteAddress(Guid id);

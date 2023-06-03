@@ -59,7 +59,7 @@ public partial class AddEditPartnerModal : ComponentBase
                 }
                 else
                 {
-                    await NotificationService.Info("An error occurred please try again.");
+                    await NotificationService.Error("An error occurred please try again.");
                 }
             }
             else
@@ -73,7 +73,7 @@ public partial class AddEditPartnerModal : ComponentBase
                 }
                 else
                 {
-                    await NotificationService.Info("An error occurred please try again.");
+                    await NotificationService.Error("An error occurred please try again.");
                 }
             }
         }
@@ -136,7 +136,7 @@ public partial class AddEditPartnerModal : ComponentBase
         else
         {
             var joinDate = DateTime.Parse(e.Value.ToString());
-            e.Status = joinDate.Date.Equals(DateTime.MinValue.Date) || joinDate.Date < DateTime.Now.Date ? ValidationStatus.Error : ValidationStatus.Success;
+            e.Status = joinDate.Date.Equals(DateTime.MinValue.Date) || (IsAdded && joinDate.Date < DateTime.Now.Date) ? ValidationStatus.Error : ValidationStatus.Success;
         }
     }
     void ValidateSelectedUser(ValidatorEventArgs e)

@@ -42,8 +42,9 @@ namespace eVoucher.Models
         {
             Campaign = 0,
             Partner = 1,
-            User = 2,
-            Dasboard = 3
+            User = 2,        
+            Dasboard = 3,
+            Game = 4
         }
     }
 }

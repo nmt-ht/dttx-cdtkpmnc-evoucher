@@ -1,6 +1,7 @@
 ﻿using eVoucher.Models;
 using eVoucher.Pages.Accounts;
 using eVoucher.Pages.Campaigns;
+using eVoucher.Pages.Games;
 using eVoucher.Pages.Partners;
 using eVoucher.Pages.Users;
 using eVourcher.Services;
@@ -30,6 +31,7 @@ public partial class AdminLayout : LayoutComponentBase, IDisposable
     private UserView userView;
     private PartnerView partnerView;
     private CampaignView campaignView;
+    private GameView gameView;
     private eAdminComponent SelectedComponent { get; set; } = eAdminComponent.Dasboard;
     private bool loggedIn;
     private bool LoggedIn

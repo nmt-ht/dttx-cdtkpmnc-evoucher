@@ -94,6 +94,30 @@
         transform: translateY(-45%);
     }
 
+.fa-square-g {
+    position: relative;
+    margin-right: 35px !important;
+    font-weight: unset !important;
+    font-family: unset !important;
+}
+
+    .fa-square-g::before {
+        content: "G";
+        width: 30px;
+        height: 30px;
+        border-radius: 5px;
+        background-color: #4527A0;
+        color: #fff;
+        position: absolute;
+        left: 0;
+        top: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-style: normal;
+        transform: translateY(-45%);
+    }
+
 .menu-level-2-icon::before {
     font-size: 5px !important;
     color: #673AB7;

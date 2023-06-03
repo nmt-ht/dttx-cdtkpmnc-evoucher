@@ -23,12 +23,12 @@ public partial class GameView : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
-        await GetUserID();
         await BindData();
     }
 
-    private async Task BindData()
+    public async Task BindData()
     {
+        await GetUserID();
         await ShowLoadingPage(true);
         Games = await GameService.GetGames();
         var index = 0;

@@ -128,6 +128,12 @@ public partial class AdminLayout : LayoutComponentBase, IDisposable
             StateHasChanged();
             await campaignView.InitData();
         }
+        else if (url.Contains("games"))
+        {
+            SelectedComponent = eAdminComponent.Game;
+            StateHasChanged();
+            await gameView.BindData();
+        }
         StateHasChanged();
     }
 }

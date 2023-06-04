@@ -4,6 +4,7 @@ using Blazorise.Icons.Material;
 using Blazorise.Material;
 using Blazorise.RichTextEdit;
 using eVoucher.Handlers;
+using eVoucher.Models;
 using eVourcher.Services;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -36,6 +37,7 @@ public class Program
         });
         builder.Configuration.Bind("eVoucherConfig", RestClient.VoucherConfig);
 
+        builder.Services.AddScoped<User>();
         builder.Services.AddSingleton<ILocalStorage, LocalStorage>(); 
         builder.Services.AddSingleton<IUserService, UserService>();
         builder.Services.AddSingleton<ICampaignService, CampaignService>();

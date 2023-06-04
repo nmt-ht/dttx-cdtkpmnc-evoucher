@@ -21,11 +21,11 @@
             @if (LoggedIn)
             {
                 <p style="margin-bottom: 0px; font-size:18px;line-height: 28px;">Hello, @GetUserName()</p>
-                <button class="btn btn-sm btn-danger" style="margin-bottom: 0px;" title="Logout" @onclick="Logout"><span class="oi oi-account-logout"></span></button>
+                <button class="btn btn-sm btn-danger" style="margin-bottom: 0px;" title="Logout" @onclick="Logout"><span class="oi oi-account-logout">Logout</span></button>
             }
             else
             {
-                <button class="btn btn-sm btn-success" style="margin-bottom: 0px; margin-top: 16px;" title="Login" @onclick="OpenLogin"><span class="oi oi-account-login"></span></button>
+                <button class="btn btn-sm btn-success" style="margin-bottom: 0px; margin-top: 16px;" title="Login" @onclick="OpenLogin"><span class="oi oi-account-login">Login</span></button>
             }
         </div>
     </LayoutHeader>

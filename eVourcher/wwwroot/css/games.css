@@ -50,7 +50,7 @@
 }
 
 .minesweeper-board div {
-    background-image: url(../images/minesweeper/sprite100.gif);
+    background-image: url(../../images/minesweeper/sprite100.gif);
 }
 
 .minesweeper-gamepiece {
@@ -306,12 +306,12 @@
 }
 
 .tictactoe-x {
-    background-image: url("../images/tictactoe/letter-x.png");
+    background-image: url("../../images/tictactoe/letter-x.png");
     background-repeat: no-repeat;
 }
 
 .tictactoe-o {
-    background-image: url("../images/tictactoe/letter-o.png");
+    background-image: url("../../images/tictactoe/letter-o.png");
     background-repeat: no-repeat;
 }
 
@@ -320,7 +320,7 @@
 }
 
 .gameoflife-container div {
-    background-image: url(../images/gameoflife/gameoflife-sprites.png);
+    background-image: url(../../images/gameoflife/gameoflife-sprites.png);
     width: 40px;
     height: 40px;
 }
@@ -404,71 +404,71 @@
 }
 
 .tetris-red-cell {
-    background-image: url(../images/tetris/tetromino-red.png);
+    background-image: url(../../images/tetris/tetromino-red.png);
 }
 
 .tetris-lightblue-cell {
-    background-image: url(../images/tetris/tetromino-lightblue.png);
+    background-image: url(../../images/tetris/tetromino-lightblue.png);
 }
 
 .tetris-purple-cell {
-    background-image: url(../images/tetris/tetromino-purple.png);
+    background-image: url(../../images/tetris/tetromino-purple.png);
 }
 
 .tetris-yellow-cell {
-    background-image: url(../images/tetris/tetromino-yellow.png);
+    background-image: url(../../images/tetris/tetromino-yellow.png);
 }
 
 .tetris-green-cell {
-    background-image: url(../images/tetris/tetromino-green.png);
+    background-image: url(../../images/tetris/tetromino-green.png);
 }
 
 .tetris-orange-cell {
-    background-image: url(../images/tetris/tetromino-orange.png);
+    background-image: url(../../images/tetris/tetromino-orange.png);
 }
 
 .tetris-darkblue-cell {
-    background-image: url(../images/tetris/tetromino-darkblue.png);
+    background-image: url(../../images/tetris/tetromino-darkblue.png);
 }
 
 .tetris-block-display {
-    background-image: url(../images/tetris/tetromino-block.png);
+    background-image: url(../../images/tetris/tetromino-block.png);
     width:48px;
     height:48px;
 }
 
 .tetris-straight-display {
-    background-image: url(../images/tetris/tetromino-straight.png);
+    background-image: url(../../images/tetris/tetromino-straight.png);
     width:96px;
     height:24px;
 }
 
 .tetris-tshaped-display {
-    background-image: url(../images/tetris/tetromino-tshaped.png);
+    background-image: url(../../images/tetris/tetromino-tshaped.png);
     width:72px;
     height:48px;
 }
 
 .tetris-leftzigzag-display {
-    background-image: url(../images/tetris/tetromino-leftzigzag.png);
+    background-image: url(../../images/tetris/tetromino-leftzigzag.png);
     width: 72px;
     height: 48px;
 }
 
 .tetris-rightzigzag-display {
-    background-image: url(../images/tetris/tetromino-rightzigzag.png);
+    background-image: url(../../images/tetris/tetromino-rightzigzag.png);
     width: 72px;
     height: 48px;
 }
 
 .tetris-reverselshaped-display {
-    background-image: url(../images/tetris/tetromino-reverselshaped.png);
+    background-image: url(../../images/tetris/tetromino-reverselshaped.png);
     width: 72px;
     height: 48px;
 }
 
 .tetris-lshaped-display {
-    background-image: url(../images/tetris/tetromino-lshaped.png);
+    background-image: url(../../images/tetris/tetromino-lshaped.png);
     width: 72px;
     height: 48px;
 }

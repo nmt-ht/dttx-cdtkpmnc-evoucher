@@ -1,0 +1,33 @@
+﻿<Modal @ref="modalRef" Class="game-board-modal">
+    <ModalContent Centered Size="ModalSize.ExtraLarge">
+        <ModalHeader>
+            <ModalTitle>Game Board - Chơi game và nhận voucher</ModalTitle>
+            <CloseButton />
+        </ModalHeader>
+        <ModalBody>
+            <Div Class="container">
+                <Div Class="row">
+                    <Div Class="col-4" @onclick="@(() => OnSelectedGame(eGameBoard.Tetris))">
+                        <h3>Tetris</h3>
+                        <img Class="img-fluid" src="images/tetris/tetris-bookmark.png" />
+                    </Div>
+                    <Div Class="col-4" @onclick="@(() => OnSelectedGame(eGameBoard.TicTacToe))">
+                        <h3>Tic Tac Toe</h3>
+                        <img Class="img-fluid" src="images/tictactoe/tictactoe-bookmark.png" />
+                    </Div>
+                    <Div Class="col-4" @onclick="@(() => OnSelectedGame(eGameBoard.ContectFour))">
+                        <h3>Connect Four</h3>
+                        <img Class="img-fluid" src="images/connectfour/connectfour-bookmark.png" />
+                    </Div>
+                </Div>
+            </Div>
+        </ModalBody>
+        <ModalFooter>
+            <Button Color="Color.Secondary" Clicked="@HideModal">Close</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
+
+<Tetris @ref="tetrisGame" OnCloseCallback="ShowModal"></Tetris>
+<TicTacToe @ref="tictactoeGame" OnCloseCallback="ShowModal"></TicTacToe>
+<ConnectFour @ref="connectFour" OnCloseCallback="ShowModal"></ConnectFour>

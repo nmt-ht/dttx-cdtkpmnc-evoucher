@@ -41,10 +41,9 @@ app {
             margin-left: 1.5rem;
         }
 
-.main .top-row a:first-child {
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
+        .main .top-row a:first-child {
+            overflow: hidden;text-overflow: ellipsis;
+        }
 
 .sidebar {
     background-image: linear-gradient(180deg, #9900cc 0%, #191b1f 70%);
@@ -129,17 +128,17 @@ app {
     z-index: 1000;
 }
 
-#blazor-error-ui .dismiss {
-    cursor: pointer;
-    position: absolute;
-    right: 0.75rem;
-    top: 0.5rem;
-}
+    #blazor-error-ui .dismiss {
+        cursor: pointer;
+        position: absolute;
+        right: 0.75rem;
+        top: 0.5rem;
+    }
 
 .inline-headers h1, .inline-headers h2,
 .inline-headers h3, .inline-headers h4,
 .inline-headers h5, .inline-headers h6,
-.inline-headers a{
+.inline-headers a {
     display: inline-block;
     vertical-align: baseline;
 }
@@ -190,7 +189,6 @@ app {
     }
 }
 
-
 .evoucher-header {
     background-color: #fff;
     margin: 3px;
@@ -238,4 +236,86 @@ app {
 .partner-actions, .campaign-actions {
     display: flex;
     justify-content: end;
+}
+
+button, .btn {
+    text-transform: capitalize;
+}
+
+.game-board-modal .modal-header {
+    border-bottom: 1px solid #ccc;
+}
+
+.game-board-modal img {
+    cursor: pointer;
+}
+
+.game-board-modal h3 {
+    font-size: 15px;
+    font-weight: bold;
+    text-decoration: underline;
+    cursor: pointer;
+    color: #4688f2;
+}
+
+    .game-board-modal h3:hover {
+        color: #054df7;
+    }
+
+.game-board-modal .modal-footer {
+    border-top: 1px solid #ccc;
+}
+
+.tictactoe-game {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+    .tictactoe-game h2 {
+        font-size: 15px;
+        font-weight: bold;
+    }
+
+.tetris-game-modal h2, h3 {
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.tetris-game-modal h1 {
+    font-size: 30px;
+    color: red;
+    text-align: center;
+}
+
+.tetris-game-modal p {
+    color: blue;
+    text-align: center;
+}
+
+.connect-four-game-modal .modal-body {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.customer-content {
+    margin: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+    .customer-content .campaign {
+    }
+
+.card {
+    margin: 5px;
+    padding: 5px;
+}
+
+.oi-account-login:before, .oi-account-logout:before {
+    margin-right: 5px;
 }

@@ -20,22 +20,22 @@
                 @if (loggedIn)
                 {
                     <p style="margin-bottom: 0px; font-size:18px;line-height: 28px;">Hello, @GetUserName()</p>
-                    <button class="btn btn-sm btn-danger" style="margin-bottom: 0px;" title="Logout" @onclick="Logout"><span class="oi oi-account-logout"></span></button>
-                    <a href="" class="reload" onclick ="@OnRegisterPartner">To become a partner</a>
+                    <button class="btn btn-sm btn-danger" style="margin-bottom: 0px;" title="Logout" @onclick="Logout"><span class="oi oi-account-logout">Logout</span></button>
                 }
                 else
                 {
-                    <button class="btn btn-sm btn-success" style="margin-bottom: 0px; margin-top: 16px;" title="Login" @onclick="OpenLogin"><span class="oi oi-account-login"></span></button>
+                    <button class="btn btn-sm btn-success" style="margin-bottom: 0px; margin-top: 16px;" title="Login" @onclick="OpenLogin"><span class="oi oi-account-login">Login</span></button>
                 }
             </div>
         </LayoutHeader>
-
-        <LayoutContent Margin="Margin.Is2" style="background-color: #E3F2FD;border-bottom-left-radius: 0;border-bottom-right-radius: 0;border-top-left-radius: 6pt; border-top-right-radius: 6pt">
-            @Body
-        </LayoutContent>
+        <CascadingValue Value="CurrentUser">
+            <LayoutContent Margin="Margin.Is2" style="background-color: #E3F2FD;border-bottom-left-radius: 0;border-bottom-right-radius: 0;border-top-left-radius: 6pt; border-top-right-radius: 6pt">
+                @Body
+            </LayoutContent>
+        </CascadingValue>
     </Layout>
 }
-else if(IsAdminPage)
+else if (IsAdminPage)
 {
     <AdminLayout CurrentUser="CurrentUser" />
 }
@@ -45,5 +45,3 @@ else if (IsPartnerPage)
 }
 
 <Login @ref="login" OnloginSuccess="OnloginSuccess"></Login>
-
-<eVoucher.Pages.Partners.Components.AddEditPartnerModal @ref="@refAddEditPartner" />

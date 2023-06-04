@@ -1,6 +1,5 @@
 ﻿using eVoucher.Models;
 using eVoucher.Pages.Accounts;
-using eVoucher.Pages.Partners.Components;
 using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
 
@@ -23,7 +22,6 @@ public partial class MainLayout : LayoutComponentBase
     private bool IsHomePage { get { return NavManager.BaseUri == NavManager.Uri; } }
     private bool IsAdminPage { get { return NavManager.Uri.Contains("admin"); } }
     private bool IsPartnerPage { get { return NavManager.Uri.Contains("partner"); } }
-    private AddEditPartnerModal refAddEditPartner;
     #endregion
 
     public string? GetUserName()
@@ -41,6 +39,7 @@ public partial class MainLayout : LayoutComponentBase
         user = userLogin.FirstName + " " + userLogin.LastName;
         CurrentUser = userLogin;
         await Login(userLogin);
+        StateHasChanged();
     }
 
     public async Task Logout()
@@ -76,10 +75,5 @@ public partial class MainLayout : LayoutComponentBase
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-    }
-
-    private void OnRegisterPartner()
-    {
-        refAddEditPartner.InitData(new Partner());
     }
 }

@@ -1,0 +1,103 @@
+﻿@page "/"
+
+@using eVourcher.Services;
+@using System.Linq;
+@using Microsoft.AspNetCore.Components;
+@using System;
+@using System.Collections.Generic;
+@using System.Threading.Tasks;
+@using eVoucher.Pages.Games;
+
+@inherits OwningComponentBase<MainLayout>
+@inject User CurrentUser
+
+@inject ICampaignService CampaignService;
+
+<Bar Breakpoint="Breakpoint.Desktop"
+     Background="Background.Light"
+     ThemeContrast="ThemeContrast.Light">
+    <BarBrand>
+        <Icon TextColor="TextColor.Primary" Name="IconName.Gift" IconSize="IconSize.x2" Margin="Margin.Is2.FromEnd"></Icon>
+    </BarBrand>
+    <BarMenu>
+        <BarStart>
+            <BarItem>
+                <SelectList TItem="string"
+                            TValue="string"
+                            Data="@Locations"
+                            TextField="@(item => item)"
+                            ValueField="@((item)=>item)"
+                            DefaultItemText="Khu vực gần bạn">
+                </SelectList>
+            </BarItem>
+            <BarItem>
+                <BarLink To="#">Ẩm thực</BarLink>
+            </BarItem>
+            <BarItem>
+                <BarLink To="#">Thức uống</BarLink>
+            </BarItem>
+            <BarItem>
+                <BarLink To="#">Sức khỏe</BarLink>
+            </BarItem>
+            <BarItem>
+                <BarLink To="#">Công nghệ</BarLink>
+            </BarItem>
+        </BarStart>
+        <BarEnd>
+            <BarItem>
+                <Button Color="Color.Primary" Clicked="OnRegisterPartner">To become a partner</Button>
+            </BarItem>
+        </BarEnd>
+    </BarMenu>
+</Bar>
+
+<Row Class="customer-content">
+    <Div Class="row">
+        @foreach (var campaign in Campaigns.Skip(int.Parse(currentPage) * pageSize).Take(pageSize))
+        {
+            <Div Class="col-md-4">
+                <Card>
+                    @if (!string.IsNullOrEmpty(campaign.ImageUrl))
+                    {
+                        <Image Source="@campaign.ImageUrl" Width="Width.Is100" Height="Height.Is100"></Image>
+                    }
+                    <CardBody>
+                        <CardTitle Size="6">@campaign.Name</CardTitle>
+                        <CardText>
+                            @campaign.Description
+                        </CardText>
+                        <Button Color="Color.Primary" Clicked="OnViewGameBoard">Nhận Voucher</Button>
+                    </CardBody>
+                </Card>
+            </Div>
+        }
+    </Div>
+    <Div Class="row">
+        <Pagination>
+            <PaginationItem Disabled="@IsPageNavigationDisabled(PREVIOUS)" @onclick="Previous">
+                <PaginationLink>
+                    <span aria-hidden="true">«</span>
+                </PaginationLink>
+            </PaginationItem>
+            @{
+                for (var i = 1; i <= pageItems; i++)
+                {
+                    var pageNumberAsString = i.ToString();
+                    <PaginationItem @key="pageNumberAsString" Active="@IsActive(pageNumberAsString)">
+                        <PaginationLink Page="@pageNumberAsString" Clicked="SetActive">
+                            @pageNumberAsString
+                        </PaginationLink>
+                    </PaginationItem>
+                }
+            }
+            <PaginationItem Disabled="@IsPageNavigationDisabled(NEXT)" @onclick="Next">
+                <PaginationLink>
+                    <span aria-hidden="true">»</span>
+                </PaginationLink>
+            </PaginationItem>
+        </Pagination>
+    </Div>
+</Row>
+
+<SelectGameModal @ref="selectGameModal"></SelectGameModal>
+<eVoucher.Pages.Partners.Components.AddEditPartnerModal @ref="@refAddEditPartner" />

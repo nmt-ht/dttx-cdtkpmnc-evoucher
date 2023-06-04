@@ -15,7 +15,6 @@ public partial class PartnerLayout : LayoutComponentBase, IDisposable
     #region External services
     [Inject] public NavigationManager NavManager { get; set; }
     [Inject] public ILocalStorage LocalStorage { get; set; }
-    [Inject] public IUserService UserService { get; set; }
     #endregion
     
     [Parameter] public User CurrentUser { get; set; }
@@ -91,6 +90,12 @@ public partial class PartnerLayout : LayoutComponentBase, IDisposable
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
+        if(UserService.CurrentUser is not null)
+        {
+            CurrentUser = UserService.CurrentUser;
+            user = CurrentUser.FullName;
+            LoggedIn = true;
+        }
         StateHasChanged();
     }
 
@@ -116,4 +121,6 @@ public partial class PartnerLayout : LayoutComponentBase, IDisposable
 
         StateHasChanged();
     }
+
+    private void GoHomepage() => NavManager.NavigateTo("/");
 }

@@ -17,7 +17,7 @@
                 }
                 else
                 {
-                    <h2>@board.GetGameCompleteMessage() <button class="btn btn-success" @onclick="@(() => board.Reset())">Reset</button></h2>
+                    <h2>@board.GetGameCompleteMessage()</h2>
                 }
 
                 <Div Class="tictactoe-board">
@@ -38,6 +38,10 @@
             </Div>
         </ModalBody>
         <ModalFooter>
+            @if(board.GameComplete)
+            {
+                <button class="btn btn-success" @onclick="@(() => board.Reset())">Reset</button>
+            }
             <Button Color="Color.Secondary" Clicked="@HideModal">Close</Button>
         </ModalFooter>
     </ModalContent>

@@ -28,11 +28,13 @@
                 }
             </div>
         </LayoutHeader>
-        <CascadingValue Value="CurrentUser">
-            <LayoutContent Margin="Margin.Is2" style="background-color: #E3F2FD;border-bottom-left-radius: 0;border-bottom-right-radius: 0;border-top-left-radius: 6pt; border-top-right-radius: 6pt">
+
+        <LayoutContent Margin="Margin.Is2" style="background-color: #E3F2FD;border-bottom-left-radius: 0;border-bottom-right-radius: 0;border-top-left-radius: 6pt; border-top-right-radius: 6pt">
+            <CascadingValue Value="UserService.CurrentUser">
                 @Body
-            </LayoutContent>
-        </CascadingValue>
+            </CascadingValue>
+        </LayoutContent>
+
     </Layout>
 }
 else if (IsAdminPage)

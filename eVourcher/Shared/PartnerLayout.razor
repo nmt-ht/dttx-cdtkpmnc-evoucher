@@ -5,6 +5,8 @@
 @inject IMessageService MessageService
 @inherits LayoutComponentBase
 @using eVoucher.Pages.Accounts
+@using eVourcher.Services;
+@inject UserService UserService
 
 <Layout>
     <LayoutHeader Class="row col-12 pr-0">
@@ -12,10 +14,10 @@
              Background="Background.White"
              ThemeContrast="ThemeContrast.Light"
              style="box-shadow: none; border-style: none;" Padding="Padding.Is2.FromStart">
+            <Icon Name="IconName.Home" IconSize="IconSize.x2" Style="cursor: pointer" Clicked="GoHomepage"></Icon>
             <BarBrand Style="cursor:pointer;">
                 @Title
             </BarBrand>
-            <BarToggler />
         </Bar>
         <div Class="col-6  pr-0" style="text-align:right;">
             @if (LoggedIn)

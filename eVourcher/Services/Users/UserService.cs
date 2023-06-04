@@ -4,7 +4,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
 using User = eVoucher.Models.User;
 
 namespace eVourcher.Services
@@ -12,6 +11,18 @@ namespace eVourcher.Services
     public class UserService : IUserService
     {
         public UserService() { }
+        public event Action<User> CurrentUserChanged;
+
+        private User currentUser;
+        public User CurrentUser
+        {
+            get => currentUser;
+            set
+            {
+                currentUser = value;
+                CurrentUserChanged?.Invoke(currentUser);
+            }
+        }
         public async Task<User> Login(string email, string passWord)
         {
             User userLogin = new User();

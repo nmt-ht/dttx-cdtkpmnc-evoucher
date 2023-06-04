@@ -1,5 +1,6 @@
 ﻿using eVoucher.Models;
 using eVoucher.Pages.Accounts;
+using eVourcher.Services;
 using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
 
@@ -10,6 +11,7 @@ public partial class MainLayout : LayoutComponentBase
     #region External services
     [Inject] public NavigationManager NavManager { get; set; }
     [Inject] public ILocalStorage LocalStorage { get; set; }
+    [Inject] public UserService UserService { get; set; }
     #endregion
 
     #region Private variables
@@ -38,6 +40,7 @@ public partial class MainLayout : LayoutComponentBase
     {
         user = userLogin.FirstName + " " + userLogin.LastName;
         CurrentUser = userLogin;
+        UserService.CurrentUser = userLogin;
         await Login(userLogin);
         StateHasChanged();
     }

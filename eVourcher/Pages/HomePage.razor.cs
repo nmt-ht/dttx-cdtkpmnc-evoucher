@@ -1,6 +1,7 @@
 ﻿using eVoucher.Models;
 using eVoucher.Pages.Games;
 using eVoucher.Pages.Partners.Components;
+using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,17 +10,21 @@ namespace eVoucher.Pages;
 
 public partial class HomePage
 {
+    [Inject] public NavigationManager NavigationManager { get; set; }
     private SelectGameModal selectGameModal;
     private IList<string> Locations = new List<string> { "Hồ Chí Minh", "Hà Nội", "Đà Nẵng" };
     private IList<Campaign> Campaigns { get; set; } = new List<Campaign>();
+    [CascadingParameter]private User CurrentUser { get; set; }
     private int pageSize = 15;
     protected override async Task OnInitializedAsync()
     {
+        CurrentUser = UserService.CurrentUser;
+        UserService.CurrentUserChanged += UpdateCurrentUser;
         Campaigns = await CampaignService.GetCampaigns();
         Campaigns.ToList().ForEach(campain =>
         {
             Campaigns.Add(campain);
-        });
+        }); 
 
         Campaigns.ToList().ForEach(campain =>
         {
@@ -90,10 +95,19 @@ public partial class HomePage
     private AddEditPartnerModal refAddEditPartner;
     private void OnRegisterPartner()
     {
-        if(CurrentUser is not null)
+        if(UserService.CurrentUser is not null)
         {
-
+            refAddEditPartner.InitData(new Partner { User_ID_FK = UserService.CurrentUser.ID });
         }
-        refAddEditPartner.InitData(new Partner());
+    }
+
+    private void OnViewPartnerManagement()
+    {
+        NavigationManager.NavigateTo("/partner");
+    }
+
+    public void UpdateCurrentUser(User newUser)
+    {
+        CurrentUser = newUser;
     }
 }

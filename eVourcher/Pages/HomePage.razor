@@ -7,9 +7,10 @@
 @using System.Collections.Generic;
 @using System.Threading.Tasks;
 @using eVoucher.Pages.Games;
+@using eVoucher.Models
 
 @inherits OwningComponentBase<MainLayout>
-@inject User CurrentUser
+@inject UserService UserService
 
 @inject ICampaignService CampaignService;
 
@@ -44,9 +45,22 @@
             </BarItem>
         </BarStart>
         <BarEnd>
-            <BarItem>
-                <Button Color="Color.Primary" Clicked="OnRegisterPartner">To become a partner</Button>
-            </BarItem>
+            <Dropdown Display="@(CurrentUser is not null ? Display.Flex : Display.None)">
+                <DropdownToggle Color="Color.Primary">
+                    <Icon Name="IconName.Bars"></Icon>
+                </DropdownToggle>
+                <DropdownMenu>
+                    <DropdownItem>Voucher Management</DropdownItem>
+                    <DropdownDivider/>
+                    <DropdownItem Display="@(CurrentUser is not null && CurrentUser.IsCustomerView ? Display.Block : Display.None)" Clicked="OnRegisterPartner">
+                        To become a partner
+                    </DropdownItem>
+                    <DropdownDivider Display="@(CurrentUser is not null && CurrentUser.IsCustomerView ? Display.Block : Display.None)" />
+                    <DropdownItem Display="@(CurrentUser is not null && CurrentUser.IsPartnerView ? Display.Block : Display.None)" Clicked="OnViewPartnerManagement">
+                        Partner Management
+                    </DropdownItem>
+                </DropdownMenu>
+            </Dropdown>
         </BarEnd>
     </BarMenu>
 </Bar>

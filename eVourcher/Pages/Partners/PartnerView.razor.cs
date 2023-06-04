@@ -1,6 +1,5 @@
 ﻿using Blazorise;
 using eVoucher.Models;
-using eVoucher.Pages.Campaigns.Components;
 using eVoucher.Pages.Partners.Components;
 using eVourcher.Services;
 using Microsoft.AspNetCore.Components;

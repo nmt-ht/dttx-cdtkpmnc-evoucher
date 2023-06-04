@@ -21,7 +21,7 @@
                 {
                     <p style="margin-bottom: 0px; font-size:18px;line-height: 28px;">Hello, @GetUserName()</p>
                     <button class="btn btn-sm btn-danger" style="margin-bottom: 0px;" title="Logout" @onclick="Logout"><span class="oi oi-account-logout"></span></button>
-                    <a href="" class="reload">To become a partner</a>
+                    <a href="" class="reload" onclick ="@OnRegisterPartner">To become a partner</a>
                 }
                 else
                 {
@@ -45,3 +45,5 @@ else if (IsPartnerPage)
 }
 
 <Login @ref="login" OnloginSuccess="OnloginSuccess"></Login>
+
+<eVoucher.Pages.Partners.Components.AddEditPartnerModal @ref="@refAddEditPartner" />

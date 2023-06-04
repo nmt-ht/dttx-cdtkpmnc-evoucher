@@ -21,4 +21,17 @@ public class Campaign
     public string CreatedDateText => CreatedDate == null ? string.Empty : CreatedDate.Value.ToShortDateString();
     public string StartedDateText => StartedDate == null ? string.Empty : StartedDate.Value.ToShortDateString();
     public string ExpiredDateText => ExpiredDate == null ? string.Empty : ExpiredDate.Value.ToShortDateString();
+    public string ImageUrl
+    {
+        get
+        {
+            if (Image is not null && Image.Length > 0)
+            {
+                var imageBase64 = Convert.ToBase64String(Image);
+                var imageDataUrl = $"data:image/png;base64,{imageBase64}";
+                return imageDataUrl;
+            }
+            return string.Empty;
+        }
+    }
 }

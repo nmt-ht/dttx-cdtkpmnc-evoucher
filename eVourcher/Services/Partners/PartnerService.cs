@@ -1,4 +1,5 @@
 ﻿using eVoucher.Handlers;
+using eVoucher.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -67,6 +68,20 @@ namespace eVourcher.Services
                 bool.TryParse(response.Data.ToString(), out result);
             } 
             return result;
-        } 
+        }
+
+        public async Task<Partner> GetPartnerById(Guid id)
+        {
+            var partner = new Partner();
+            string requestURL = $"/api/partners/partners/{id}";
+            var response = await RestClient.APIClient.GetAsync(requestURL);
+
+            if (response != null && response.Success && response.Data != null)
+            {
+                partner = JsonConvert.DeserializeObject<Partner>(response.Data.ToString());
+            }
+
+            return partner;
+        }
     }
 }

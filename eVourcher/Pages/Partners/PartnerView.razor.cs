@@ -1,5 +1,6 @@
 ﻿using Blazorise;
 using eVoucher.Models;
+using eVoucher.Pages.Campaigns.Components;
 using eVoucher.Pages.Partners.Components;
 using eVourcher.Services;
 using Microsoft.AspNetCore.Components;
@@ -50,11 +51,21 @@ public partial class PartnerView : ComponentBase
         addEditPartnerModal.InitData(partner);
     }
 
-    private void ViewEditPartner()
+    private async Task ViewEditPartnerAsync()
     {
         if (selectedPartner != null && selectedPartner.Id != Guid.Empty)
         {
-            addEditPartnerModal.InitData(selectedPartner);
+            var editPartner = await PartnerService.GetPartnerById(selectedPartner.Id);
+            if (editPartner is not null && editPartner.PartnerCampaigns.Any())
+            {
+                var index = 0;
+                editPartner.PartnerCampaigns.ToList().ForEach(a => a.Index = ++index);
+            }
+            else
+            {
+                editPartner.PartnerCampaigns = new List<PartnerCampaign>();
+            }
+            addEditPartnerModal.InitData(editPartner);
         }
     }
 

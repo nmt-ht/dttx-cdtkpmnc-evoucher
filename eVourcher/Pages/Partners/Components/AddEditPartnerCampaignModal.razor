@@ -1,0 +1,32 @@
+﻿<Modal @ref="campaignsRef">
+    <ModalContent Centered Size="ModalSize.ExtraLarge">
+        <ModalHeader>
+            <ModalTitle>@Title</ModalTitle>
+            <CloseButton />
+        </ModalHeader>
+        <ModalBody>
+            <Div Class="evoucher-content Campaign-content" Style="min-height: 650px;">
+                <DataGrid TItem="Campaign"
+                          Data="@Campaigns"
+                          @bind-SelectedRow="@SelectedCampaign"
+                          Responsive
+                          PageSize="20"
+                          ShowPager="true"
+                          Hoverable="true"
+                          Striped="true"
+                          Filterable>
+                    <DataGridCommandColumn />
+                    <DataGridColumn Field="@nameof(Campaign.Index)" Caption="#" Sortable="false" />
+                    <DataGridColumn Field="@nameof(Campaign.Name)" Caption="Campaign" />
+                    <DataGridColumn Field="@nameof(Campaign.Description)" Caption="Description" />
+                    <DataGridColumn Field="@nameof(Campaign.StartedDateText)" Caption="Started Date" />
+                    <DataGridColumn Field="@nameof(Campaign.ExpiredDateText)" Caption="Expired Date" />
+                </DataGrid>
+            </Div>           
+        </ModalBody>
+        <ModalFooter>
+            <Button Color="Color.Secondary" Clicked="@HideModal">Close</Button>
+            <Button Color="@(SelectedCampaign is not null ? Color.Primary : Color.Dark)" Disabled="@(SelectedCampaign is not null ? false : true)" Clicked="@UpdateData">OK</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>

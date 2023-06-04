@@ -11,7 +11,7 @@
                     <Icon Name="IconName.Add"></Icon><Span>&nbsp; @("Add")</Span>
                     </Button>
                     <Button Color="@(selectedPartner is not null ? Color.Secondary : Color.Dark)" 
-                        Disabled="@(selectedPartner is not null ? false:true)" Margin="Margin.Is2.FromEnd" Clicked="ViewEditPartner">
+                        Disabled="@(selectedPartner is not null ? false:true)" Margin="Margin.Is2.FromEnd" Clicked="ViewEditPartnerAsync">
                         <Icon Name="IconName.Edit"></Icon><Span>&nbsp; @("Edit")</Span>
                     </Button>
                     <Button Color="@(selectedPartner is not null ? Color.Danger : Color.Dark)" 

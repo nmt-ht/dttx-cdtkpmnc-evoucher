@@ -77,6 +77,36 @@
                     </Field>
                 </Column>
             </Row>
+            <Div Display="Display.Flex">
+                <Field Class="edit-user-header">Campaign Information:</Field>
+                <Buttons>
+                    <Button Color="Color.Primary" Clicked="@(() => CampaignActions(eAction.Add))">Add</Button>
+                    <Button Color="@(SelectedPartnerCampaign is not null ? Color.Danger : Color.Dark)" Disabled="@(SelectedPartnerCampaign is not null ? false : true)" Clicked="@(() => CampaignActions(eAction.Delete))">Delete</Button>
+                </Buttons>
+            </Div>
+            @if (Partner.PartnerCampaigns.Any())
+            {
+                <DataGrid TItem="PartnerCampaign"
+                      Data="@Partner.PartnerCampaigns"
+                        Responsive
+                      @bind-SelectedRow="@SelectedPartnerCampaign"
+                      PageSize="20"
+                      ShowPager="true"
+                      Hoverable="true"
+                      Striped="true"
+                        Filterable>
+                <DataGridColumn Field="@nameof(PartnerCampaign.Index)" Caption="#" Sortable="false" />
+                <DataGridColumn Field="@nameof(PartnerCampaign.Name)" Caption="Name" />
+                <DataGridColumn Field="@nameof(PartnerCampaign.Description)" Caption="Description" />
+                <DataGridColumn Field="@nameof(PartnerCampaign.StartedDate)" Caption="Started Date" />
+                <DataGridColumn Field="@nameof(PartnerCampaign.ExpiredDate)" Caption="Expired Date" />
+
+            </DataGrid>
+            }
+            else
+            {
+                <Field TextAlignment="TextAlignment.Center">The current campaign is empty.</Field>
+            }
         </ModalBody>
         <ModalFooter>
             <Button Color="Color.Secondary" Clicked="@HideModal">Close</Button>
@@ -84,3 +114,6 @@
         </ModalFooter>
     </ModalContent>
 </Modal>
+
+<AddEditPartnerCampaignModal @ref="addEditPartnerCampaignModal" UpdatePartnerCampaignCallBack="OnUpdatePartnerCampaignCallBack"></AddEditPartnerCampaignModal>
+

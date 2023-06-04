@@ -17,6 +17,8 @@ public class Partner
     public bool IsActive { get; set; }
     public int Index { get; set; }
     public Guid User_ID_FK { get; set; }
+    public IList<PartnerCampaign> PartnerCampaigns { get; set; } = new List<PartnerCampaign>();
+
     public string JoinDateText
     {
         get

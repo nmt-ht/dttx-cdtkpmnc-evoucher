@@ -1,5 +1,7 @@
 ﻿using Blazorise;
 using eVoucher.Models;
+using eVoucher.Pages.Campaigns.Components;
+using eVoucher.Pages.Games.Components;
 using eVourcher.Services;
 using Microsoft.AspNetCore.Components;
 using System;
@@ -10,6 +12,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using static eVoucher.Models.DataType;
 
 namespace eVoucher.Pages.Partners.Components;
 public partial class AddEditPartnerModal : ComponentBase
@@ -17,15 +20,20 @@ public partial class AddEditPartnerModal : ComponentBase
     [Inject] public IPartnerService PartnerService { get; set; }
     [Inject] public IUserService UserService { get; set; }
     [Inject] public INotificationService NotificationService { get; set; }
+    [Inject] public IMessageService MessageService { get; set; }
     [Parameter] public EventCallback OnUpdatePartner { get; set; }
 
     private Validations validationsRef;
+    private AddEditPartnerCampaignModal addEditPartnerCampaignModal;
     public Partner Partner { get; set; } = new Partner();
     private Modal modalRef;
     private bool IsAdded => Partner is not null && Partner.Id != Guid.Empty ? false : true;
     private string Title => IsAdded ? "Add Partner" : "Edit Partner";
     private IList<User> Users { get; set; }
     private Guid SelectedUserId { get; set; }
+    private PartnerCampaign SelectedPartnerCampaign { get; set; }
+    public IList<Guid> CampaignIds => Partner != null && Partner.PartnerCampaigns != null ? Partner.PartnerCampaigns.Select(x => x.Campaign.Id).ToList() : new List<Guid>();
+
     public async void InitData(Partner partner)
     {
         ResetValue();
@@ -77,6 +85,63 @@ public partial class AddEditPartnerModal : ComponentBase
                 }
             }
         }
+    }
+
+    private bool IsEditingGame = false;
+    private async Task CampaignActions(eAction action)
+    {
+        IsEditingGame = false;
+        switch (action)
+        {
+            case eAction.Add:
+                addEditPartnerCampaignModal.SetParameters(new PartnerCampaign(), true, CampaignIds);
+                addEditPartnerCampaignModal.InitData();
+                break;
+            case eAction.Edit:
+                EditPartnerCampaign();
+                break;
+            case eAction.Delete:
+                await DeletePartnerCampaign();
+                break;
+        }
+    }
+    private void EditPartnerCampaign()
+    {
+        IsEditingGame = true;
+        addEditPartnerCampaignModal.SetParameters(SelectedPartnerCampaign, false, CampaignIds);
+        addEditPartnerCampaignModal.InitData();
+    }
+
+    private async Task DeletePartnerCampaign()
+    {
+        var confirm = await MessageService.Confirm("Are you sure delete this game?");
+        if (confirm)
+        {
+            if (SelectedPartnerCampaign != null)// Delete on memory only
+            {
+                Partner.PartnerCampaigns.Remove(SelectedPartnerCampaign);
+                if (Partner.PartnerCampaigns is not null && Partner.PartnerCampaigns.Any())
+                {
+                    var index = 0;
+                    Partner.PartnerCampaigns.ToList().ForEach(a => a.Index = ++index);
+                }
+            }
+        }
+    }
+
+    private async Task OnUpdatePartnerCampaignCallBack(PartnerCampaign partnerCampaign)
+    {
+        if (!IsEditingGame)
+        {
+            var maxIndex = Partner.PartnerCampaigns.Count + 1;
+            partnerCampaign.Index = maxIndex;
+            Partner.PartnerCampaigns.Add(partnerCampaign);
+        }
+        else
+        {
+            SelectedPartnerCampaign = partnerCampaign;
+        }
+        StateHasChanged();
     }
 
     protected string ImageDataUrl { get; set; }

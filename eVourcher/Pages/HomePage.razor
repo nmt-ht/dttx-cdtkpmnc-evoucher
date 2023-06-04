@@ -18,7 +18,7 @@
      Background="Background.Light"
      ThemeContrast="ThemeContrast.Light">
     <BarBrand>
-        <Icon TextColor="TextColor.Primary" Name="IconName.Gift" IconSize="IconSize.x2" Margin="Margin.Is2.FromEnd"></Icon>
+        <Icon Style="cursor: pointer" Clicked="GotoHomePage" TextColor="TextColor.Primary" Name="IconName.Gift" IconSize="IconSize.x2" Margin="Margin.Is2.FromEnd"></Icon>
     </BarBrand>
     <BarMenu>
         <BarStart>
@@ -51,7 +51,7 @@
                 </DropdownToggle>
                 <DropdownMenu>
                     <DropdownItem>Voucher Management</DropdownItem>
-                    <DropdownDivider/>
+                    <DropdownDivider />
                     <DropdownItem Display="@(CurrentUser is not null && CurrentUser.IsCustomerView ? Display.Block : Display.None)" Clicked="OnRegisterPartner">
                         To become a partner
                     </DropdownItem>
@@ -67,9 +67,9 @@
 
 <Row Class="customer-content">
     <Div Class="row">
-        @foreach (var campaign in Campaigns.Skip(int.Parse(currentPage) * pageSize).Take(pageSize))
+        @foreach (var campaign in Campaigns.Skip(int.Parse(currentPage)).Take(pageSize))
         {
-            <Div Class="col-md-4">
+            <Div Class="col-md-2">
                 <Card>
                     @if (!string.IsNullOrEmpty(campaign.ImageUrl))
                     {
@@ -80,13 +80,13 @@
                         <CardText>
                             @campaign.Description
                         </CardText>
-                        <Button Color="Color.Primary" Clicked="OnViewGameBoard">Nhận Voucher</Button>
+                        <Button Margin=Margin.Is2.FromTop Color="Color.Primary" Clicked="OnViewGameBoard">Nhận Voucher</Button>
                     </CardBody>
                 </Card>
             </Div>
         }
     </Div>
-    <Div Class="row">
+    <Div Class="row" Display="@(pageItems > 0 ? Display.Flex : Display.None)">
         <Pagination>
             <PaginationItem Disabled="@IsPageNavigationDisabled(PREVIOUS)" @onclick="Previous">
                 <PaginationLink>

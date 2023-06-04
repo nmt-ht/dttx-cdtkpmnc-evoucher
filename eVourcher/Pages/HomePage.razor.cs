@@ -1,9 +1,9 @@
-﻿using eVoucher.Models;
+﻿using Blazorise;
+using eVoucher.Models;
 using eVoucher.Pages.Games;
 using eVoucher.Pages.Partners.Components;
 using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace eVoucher.Pages;
@@ -15,34 +15,15 @@ public partial class HomePage
     private IList<string> Locations = new List<string> { "Hồ Chí Minh", "Hà Nội", "Đà Nẵng" };
     private IList<Campaign> Campaigns { get; set; } = new List<Campaign>();
     [CascadingParameter]private User CurrentUser { get; set; }
-    private int pageSize = 15;
+    private int pageSize = 10;
     protected override async Task OnInitializedAsync()
     {
+        await ShowLoadingPage(true);
         CurrentUser = UserService.CurrentUser;
         UserService.CurrentUserChanged += UpdateCurrentUser;
         Campaigns = await CampaignService.GetCampaigns();
-        Campaigns.ToList().ForEach(campain =>
-        {
-            Campaigns.Add(campain);
-        }); 
-
-        Campaigns.ToList().ForEach(campain =>
-        {
-            Campaigns.Add(campain);
-        });
-
-        Campaigns.ToList().ForEach(campain =>
-        {
-            Campaigns.Add(campain);
-        });
-
-        Campaigns.ToList().ForEach(campain =>
-        {
-            Campaigns.Add(campain);
-        });
-
         pageItems = (Campaigns.Count / pageSize);
-        StateHasChanged();
+        await ShowLoadingPage(false);
     }
 
     private void OnViewGameBoard()
@@ -110,4 +91,31 @@ public partial class HomePage
     {
         CurrentUser = newUser;
     }
+
+    private void GotoHomePage()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+
+    #region Show Loading page
+    [Inject] IPageProgressService PageProgressService { get; set; }
+    private async Task ShowLoadingPage(bool isShow)
+    {
+        if (isShow)
+        {
+            await SetPageProgressIndeterminate();
+        }
+        else { await SetPageProgressHidden(); }
+        StateHasChanged();
+    }
+    Task SetPageProgressIndeterminate()
+    {
+        return PageProgressService.Go(null, options => { options.Color = Color.Info; });
+    }
+    Task SetPageProgressHidden()
+    {
+        // setting it to -1 will hide the progress bar
+        return PageProgressService.Go(-1);
+    }
+    #endregion
 }

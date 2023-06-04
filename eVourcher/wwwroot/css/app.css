@@ -1,5 +1,10 @@
 ﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
+.b-layout {
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
@@ -308,12 +313,14 @@ button, .btn {
     align-items: center;
 }
 
-    .customer-content .campaign {
+    .customer-content .col-md-2 {
+        min-height: 350px;
     }
 
 .card {
     margin: 5px;
     padding: 5px;
+    min-height: 350px;
 }
 
 .oi-account-login:before, .oi-account-logout:before {

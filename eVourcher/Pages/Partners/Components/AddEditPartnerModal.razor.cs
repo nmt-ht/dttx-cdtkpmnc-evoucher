@@ -114,7 +114,7 @@ public partial class AddEditPartnerModal : ComponentBase
 
     private async Task DeletePartnerCampaign()
     {
-        var confirm = await MessageService.Confirm("Are you sure delete this game?");
+        var confirm = await MessageService.Confirm("Are you sure delete this campaign?");
         if (confirm)
         {
             if (SelectedPartnerCampaign != null)// Delete on memory only

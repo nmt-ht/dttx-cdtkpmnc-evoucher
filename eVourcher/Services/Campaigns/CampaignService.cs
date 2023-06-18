@@ -40,7 +40,6 @@ namespace eVourcher.Services
             }
             return result;
         }
-
         public async Task<bool> DeleteCampaign(Guid id)
         {
             var result = false;
@@ -54,7 +53,6 @@ namespace eVourcher.Services
             }
             return result;
         }
-
         public async Task<bool> UpdateCampaign(Campaign campaign)
         {
             var result = false;
@@ -68,7 +66,6 @@ namespace eVourcher.Services
             }
             return result;
         }
-
         public async Task<Campaign> GetCampaignById(Guid id)
         {
             var campaign = new Campaign();
@@ -97,7 +94,6 @@ namespace eVourcher.Services
 
             return games;
         }
-
         public async Task<bool> DeleteGame(Guid id)
         {
             var result = false;
@@ -117,6 +113,24 @@ namespace eVourcher.Services
             string requestURL = "api/users/game/update";
 
             var response = await RestClient.APIClient.PostAsync(requestURL, game);
+
+            if (response != null && response.Success && response.Data != null)
+            {
+                bool.TryParse(response.Data.ToString(), out result);
+            }
+            return result;
+        }
+        public async Task<bool> UpdateCampaignUser(Guid campaignId, Guid userId)
+        {
+            var result = false;
+            string requestURL = "/api/campaigns/user/update";
+            var gameUserDto = new CampaignUserDto
+            {
+                CampaignId = campaignId,
+                UserId = userId
+            };
+
+            var response = await RestClient.APIClient.PostAsync(requestURL, gameUserDto);
 
             if (response != null && response.Success && response.Data != null)
             {

@@ -1,8 +1,10 @@
 ﻿using eVoucher.Handlers;
+using eVoucher.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
 using Game = eVoucher.Models.Game;
 
 namespace eVourcher.Services
@@ -39,7 +41,6 @@ namespace eVourcher.Services
             }
             return result;
         } 
-
         public async Task<bool> DeleteGame(Guid id)
         {
             var result = false;
@@ -54,7 +55,6 @@ namespace eVourcher.Services
             }
             return result;
         }
-
         public async Task<bool> UpdateGame(Game game)
         {
             var result = false;
@@ -67,6 +67,18 @@ namespace eVourcher.Services
                 bool.TryParse(response.Data.ToString(), out result);
             } 
             return result;
-        } 
+        }
+        public async Task<bool> CreateVoucher(Voucher voucher)
+        {
+            var result = false;
+            string requestURL = "/api/games/voucher/create";
+            var response = await RestClient.APIClient.PostAsync(requestURL, voucher);
+
+            if (response != null && response.Success && response.Data != null)
+            {
+                bool.TryParse(response.Data.ToString(), out result);
+            }
+            return result;
+        }
     }
 }

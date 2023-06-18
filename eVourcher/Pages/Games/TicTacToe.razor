@@ -40,7 +40,7 @@
         <ModalFooter>
             @if(board.GameComplete)
             {
-                <button class="btn btn-success" @onclick="@(() => board.Reset())">Reset</button>
+                <button class="btn btn-success" @onclick="@OnResetGame">Reset</button>
             }
             <Button Color="Color.Secondary" Clicked="@HideModal">Close</Button>
         </ModalFooter>

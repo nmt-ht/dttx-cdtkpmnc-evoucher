@@ -16,5 +16,6 @@ namespace eVourcher.Services
         Task<bool> DeleteAddress(Guid id);
         Task<bool> UpdateAddess(Address address);
         Task<IList<UserGroup>> GetUserGroups();
+        Task<IList<UserVoucher>> GetUserVouchers(Guid currentUserID);
     }
 }

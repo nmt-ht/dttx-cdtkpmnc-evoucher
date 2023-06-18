@@ -43,7 +43,7 @@
             </div>
         </ModalBody>
         <ModalFooter>
-            <Button Display="@(board.WinningPlay is not null ? Display.Block : Display.None)" class="btn btn-success" @onclick="@(() => board.Reset())">Reset</Button>
+            <Button Display="@(board.WinningPlay is not null ? Display.Block : Display.None)" class="btn btn-success" @onclick="@(OnResetGame)">Reset</Button>
             <Button Color="Color.Secondary" Clicked="@HideModal">Close</Button>
         </ModalFooter>
     </ModalContent>

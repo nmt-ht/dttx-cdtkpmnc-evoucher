@@ -1,0 +1,30 @@
+﻿<Modal @ref="modalRef">
+    <ModalContent Centered Size="ModalSize.Fullscreen">
+        <ModalHeader>
+            <ModalTitle>Voucher của tôi</ModalTitle>
+            <CloseButton />
+        </ModalHeader>
+        <ModalBody>
+            <DataGrid TItem="UserVoucher"
+                      Data="@UserVouchers"
+                      Responsive
+                      PageSize="20"
+                      ShowPager="true"
+                      Hoverable="true"
+                      Striped="true"
+                      Filterable>
+                <DataGridCommandColumn />
+                <DataGridColumn Field="@nameof(UserVoucher.Index)" Caption="#" Sortable="false" />
+                <DataGridColumn Field="@nameof(UserVoucher.VoucherCode)" Caption="Voucher Code" Editable />
+                <DataGridColumn Field="@nameof(UserVoucher.ReceivedDate)" Caption="Received Date" Editable />
+                <DataGridColumn Field="@nameof(UserVoucher.ExpiredDate)" Caption="Expired Date" Editable />
+                <DataGridColumn Field="@nameof(UserVoucher.CampaignName)" Caption="Campaign Name" Editable />
+                <DataGridColumn Field="@nameof(UserVoucher.GameName)" Caption="Game Name" Editable />
+                <DataGridColumn Field="@nameof(UserVoucher.IsActive)" Caption="Status" Editable />
+            </DataGrid>
+        </ModalBody>
+        <ModalFooter>
+            <Button Color="Color.Secondary" Clicked="@HideModal">Close</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>

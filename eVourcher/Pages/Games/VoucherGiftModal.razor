@@ -1,0 +1,17 @@
+﻿<Modal @ref="modalRef">
+    <ModalContent Centered Size="ModalSize.ExtraLarge">
+        <ModalHeader>
+            <ModalTitle>CONGRATULATIONS - YOU GOT IT</ModalTitle>
+            <CloseButton />
+        </ModalHeader>
+        <ModalBody>
+            <Figure Size="FigureSize.Is256x256">
+                <FigureImage Source="@ImageLink" AlternateText="Image Voucher" />
+                <FigureCaption>A caption for the above image.</FigureCaption>
+            </Figure>
+        </ModalBody>
+        <ModalFooter>
+            <Button Color="Color.Secondary" Clicked="@HideModal">Close</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>

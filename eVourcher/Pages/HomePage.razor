@@ -12,7 +12,6 @@
 
 @inherits OwningComponentBase<MainLayout>
 @inject UserService UserService
-
 @inject ICampaignService CampaignService;
 
 <Bar Breakpoint="Breakpoint.Desktop"
@@ -23,26 +22,32 @@
     </BarBrand>
     <BarMenu>
         <BarStart>
-            <BarItem>
+            <BarItem Class="search-filter-bar">
                 <SelectList TItem="string"
                             TValue="string"
                             Data="@Locations"
                             TextField="@(item => item)"
                             ValueField="@((item)=>item)"
+                            SelectedValue="@LocationName"
+                            SelectedValueChanged="@((item) => OnLocationChange(item))"
                             DefaultItemText="Khu vực gần bạn">
                 </SelectList>
+                <Div Class="search-bar">
+                    <Icon Name="IconName.Search" Clicked="OnSearch"/>
+                    <input placeholder="Cửa hàng/sản phẩm bạn muốn tìm?" value="@TextSearch" @oninput="onInputThrottled" />
+                </Div>
             </BarItem>
             <BarItem>
-                <BarLink To="#">Ẩm thực</BarLink>
+                <BarLink To="#" Clicked="@(() => OnFilterByPartnerType(ePartnerType.Food))">Ẩm thực</BarLink>
             </BarItem>
             <BarItem>
-                <BarLink To="#">Thức uống</BarLink>
+                <BarLink To="#" Clicked="@(() => OnFilterByPartnerType(ePartnerType.Drink))">Thức uống</BarLink>
             </BarItem>
             <BarItem>
-                <BarLink To="#">Sức khỏe</BarLink>
+                <BarLink To="#" Clicked="@(() => OnFilterByPartnerType(ePartnerType.Heathy))">Sức khỏe</BarLink>
             </BarItem>
             <BarItem>
-                <BarLink To="#">Công nghệ</BarLink>
+                <BarLink To="#" Clicked="@(() => OnFilterByPartnerType(ePartnerType.Technology))">Công nghệ</BarLink>
             </BarItem>
         </BarStart>
         <BarEnd>
@@ -51,12 +56,12 @@
                     <Icon Name="IconName.Bars"></Icon>
                 </DropdownToggle>
                 <DropdownMenu>
-                    <DropdownItem>Voucher Management</DropdownItem>
-                    <DropdownDivider />
+                    <DropdownItem Clicked="ViewVoucherManagement">Voucher Management</DropdownItem>
+                    <DropdownDivider Display="@(CurrentUser is not null && CurrentUser.IsCustomerView ? Display.Block : Display.None)" />
                     <DropdownItem Display="@(CurrentUser is not null && CurrentUser.IsCustomerView ? Display.Block : Display.None)" Clicked="OnRegisterPartner">
                         To become a partner
                     </DropdownItem>
-                    <DropdownDivider Display="@(CurrentUser is not null && CurrentUser.IsCustomerView ? Display.Block : Display.None)" />
+                    <DropdownDivider Display="@(CurrentUser is not null && CurrentUser.IsPartnerView ? Display.Block : Display.None)" />
                     <DropdownItem Display="@(CurrentUser is not null && CurrentUser.IsPartnerView ? Display.Block : Display.None)" Clicked="OnViewPartnerManagement">
                         Partner Management
                     </DropdownItem>
@@ -70,7 +75,7 @@
     <Div Class="row">
         @foreach (var campaign in Campaigns.Skip(int.Parse(currentPage)).Take(pageSize))
         {
-            <Div Class="col-md-2">
+            <Div Class="col-md-3">
                 <Card>
                     @if (!string.IsNullOrEmpty(campaign.ImageUrl))
                     {
@@ -79,9 +84,20 @@
                     <CardBody>
                         <CardTitle Size="6">@campaign.Name</CardTitle>
                         <CardText>
-                            @campaign.Description
+                            <Div>
+                                <Div>
+                                    <Strong>Company Name: </Strong>
+                                    @campaign.Partners.FirstOrDefault().CompanyName
+                                </Div>
+                                
+                                <Div>
+                                    <Strong>Description:</Strong> <br>
+                                    @campaign.Description
+                                </Div>
+                            </Div>
+                            
                         </CardText>
-                        <Button Margin=Margin.Is2.FromTop Color="Color.Primary" Clicked="OnViewGameBoard">Nhận Voucher</Button>
+                        <Button Margin=Margin.Is2.FromTop Color="Color.Primary" Clicked="@(() => OnViewGameBoard(campaign))">Nhận Voucher</Button>
                     </CardBody>
                 </Card>
             </Div>
@@ -114,5 +130,6 @@
     </Div>
 </Row>
 
-<SelectGameModal @ref="selectGameModal"></SelectGameModal>
+<SelectGameModal @ref="selectGameModal" CurrentUserID="@(CurrentUser is not null ? CurrentUser.ID : Guid.Empty)" Campaign="SelectedCampain"></SelectGameModal>
 <eVoucher.Pages.Partners.Components.AddEditPartnerModal @ref="@refAddEditPartner" />
+<eVoucher.Pages.Vouchers.VoucherManagementModal CurrentUserID="@(CurrentUser is not null ? CurrentUser.ID : Guid.Empty)" @ref=@refVouchermanagement></eVoucher.Pages.Vouchers.VoucherManagementModal>

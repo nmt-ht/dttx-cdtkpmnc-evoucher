@@ -11,5 +11,6 @@ namespace eVourcher.Services
         Task<bool> CreateGame(Game game);
         Task<bool> UpdateGame(Game game);        
         Task<bool> DeleteGame(Guid id);
+        Task<bool> CreateVoucher(Voucher voucher);
     }
 }

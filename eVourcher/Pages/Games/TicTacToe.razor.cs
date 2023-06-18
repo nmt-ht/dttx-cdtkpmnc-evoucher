@@ -8,6 +8,7 @@ namespace eVoucher.Pages.Games;
 
 public partial class TicTacToe : ComponentBase
 {
+    [Parameter] public EventCallback<bool> CanReceiveVoucher { get; set; }
     [Parameter] public EventCallback<bool> OnCloseCallback { get; set; }
     GameBoard board  = new GameBoard();
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -32,5 +33,16 @@ public partial class TicTacToe : ComponentBase
     {
         OnCloseCallback.InvokeAsync();
         return modalRef.Hide();
+    }
+
+    private void OnResetGame()
+    {
+        var winPlay = board.GetWinner();
+        if (board.GameComplete && winPlay is not null && winPlay.WinningStyle != eVoucherGames.Models.TicTacToe.Enums.PieceStyle.Blank)
+        {
+            CanReceiveVoucher.InvokeAsync();
+            HideModal();
+        }
+        board.Reset();
     }
 }

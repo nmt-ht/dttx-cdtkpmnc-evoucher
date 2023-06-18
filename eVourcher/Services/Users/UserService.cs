@@ -155,5 +155,20 @@ namespace eVourcher.Services
 
             return users;
         }
+        public async Task<IList<UserVoucher>> GetUserVouchers(Guid currentUserID)
+        {
+            IList<UserVoucher> userVouchers = new List<UserVoucher>();
+
+            string requestURL = $"/api/users/vouchers/{currentUserID}";
+
+            var response = await RestClient.APIClient.GetAsync(requestURL);
+
+            if (response != null && response.Success && response.Data != null)
+            {
+                userVouchers = JsonConvert.DeserializeObject<IList<UserVoucher>>(response.Data.ToString());
+            }
+
+            return userVouchers;
+        }
     }
 }

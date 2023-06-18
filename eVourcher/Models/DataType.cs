@@ -20,14 +20,16 @@ namespace eVoucher.Models
         {
             Food = 0,
             Drink = 1,
-            Technology = 2
+            Technology = 2,
+            Sport = 3,
+            Heathy = 4,
         }
 
         public enum eVoucherType
         {
-            Ten = 0,
-            Twenty = 1,
-            Thirty = 2,
+            NetPrice = 0,
+            TwentyFive= 1,
+            ThirtyFive = 2,
             Fifty = 3,
             OneHundered = 4
         }

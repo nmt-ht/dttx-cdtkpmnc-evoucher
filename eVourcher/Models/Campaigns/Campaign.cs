@@ -34,4 +34,8 @@ public class Campaign
             return string.Empty;
         }
     }
+
+    public string UserName { get; set; }
+    public IList<Partner> Partners { get; set; }
+    public IList<Game> Games { get; set; }
 }

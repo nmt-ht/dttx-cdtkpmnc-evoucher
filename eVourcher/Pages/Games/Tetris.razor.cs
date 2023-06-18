@@ -2,11 +2,9 @@
 using eVoucherGames.Models.Tetris;
 using eVoucherGames.Models.Tetris.Enums;
 using eVoucherGames.Models.Tetris.Tetrominos;
-using eVoucherGames.Models.TicTacToe;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
-using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,7 +14,10 @@ namespace eVoucher.Pages.Games;
 public partial class Tetris : ComponentBase
 {
     [Parameter] public EventCallback<bool> OnCloseCallback { get; set; }
+    [Parameter] public EventCallback<bool> CanReceiveVoucher { get; set; }
+
     Grid grid = new Grid();
+    private const int LIMIT_SCORE = 50;
 
     //Creates new tetrominos as the game needs them
     TetrominoGenerator generator = new TetrominoGenerator();
@@ -66,11 +67,8 @@ public partial class Tetris : ComponentBase
     public void NewGame()
     {
         grid = new Grid();
-
         generator = new TetrominoGenerator();
-
         currentTetromino = null;
-
         level = 1;
         score = 0;
     }
@@ -120,6 +118,11 @@ public partial class Tetris : ComponentBase
         //If the current high score is larger than the old high score, update the cookie
         if (score > previousHighScore)
             await _jsRuntime.InvokeAsync<object>("WriteCookie", "tetrisHighScore", score, 14);
+
+        if (score > LIMIT_SCORE)
+        {
+            await CanReceiveVoucher.InvokeAsync();
+        }
     }
 
     public async Task ToggleAudio()

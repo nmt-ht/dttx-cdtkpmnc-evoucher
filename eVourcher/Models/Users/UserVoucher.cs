@@ -9,7 +9,26 @@ namespace eVoucher.Models
         public DateTime ExpiredDate { get; set;}
         public string GameName { get; set; }
         public string CampaignName { get; set; }
-        public bool IsActive { get; set; }
+        private bool isActive;
+        public bool IsActive
+        {
+            get
+            {
+                return ExpiredDate.Date >= DateTime.Now.Date;
+            }
+            set
+            {
+                isActive = value;
+            }
+        }
         public int Index { get; set; }
+
+        public string Status
+        {
+            get
+            {
+                return IsActive ? "Available" : "Expried";
+            }
+        }
     }
 }

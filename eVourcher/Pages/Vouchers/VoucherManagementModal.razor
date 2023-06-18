@@ -18,9 +18,14 @@
                 <DataGridColumn Field="@nameof(UserVoucher.VoucherCode)" Caption="Voucher Code" Editable />
                 <DataGridColumn Field="@nameof(UserVoucher.ReceivedDate)" Caption="Received Date" Editable />
                 <DataGridColumn Field="@nameof(UserVoucher.ExpiredDate)" Caption="Expired Date" Editable />
-                <DataGridColumn Field="@nameof(UserVoucher.CampaignName)" Caption="Campaign Name" Editable />
+                @*<DataGridColumn Field="@nameof(UserVoucher.CampaignName)" Caption="Campaign Name" Editable />*@
                 <DataGridColumn Field="@nameof(UserVoucher.GameName)" Caption="Game Name" Editable />
-                <DataGridColumn Field="@nameof(UserVoucher.IsActive)" Caption="Status" Editable />
+                <DataGridColumn Field="@nameof(UserVoucher.Status)" Caption="Status" Editable />
+                <DataGridColumn Caption="Action">
+                    <DisplayTemplate Context="item">
+                        <Button Color=Color.Success Display="@(item.IsActive ? Display.Block : Display.None)" Clicked="OnUseChanged">Sử dụng</Button>
+                    </DisplayTemplate>
+                </DataGridColumn>
             </DataGrid>
         </ModalBody>
         <ModalFooter>

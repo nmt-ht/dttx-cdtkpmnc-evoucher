@@ -42,7 +42,7 @@ public partial class Tetris : ComponentBase
     int level = 1;
     int score = 0;
     int previousHighScore = 0;
-    string previousScoreCookieValue = "Nothing";
+    //string previousScoreCookieValue = "Nothing";
 
     //This flag changes based on whether or not the user checks the "mute audio" checkbox.
     bool playAudio = true;
@@ -52,15 +52,14 @@ public partial class Tetris : ComponentBase
     protected override async Task OnInitializedAsync()
     {
         //Get the previous high score cookie if one exists
-        previousScoreCookieValue = await _jsRuntime.InvokeAsync<string>("ReadCookie", "tetrisHighScore");
-        bool hasHighScore = int.TryParse(previousScoreCookieValue, out previousHighScore);
+        //previousScoreCookieValue = await _jsRuntime.InvokeAsync<string>("ReadCookie", "tetrisHighScore");
     }
 
     protected async override Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            await _jsRuntime.InvokeVoidAsync("SetFocusToElement", gameBoardDiv);
+            //await _jsRuntime.InvokeVoidAsync("SetFocusToElement", gameBoardDiv);
         }
     }
 

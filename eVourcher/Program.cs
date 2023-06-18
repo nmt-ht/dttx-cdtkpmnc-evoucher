@@ -42,6 +42,7 @@ public class Program
         builder.Services.AddSingleton<ICampaignService, CampaignService>();
         builder.Services.AddSingleton<IPartnerService, PartnerService>();
         builder.Services.AddSingleton<IGameService, GameService>();
+        builder.Services.AddSingleton<IReportService, ReportService>();
 
         builder.Services.AddHttpClient("default", client =>
         {

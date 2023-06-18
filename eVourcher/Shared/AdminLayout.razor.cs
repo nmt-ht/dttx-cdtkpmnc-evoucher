@@ -1,4 +1,5 @@
 ﻿using eVoucher.Models;
+using eVoucher.Pages;
 using eVoucher.Pages.Accounts;
 using eVoucher.Pages.Campaigns;
 using eVoucher.Pages.Games;
@@ -32,6 +33,7 @@ public partial class AdminLayout : LayoutComponentBase, IDisposable
     private PartnerView partnerView;
     private CampaignView campaignView;
     private GameView gameView;
+    private Dashboard dashboardView;
     private eAdminComponent SelectedComponent { get; set; } = eAdminComponent.Dasboard;
     private bool loggedIn;
     private bool LoggedIn
@@ -110,6 +112,8 @@ public partial class AdminLayout : LayoutComponentBase, IDisposable
     private async void LocationChanged(object sender, LocationChangedEventArgs e)
     {
         var url = NavManager.Uri.ToString();
+        var isAdminURLonly = url.Replace(NavManager.BaseUri, "").Split("/")?.Length == 1;
+
         if (url.Contains("users"))
         {
             SelectedComponent = eAdminComponent.User;
@@ -133,6 +137,12 @@ public partial class AdminLayout : LayoutComponentBase, IDisposable
             SelectedComponent = eAdminComponent.Game;
             StateHasChanged();
             await gameView.BindData();
+        }
+        else if (isAdminURLonly)
+        {
+            SelectedComponent = eAdminComponent.Dasboard;
+            StateHasChanged();
+            await dashboardView.BindData();
         }
         StateHasChanged();
     }

@@ -377,3 +377,35 @@ button, .btn {
     display: flex;
     margin: 0 auto;
 }
+
+.campaign-total-report {
+    margin: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    height: 500px;
+}
+.campaign-total-report .header {
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+    .campaign-total-report .created-filter {
+        margin: 0;
+        padding: 0;
+        border-bottom: 1px solid #ccc;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        
+    }
+
+.report {
+    min-height: 900px;
+}
+
+.report.row {
+    flex-wrap: unset;
+    margin-right: unset;
+    margin-left: unset;
+}
